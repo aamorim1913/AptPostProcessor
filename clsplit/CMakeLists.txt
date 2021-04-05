@@ -9,3 +9,5 @@ project ("clsplit")
 add_executable (clsplit "clsplit.cpp" "clsplit.h")
 
 # TODO: Add tests and install targets if needed.
+
+add_compile_definitions(_CRT_SECURE_NO_WARNINGS)

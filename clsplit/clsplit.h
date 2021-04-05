@@ -100,9 +100,10 @@ int ReadArrayCom(char* com, char* s, char del) {
 	return i;
 }
 
-int RotateArray(int n, double* A, double& Cb, double& Sb, double& Cc, double& Sc) {
+int RotateArray(int n, double* A, double& thetab, double& thetac) {
 	/* rotate A[0] A[1] A[3] with the machine rotation that puts A[4] A[5] A[6] as (0,0,1) normal out */
 	double x, y, z;
+	double Cb, Sb, Cc, Sc;
 
 	if (n < 6) return -1;
 	Cb = A[5];
@@ -115,6 +116,9 @@ int RotateArray(int n, double* A, double& Cb, double& Sb, double& Cc, double& Sc
 		Cc = A[3] / Sb;
 		Sc = A[4] / Sb;
 	}
+	thetab = atan2(Sb, Cb) * 180.0 / AM_PI;
+	thetac = atan2(Sc, Cc) * 180.0 / AM_PI;
+
 	x = A[0]; y = A[1]; z = A[2];
 	/* directa */
 	A[0] = Cb * Cc * x + Cb * Sc * y - Sb * z;
@@ -128,11 +132,10 @@ int RotateArray(int n, double* A, double& Cb, double& Sb, double& Cc, double& Sc
 	return 0;
 }
 
-int ReadCoord(double* xm, double* ym, double* zm, double* Dx, double* Dy, double* Dz) {
+int ReadCoord(double* xd, double* yd, double* zd, double* Datum) {
 	int ns = 0;
 	FILE* SETCOOR;
 	char linecoor[MAXLINE];
-	double xd,yd,zd;
 
 	if ( (SETCOOR=fopen(SETCOORNAME, "r")) == NULL ) {
 		printf("cannot open SETCOOR file %s\n", SETCOORNAME);
@@ -140,17 +143,17 @@ int ReadCoord(double* xm, double* ym, double* zm, double* Dx, double* Dy, double
 	}
 	ReadLine(linecoor, SETCOOR);
 	for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
-	while (sscanf(linecoor, "%lf %lf %lf %lf %lf %lf", &xd, &yd, &zd, &xm[ns], &ym[ns], &zm[ns]) == 6) {
-		ReadLine(linecoor, SETCOOR);
+	sscanf(linecoor, "%lf %lf %lf", Datum, Datum+1, Datum+2);
+	while (ReadLine(linecoor, SETCOOR)) {
 		for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
-		*Dx=xm[ns]-xd; *Dy=ym[ns]-yd; *Dz=zm[ns]-zd;
+		if (sscanf(linecoor, "%lf %lf %lf", xd+ns, yd+ns, zd+ns) != 3) break;
 		ns++;
 	}
 	fclose(SETCOOR);
 	return ns;
 }
 
-int WriteSetup(int ns, double axis[3], double S[3], double M[3]) {
+int WriteSetup(int ns, double axis[3], double S[3]) {
 	char filename[MAXLINE];
 	FILE* SETUP;
 
@@ -161,7 +164,6 @@ int WriteSetup(int ns, double axis[3], double S[3], double M[3]) {
 	}
 	fprintf(SETUP, "1 BEGIN PGM %dsetup MM\n", ns);
 	fprintf(SETUP, "2 ;axis %lg %lg %lg\n", axis[0], axis[1], axis[2]);
-	fprintf(SETUP, "3 ;New datum Machine coord  %.3lf %.3lf %.3lf\n", M[0], M[1], M[2]);
 	fprintf(SETUP, "4 CYCL DEF 7.0 DATUM SHIFT\n5 CYCL DEF 7.1  X%+.3lf\n6 CYCL DEF 7.2  Y%+.3lf\n7 CYCL DEF 7.3  Z%+.3lf\n"
 		, S[0], S[1], S[2]);
 	fprintf(SETUP, "8 END PGM %dsetup MM\n", ns);
@@ -169,19 +171,19 @@ int WriteSetup(int ns, double axis[3], double S[3], double M[3]) {
 	return 0;
 }
 
-int ReadTool() {
-	FILE* TOOL;
+int ReadTool(struct TOOL *tl) {
+	FILE* FTOOL;
 	int ibuff;
 	double buff;
 	char sbuff[1024];
-	if ((TOOL=fopen(TOOLFILE, "r")) == NULL) {
+	if ((FTOOL=fopen(TOOLFILE, "r")) == NULL) {
 		printf("cannot read Tool file TOOLFILE\n");
 		return 1;
 	}
-	fgets(sbuff, 1024, TOOL);
-	fgets(sbuff, 1024, TOOL);
+	fgets(sbuff, 1024, FTOOL);
+	fgets(sbuff, 1024, FTOOL);
 	for (int i = 0; i < 100; i++) {
-		fgets(sbuff, 1024, TOOL);
+		fgets(sbuff, 1024, FTOOL);
 		for (int j = 0; j < 1024; j++) {
 			if (sbuff[j] == '\0') break;
 			if (sbuff[j] == ',') sbuff[j] = '.';
