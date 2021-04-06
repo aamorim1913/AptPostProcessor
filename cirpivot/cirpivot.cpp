@@ -1,9 +1,8 @@
  // ccirpivot.cpp
 // Antonio Amorim CENTRA-FCUL 2021
 
-const double Xpim = -200.66;
-const double Ypim = -193.7836;
-const double Zpim = -338.3841;
+const double PIVOT[3] = { -200.66, -193.7836, -338.3841};
+#define NUMREC
 
 #include "cinttypes"
 #include "stdio.h"
@@ -15,35 +14,22 @@ const double Zpim = -338.3841;
 #endif
 #include "math.h"
 #define AM_PI 3.14159265358979323846   // pi
-
-#include "nr3.h"
-#include "svd.h"
-#include "gaussj.h"
-
 #define MAXLINE 1024
-
-#if defined(_WIN64)
-#define DMUDIR "C:/svn_dmu50/code-utils/%d.h"
-#define DMUDIRSCAD "C:/svn_dmu50/code-utils/%dt%d.scad"
-#define DMUDIRSETUP "C:/svn_dmu50/code-utils/%dsetup.h"
-#define SETCOORNAME "C:/svn_dmu50/code-utils/%FN15RUN.A"
-#else
-#define DMUDIR "/Users/aamorim/svn_dmu50/code-utils/%d.h"
-#define DMUDIRSCAD "/Users/aamorim/svn_dmu50/code-utils/%dt%d.scad"
-#define DMUDIRSETUP "/Users/aamorim/svn_dmu50/code-utils/%dsetup.h"
-#define SETCOORNAME "/Users/aamorim/svn_dmu50/code-utils/%FN15RUN.A"
-#endif
-
-using namespace std;
 
 #include "cirpivot.h"
 
+using namespace std;
+
+#if defined(NUMREC)
+#include "../numrec/nr3.h"
+#include "../numrec/svd.h"
+#include "../numrec/gaussj.h"
+#endif
+
 int writeCircleSCAD(int ncoord, double* n, double* xm, double* ym, double* zm) {
 	FILE* SCAD;
-	char filename[MAXLINE];
-	sprintf(filename, DMUDIRSCAD, 0, 0);
-	if ((SCAD = fopen(filename, "w")) == NULL) {
-		printf("cannot write SCAD file %s\n", filename);
+	if ((SCAD = fopen("CIRCLE.scad", "w")) == NULL) {
+		printf("cannot write CIRCLE.scad file.\n");
 		return 1;
 	}
 	for (int i = 0; i < ncoord; i++)
@@ -59,38 +45,39 @@ int writeCircleSCAD(int ncoord, double* n, double* xm, double* ym, double* zm) {
 int main(int argc, char** argv) {
 	time_t current_time;
 	char* c_time_string;
-	double Yi, S[3], M[3] = { 0,0,0 };
+	double Yi, S[3], M[3] = { 0,0,0 }, Datum[3];
 	double n[4], nt[4];
-	double xd[32], yd[32], zd[32], Dx, Dy, Dz;
+	double xd[32], yd[32], zd[32];
 	double xm[323], ym[32], zm[32];
 	int ncoord;
 	double axis[3] = { 0,0,0 };
-	MatDoub A(4, 4, 0.), B(4, 1, 0.);
+	double A[4][4],U[4][4],V[4][4];
+	double B[4][1],W[4];
+	int sphere=0;
 
-	FILE *ALI;
+	FILE *TXT;
 	char command[MAXLINE];
 
 	if (argc < 2) {
-		cout << "Provide the ALI file name or or CIRCLE.ali, SPHERE.ali.\nMust exist .apt file in the current directory and a %FN15RUN.A file.\n" << endl;
+		cout << "Provide the .A file name. Output to CIRCLE.txt\nData format of %FN15RUN.A \n" << endl;
 		exit(1);
 	}
-	if (( strstr(argv[1], "CIRCLE.ali") != 0) || (strstr(argv[1], "SPHERE.ali") != 0)) {
 
-		if ( (ALI=fopen(argv[1], "a")) == NULL) {
-			printf("cannot open apt file to append %s\n", argv[1]);
-			return -1;
-		}
-			/* For a sphere or circle  center and radius. */
+	if ( (TXT=fopen("CIRCLE.txt", "a")) == NULL) {
+		printf("cannot open CIRCLE.txt file to append\n");
+		return -1;
+	}
+	/* For a sphere or circle  center and radius. */
 
 	current_time = time(NULL);
 	c_time_string = ctime(&current_time);
-	fprintf(ALI, "%s", c_time_string);
+	fprintf(TXT, "Process file %s at %s", argv[1], c_time_string);
 
-	ncoord = ReadCoord(xd, yd, zd, &Dx, &Dy, &Dz);
+	ncoord = ReadCoord(argv[1], xd, yd, zd, Datum);
 	for (int i = 0; i < ncoord; i++) {
-		xm[i] = xd[i] + Dx + Xpim;
-		ym[i] = yd[i] + Dy + Ypim;
-		zm[i] = zd[i] + Dz + Zpim;
+		xm[i] = xd[i] + Datum[0] + PIVOT[0];
+		ym[i] = yd[i] + Datum[1] + PIVOT[1];
+		zm[i] = zd[i] + Datum[2] + PIVOT[2];
 	}
 
 	for (int i = 0; i < ncoord; i++) {
@@ -117,55 +104,71 @@ int main(int argc, char** argv) {
 		B[2][0] += Yi * ym[i];
 		B[3][0] += Yi * zm[i];
 	}
-	SVD svd(A);
 
-	/* if sphere */
-	if (strstr(command, "SPHERE.ali") != 0) {
-		if (svd.w[3] < 0.01) printf("Should use CIRCLE.ali instead\n");
-		gaussj(A, B);
-		fprintf(ALI, "center of sphere %f %f %f\n", B[0][0] / 2.0, B[1][0] / 2.0, B[2][0] / 2.0);
-		fprintf(ALI, "R=%f\n", sqrt(B[3][0] + B[0][0] * B[0][0] / 4.0 + B[1][0] * B[1][0] / 4.0 + B[2][0] * B[2][0] / 4.0));
+#if defined(NUMREC)
+	MatDoub AA(4, 4, 0.), BB(4, 1, 0.);
+	for (int i=0; i<4; i++) {
+		BB[i][0]=B[i][0];
+		for (int j=1; j<4; j++) AA[i][j]=A[i][j];
+	}
+	SVD svd(AA);
+	if (svd.w[3] >= 0.01) {
+		sphere=1;
+		gaussj(AA, BB);
+	}
+	for (int i=0; i<4; i++) {
+		W[i]=svd.w[i];
+		for (int j=1; j<4; j++) {
+			V[i][j]=svd.v[i][j];
+			U[i][j]=svd.u[i][j];
+		}
+	}
+	#endif
+
+	if (sphere == 1){
+		fprintf(TXT, "Using SPHERE instead\ncenter of sphere %f %f %f\n", B[0][0] / 2.0, B[1][0] / 2.0, B[2][0] / 2.0);
+		fprintf(TXT, "R=%f\n", sqrt(B[3][0] + B[0][0] * B[0][0] / 4.0 + B[1][0] * B[1][0] / 4.0 + B[2][0] * B[2][0] / 4.0));
 		exit(0);
 	}
-	else if (svd.w[3] >= 0.01) printf("Should use SPHERE.ali instead\n");
-
-	fprintf(ALI, "w %f %f %f %f\n", svd.w[0], svd.w[1], svd.w[2], svd.w[3]);
+	fprintf(TXT, "w %f %f %f %f\n", W[0], W[1], W[2], W[3]);
 
 	/* the normal vector */
-	for (int i = 0; i < 3; ++i) n[i] = svd.v[i][3];
+	for (int i = 0; i < 3; ++i) n[i] = V[i][3];
 
 	/* normalize */
 	double norm = sqrt(n[0] * n[0] + n[1] * n[1] + n[2] * n[2]);
-	fprintf(ALI, "normal %f %f %f \n", n[0] / norm, n[1] / norm, n[2] / norm);
+	fprintf(TXT, "normal %f %f %f \n", n[0] / norm, n[1] / norm, n[2] / norm);
+	axis[0]=n[0] / norm;
+	axis[1]=n[1] / norm; 
+	axis[2]=n[2] / norm;
+
 
 	/* the center */
 	for (int i = 0; i < 4; ++i) {
 		nt[i] = 0;
-		for (int k = 0; k < 4; k++) nt[i] += svd.u[k][i] * B[k][0];
+		for (int k = 0; k < 4; k++) nt[i] += U[k][i] * B[k][0];
 	}
-	for (int i = 0; i < 3; ++i) nt[i] = nt[i] / svd.w[i];
+	for (int i = 0; i < 3; ++i) nt[i] = nt[i] / W[i];
 
 	/* alpha0   */
-	nt[3] = (svd.v[3][0] * nt[0] + svd.v[3][1] * nt[1] + svd.v[3][2] * nt[2] - 2) / (1 / svd.v[3][3] - svd.v[3][3]);
+	nt[3] = (V[3][0] * nt[0] + V[3][1] * nt[1] + V[3][2] * nt[2] - 2) / (1 / V[3][3] - V[3][3]);
 	for (int i = 0; i < 4; ++i) {
 		n[i] = 0;
-		for (int k = 0; k < 4; k++) n[i] += svd.v[i][k] * nt[k];
+		for (int k = 0; k < 4; k++) n[i] += V[i][k] * nt[k];
 	}
-	M[0] = n[0] / 2.0;
-	M[1] = n[1] / 2.0;
-	M[2] = n[2] / 2.0;
-	S[0] = M[0] - Dx;
-	S[1] = M[1] - Dy;
-	S[2] = M[2] - Dz;
 
-	fprintf(ALI, "center of circle  %f %f %f\n", n[0]/2.0, n[1]/2.0, n[2]/2.0);
-	fprintf(ALI, "R=%f\n", sqrt(n[3]+n[0]*n[0]/4.0+n[1]*n[1]/4.0+n[2]*n[2]/4.0));
+	fprintf(TXT, "center of circle  %f %f %f\n", n[0]/2.0, n[1]/2.0, n[2]/2.0);
+	fprintf(TXT, "R=%f\n", sqrt(n[3]+n[0]*n[0]/4.0+n[1]*n[1]/4.0+n[2]*n[2]/4.0));
 
-	WriteSetup(100, axis, S, M);
+
+	for (int i=0; i<3; i++){
+		M[i] = n[i] / 2.0;
+		S[i] = M[i] - (Datum[i]+PIVOT[i]);
+	}
+
+	WriteSetup(axis, S, M);
 
 	writeCircleSCAD(ncoord, n, xm, ym, zm);
-		return 0;
-	}
 
 	return 0;
 }
