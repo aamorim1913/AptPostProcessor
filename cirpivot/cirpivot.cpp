@@ -2,7 +2,8 @@
 // Antonio Amorim CENTRA-FCUL 2021
 
 const double PIVOT[3] = { -200.66, -193.7836, -338.3841};
-#define NUMREC
+//#define NUMREC
+#define ARMADILLO
 
 #include "cinttypes"
 #include "stdio.h"
@@ -24,6 +25,11 @@ using namespace std;
 #include "../numrec/nr3.h"
 #include "../numrec/svd.h"
 #include "../numrec/gaussj.h"
+#endif
+
+#if defined(ARMADILLO)
+#include <armadillo>
+using namespace arma;
 #endif
 
 int writeCircleSCAD(int ncoord, double* n, double* xm, double* ym, double* zm) {
@@ -123,7 +129,27 @@ int main(int argc, char** argv) {
 			U[i][j]=svd.u[i][j];
 		}
 	}
-	#endif
+#endif
+#if defined(ARMADILLO)
+	mat AA(4,4), BB(4,4), UU(4,4), VV(4,4);
+	vec WW(4);
+	for (int i=0; i<4; i++) {
+		BB(i,0)=B[i][0];
+		for (int j=1; j<4; j++) AA(i,j)=A[i][j];
+	}
+	svd(UU,WW,VV,AA);
+if (WW(3) >= 0.01) {
+		sphere=1;
+//		WW=solve(AA, BB);
+	}
+	for (int i=0; i<4; i++) {
+		W[i]=WW(i);
+		for (int j=1; j<4; j++) {
+			V[i][j]=VV(i,j);
+			U[i][j]=UU(i,j);
+		}
+	}
+#endif
 
 	if (sphere == 1){
 		fprintf(TXT, "Using SPHERE instead\ncenter of sphere %f %f %f\n", B[0][0] / 2.0, B[1][0] / 2.0, B[2][0] / 2.0);
