@@ -17,3 +17,7 @@ target_link_libraries(cirpivot ${ARMADILLO_LIBRARIES})
 # TODO: Add tests and install targets if needed.
 
 add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+
+# choose only one of the above
+add_compile_definitions(NUMREC)
+#add_compile_definitions(ARMADILLO)

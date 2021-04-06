@@ -2,8 +2,10 @@
 // Antonio Amorim CENTRA-FCUL 2021
 
 const double PIVOT[3] = { -200.66, -193.7836, -338.3841};
-//#define NUMREC
-#define ARMADILLO
+
+//managed by CMAKE
+//#define NUMREC 
+//#define ARMADILLO
 
 #include "cinttypes"
 #include "stdio.h"
@@ -115,7 +117,8 @@ int main(int argc, char** argv) {
 	MatDoub AA(4, 4, 0.), BB(4, 1, 0.);
 	for (int i=0; i<4; i++) {
 		BB[i][0]=B[i][0];
-		for (int j=1; j<4; j++) AA[i][j]=A[i][j];
+		for (int j=1; j<4; j++) BB[i][j]=0;;
+		for (int j=0; j<4; j++) AA[i][j]=A[i][j];
 	}
 	SVD svd(AA);
 	if (svd.w[3] >= 0.01) {
@@ -124,7 +127,7 @@ int main(int argc, char** argv) {
 	}
 	for (int i=0; i<4; i++) {
 		W[i]=svd.w[i];
-		for (int j=1; j<4; j++) {
+		for (int j=0; j<4; j++) {
 			V[i][j]=svd.v[i][j];
 			U[i][j]=svd.u[i][j];
 		}
@@ -135,16 +138,17 @@ int main(int argc, char** argv) {
 	vec WW(4);
 	for (int i=0; i<4; i++) {
 		BB(i,0)=B[i][0];
-		for (int j=1; j<4; j++) AA(i,j)=A[i][j];
+		for (int j=0; j<4; j++) AA(i,j)=A[i][j];
 	}
 	svd(UU,WW,VV,AA);
 if (WW(3) >= 0.01) {
 		sphere=1;
-//		WW=solve(AA, BB);
+		WW=solve(AA, BB);
+		for (int i=0; i<4 ; i++) B[i][0]=WW(i);
 	}
 	for (int i=0; i<4; i++) {
 		W[i]=WW(i);
-		for (int j=1; j<4; j++) {
+		for (int j=0; j<4; j++) {
 			V[i][j]=VV(i,j);
 			U[i][j]=UU(i,j);
 		}
