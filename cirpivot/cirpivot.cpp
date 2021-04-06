@@ -62,9 +62,7 @@ int main(int argc, char** argv) {
 	double A[4][4],U[4][4],V[4][4];
 	double B[4][1],W[4];
 	int sphere=0;
-
 	FILE *TXT;
-	char command[MAXLINE];
 
 	if (argc < 2) {
 		cout << "Provide the .A file name. Output to CIRCLE.txt\nData format of %FN15RUN.A \n" << endl;
