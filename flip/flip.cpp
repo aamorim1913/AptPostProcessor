@@ -16,6 +16,15 @@
 #define COMSIZE 265
 #define SPINMAX 3500
 
+using namespace std;
+
+#if defined(_WIN64)
+#include <filesystem>
+#define SETCOORNAME "C:/AptPostProcessor/machine-code/%FN15SIM.A"
+#else
+#define SETCOORNAME "../machine-code/%FN15SIM.A"
+#endif
+
 //Rx=|1  0  0|
 //   |0  C  S|
 //   |0  -S C|
@@ -32,55 +41,7 @@
 // sin 180 =0 cos 180 =-1
 // sin 270 =-1 cos 270=0
 
-int ReadArray (double *x, char* s, char del) {
-        int i=0;
-        char* found;
-        found = strtok(s, ",");
-        if (found) {
-                x[0] = (float) atof(found);
-                ++i;
-        }
-        while ( (found = strtok(NULL, ",")) != NULL) {
-                x[i] = (float) atof(found);
-                i++;
-        }
-        return i;
-        }
-
-
-int ReadArrayCom (char *com, char* s, char del) {
-        int i=0;
-        char* found;
-        found = strtok(s, ",");
-        if (found) {
-                strcpy(com,found);
-                ++i;
-        }
-        while ( (found = strtok(NULL, ",")) != NULL) {
-                strcpy(com+i*COMSIZE ,found);
-                i++;
-        }
-        return i;
-}
-
-int ReadLine(char* buff, FILE* fp) {
-        buff[0] = '\0';
-        buff[MAXLINE - 1] = '\0';             /* mark end of buffer */
-        char* tmp;
-
-        if (fgets(buff, MAXLINE, fp) == NULL) {
-                *buff = '\0';                   /* EOF */
-                return false;
-        }
-        else {
-                /* remove newline */
-                if ((tmp = strrchr(buff, '\n')) != NULL) {
-                        *tmp = '\0';
-                }
-        }
-        return true;
-}
-
+#include "flip.h"
 
 int RotateSTL(char * filein, char *fileout, double *T){
 	size_t st;
@@ -198,16 +159,15 @@ int main(int argc, char **argv) {
 	char com[12*COMSIZE];
 
        if (argc < 3 ) { 
-		printf("Give original apt file name and option:\n");
-		printf("     - rotate along YY; F1Y 90 deg; F2Y 180 deg; F3Y -90 deg\n");
-		printf("     - rotate along ZZ; F1Z 90 deg; F2Z 180 deg; F3Z -90 deg\n");
-		printf("     - rotate along XX; F1X 90 deg; F2X 180 deg; F3X -90 deg\n");
-		printf("     - scale divide by 2,4: D2; D4\n");
-		printf("invoke twice for combinations..\n");
-		printf("option values to correct xb yb zb of stock.\n");
-		printf("	values as 0 are kept unchanged.\n");
-		printf("	Part to original datum is unchanged.\n");
-		printf(" or original apt file name and clean to remove all file-F1X... and file-FiX-F2X... apt and stl files\n");
+		cout << "Give original apt file name and option:" << endl;
+		cout <<"     - rotate along YY; F1Y 90 deg; F2Y 180 deg; F3Y -90 deg" << endl;
+		cout <<"     - rotate along ZZ; F1Z 90 deg; F2Z 180 deg; F3Z -90 deg"<< endl;
+		cout <<"     - rotate along XX; F1X 90 deg; F2X 180 deg; F3X -90 deg" << endl;
+		cout <<"     - scale divide by 2 or 4: D2; D4" << endl;
+		cout <<"              invoke twice for combinations.." << endl;
+		cout <<"       values to correct xb yb zb of stock from the ../machine-code/%FN15SIM.A." << endl;
+		cout <<"	      part to original datum is unchanged." << endl;
+		cout <<"       clean to remove all file-F1X... and file-FiX-F2X... apt and stl files" << endl;
 		return -1;
 	}
 
@@ -260,9 +220,7 @@ int main(int argc, char **argv) {
                                 counter++;
                         }
                         sscanf(lineapt+strlen("INSERT/Stock Size"),"%lf %lf %lf",&xb,&yb,&zb);
-			if ( (argc > 3)  && (atof(argv[3]) != 0)) xb = atof(argv[3]);
-			if ( (argc > 4)  && (atof(argv[4]) != 0)) yb = atof(argv[4]);
-			if ( (argc > 5)  && (atof(argv[5]) != 0)) zb = atof(argv[5]);
+			if ( strcmp(argv[2],"clean") == 0 ) ReadCoord(&xb, &yb, &zb);
 
 			if ( strcmp(argv[2],"I")==0 ){
 				T[0]=1; T[1]=0; T[2]=0; T[3]=0;
