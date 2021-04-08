@@ -1,15 +1,22 @@
 ﻿// CreateSCAD.h :
+double x1min, y1min, z1min;
+double x2, y2, z2;
 
-int  AddLineSCAD(double *coord,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum) {
+int  AddLineSCAD(double *coord, int lnumber, int toolcall, int nsetup, int op, 
+			double feed, int *fpause, double *Datum, double thetab) {
 
-	static double old_x, old_y , old_z;
+	static double old_coord[3];
 	static int old_nsetup = -1;
 	static int old_op = -1;
+	static double d1min=9999, d2min=9999;
+	double d1,d2;
 
 	if ((nsetup != old_nsetup) || (op != old_op)) {
 		old_nsetup = nsetup  ;
 		old_op = op ;
-		old_x = coord[0]; old_y = coord[1]; old_z = coord[2];
+		for (int i=0; i<3; i++) old_coord[i]=coord[i];
+		d1min=9999;
+		d2min=9999;
 		return 0;
 	}
 
@@ -29,20 +36,20 @@ int  AddLineSCAD(double *coord,  int lnumber, int toolcall, int nsetup, int op, 
 	if (feed <= 0) fprintf(SCAD, "color(\"blue\",0.3) ");
 	else fprintf(SCAD, "color(\"yellow\",0.3) ");
 	fprintf(SCAD, "translate([xd,yd,zd]) hull(){translate([%.2f,%.2f,%.2f]) cylinder(1,rtool); translate([%.2f,%.2f,%.2f]) cylinder(1,rtool);}\n",
-	old_x, old_y, old_z, coord[0], coord[1], coord[2]);
+	old_coord[0], old_coord[1], old_coord[2], coord[0], coord[1], coord[2]);
 
-	/*
-	d1 = 50 - (xgo[i] + x + tl[tool].rcad) * sin(thetab * AM_PI / 180.) + (zgo[i] + z) * cos(thetab * AM_PI / 180.);
-	if (d1 <= d1min) { d1min = d1; x1 = xgo[i]; y1 = ygo[i]; z1 = zgo[i]; }
-	d2 = 50 - (xgo[i] + x + tl[tool].rcad) * sin(thetab * AM_PI / 180.) + (zgo[i] + z) * cos(thetab * AM_PI / 180.);
-	if (d2 <= d2min) { d2min = d2; x2 = xgo[i]; y2 = ygo[i]; z2 = zgo[i]; }
-	fprintf(SCAD, "x=%.3lf;y=%.3lf;z=%.3lf; Near the table d=%.3lf\n", x1 + x, y1 + y, z1 + z, d1min);
-	*/
-	old_x = coord[0]; old_y = coord[1]; old_z = coord[2];
+	d1 = 50 - (coord[0]+Datum[0]+Pivot[0])*sin(thetab*AM_PI/180.) + 
+			(coord[2]+Datum[2]+Pivot[2])*cos(thetab*AM_PI/180.);
+	if (d1 <= d1min) { d1min = d1; x1min = coord[0]; y1min = coord[1]; z1min = coord[2]; }
+	d2 = 50 - (coord[0]+Datum[0]+Pivot[0])*sin(thetab*AM_PI/180.) + 
+			(coord[2]+Datum[2]+Pivot[2])*cos(thetab*AM_PI/180.);
+	if (d2 <= d2min) { d2min = d2; x2 = coord[0]; y2 = coord[1]; z2 = coord[2]; }
+
+	for (int i=0; i<3 ; i++) old_coord[i]=coord[i];
 	return 0;
 }
 
-int AddCircleSCAD( double* CC,double CCR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum) {
+int AddCircleSCAD( double* CC,double CCR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum, double thetab) {
 	double coord[3];
 
 	if (Sense == '-') {
@@ -60,7 +67,7 @@ int AddCircleSCAD( double* CC,double CCR,double theta1,double theta2, double old
 		coord[0]=CC[0]+CCR*cos(theta);
 		coord[1]=CC[1]+CCR*sin(theta);
                 coord[2]=old_z+(theta-theta1)/(theta2-theta1)*(z-old_z),
-		AddLineSCAD( coord, lnumber, toolcall, nsetup, op, feed, fpause, Datum);
+		AddLineSCAD( coord, lnumber, toolcall, nsetup, op, feed, fpause, Datum, thetab);
 	}
 	return 0;
 }
@@ -113,12 +120,15 @@ int openSCAD(char* name, int nsetup, int op, int tool, double * Stock, struct TO
 	return 0;
 }
 
-int closeSCAD(int tool, double *Stock, struct TOOL *tl, double *Datum, double thetab, double thetac) {
+int closeSCAD(int tool, double *Stock, struct TOOL *tl, double *Datum, double thetab, double thetac, double *Shift) {
 
 	if (SCAD == NULL) return -1;
 
+	fprintf(SCAD,"x=%.3lf;y=%.3lf;z=%.3lf; Near the table\n", x1min+Datum[0]+Shift[0], y1min+Datum[1]+Shift[1],
+			 z1min+Datum[2]+Shift[2]);
+
 	/* machine head xd to be replaced by x */
-	fprintf(SCAD, "color(\"white\") translate([xd,yd,zd]) union(){\ntranslate([7.5,0,280-l]) linear_extrude(500) square(295,center=true);\ntranslate([0,0,230-l]) cylinder(100,75,75,center=true);\ntranslate([0,0,90-l/2+ltool/2]) cylinder(180-l-ltool,35,35,center=true);\ntranslate([0,0,ltool/2]) cylinder(ltool,rtool,rtool,center=true);}\n");
+	fprintf(SCAD, "color(\"white\") translate([x,y,z]) union(){\ntranslate([7.5,0,280-l]) linear_extrude(500) square(295,center=true);\ntranslate([0,0,230-l]) cylinder(100,75,75,center=true);\ntranslate([0,0,90-l/2+ltool/2]) cylinder(180-l-ltool,35,35,center=true);\ntranslate([0,0,ltool/2]) cylinder(ltool,rtool,rtool,center=true);}\n");
 
 	/* stock transparent */
 	fprintf(SCAD, "color(\"blue\",0.6) rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) cube([%f,%f,%f],center=true);\n",

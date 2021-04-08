@@ -153,7 +153,7 @@ int main(int argc, char **argv) {
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
 		} else if (strstr(lineapt, "CSYS/") != 0) { 
 
-			if ( op> 0) closeSCAD(toolcall, Stock, tl, Datum, thetab, thetac);
+			if ( op> 0) closeSCAD(toolcall, Stock, tl, Datum, thetab, thetac, Shift);
 
 			++op;
 			nA = ReadArray(A, lineapt + strlen("CSYS/"), ',');
@@ -428,16 +428,16 @@ int main(int argc, char **argv) {
 				if (updated & CYCLE_ON) fprintf(OUT," M99");
 				fprintf(OUT, "\n"); ++lnumber;
 
-				AddLineSCAD(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum);
+				AddLineSCAD(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab);
 				/* if there is a drill cycle */
 				if (dist != 0 ){
 					double ShiftCoord[3];
 					ShiftCoord[0]=coord[0];
 					ShiftCoord[1]=coord[1];
 					ShiftCoord[2]=coord[2]-dist-length;
-					AddLineSCAD(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum);
+					AddLineSCAD(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum, thetab);
 					ShiftCoord[2]=coord[2];
-					AddLineSCAD(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum);
+					AddLineSCAD(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum, thetab);
 				}
 			 /* draw circle or spiral */
 			} else {
@@ -480,7 +480,7 @@ int main(int argc, char **argv) {
 				++lnumber;
 
 				 AddCircleSCAD(CC,CCR,theta1,theta2,old_coord[2], coord[2],Sense,
-					  lnumber, toolcall, nsetup, op, feed, &fpause, Datum);
+					  lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab);
 			}
 
 			for (int i=0; i<3; i++) old_coord[i] = coord[i];
@@ -495,7 +495,7 @@ int main(int argc, char **argv) {
 			fprintf(OUT, "%d L Z-10 R0 FMAX M91 M9\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d M30\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d END PGM %d MM\n", lnumber, nsetup + 11); ++lnumber;
-			closeSCAD(toolcall, Stock, tl, Datum, thetab, thetac);
+			closeSCAD(toolcall, Stock, tl, Datum, thetab, thetac,Shift);
 
 		/* do nothing for part number */
 		} else if (strstr(lineapt, "PARTNO/") != 0) {
