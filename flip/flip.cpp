@@ -105,6 +105,39 @@ int RotateSTL(char * filein, char *fileout, double *T){
     return 0;
 }
 
+
+int CheckSTL(char * filein, double xb, double yb, double zb){
+        size_t st;
+        FILE *STLIN;
+        char buff[MAXLINE];
+        uint32_t nTri;
+        float n[3];
+        uint16_t attr;
+
+        st=strlen(filein);
+        filein[st-3]='S'; filein[st-2]='T'; filein[st-1]='L';
+        if ((STLIN = fopen(filein, "r")) == NULL) {
+                printf("cannot read STL file %s\n", filein);
+                return -1;
+        }
+
+        fread(buff,80,1,STLIN);
+        fread(&nTri,4,1,STLIN);
+
+	for (uint32_t i=0; i< nTri; i++) {
+		for (uint32_t j=0; j<4; j++) {
+                	fread(n,4,3,STLIN);
+			if ((n[0]<0) || (n[0]>xb))  return -1;
+			if ((n[1]<0) || (n[1]>yb))  return -1;
+			if ((n[2]<-zb) || (n[2]>0))  return -1;
+		}
+                fread(&attr,2,1,STLIN);
+	}
+
+    fclose(STLIN);
+    return 0;
+}
+
 int rm(char *filename){
 #if defined(_WIN64)
         _unlink(filename);
@@ -220,7 +253,10 @@ int main(int argc, char **argv) {
                                 counter++;
                         }
                         sscanf(lineapt+strlen("INSERT/Stock Size"),"%lf %lf %lf",&xb,&yb,&zb);
-			if ( strcmp(argv[2],"clean") == 0 ) ReadCoord(&xb, &yb, &zb);
+			if ( strcmp(argv[2],"clean") == 0 ) {
+				ReadCoord(&xb, &yb, &zb);
+				if (CheckSTL(filein,xb,yb,zb)!=0 ){ printf("Error: STL does not fit in Stock\n"); return -1; }
+			}
 
 			if ( strcmp(argv[2],"I")==0 ){
 				T[0]=1; T[1]=0; T[2]=0; T[3]=0;
