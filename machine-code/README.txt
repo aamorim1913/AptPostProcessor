@@ -10,7 +10,7 @@ PRINTREF.h - Print 5 lines with the datum coordinates and ,x,y,z - different for
 PROFILE.h - Mill a rectangular profile, 2.5 mm per step, zmin,xmin,ymin to zmax,xmin,ymin - tool 1
 RECTIFI.h - Rectify the top surface 0.25 mm at per step - tool 2 
 TOOL.T - The machine tool table
-WALL.h - Machine a wall with xmin,zmin to xmax,zmax - tool 1
+WALL.h - Machine a wall with xmin,zmin to xmax,zmax - tool 3
 XDIAL.h - Set datum shift to where to rotate to align Y coordinate along the YZ plane
 YDIAL.h - Set datum shift to where to rotate to align X along YZ plane
 ZDIAL.h - Set datum shift to where to rotate to align Z along XY plane
