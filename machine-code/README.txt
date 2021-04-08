@@ -17,3 +17,12 @@ ZDIAL.h - Set datum shift to where to rotate to align Z along XY plane
 clsplit - Solidworks CAM post procesor 
 flip - Flip stock, apt paths and STL file for new setup.
 cirpivot - find the center and radius of a series of measurements provided by PRINTREF.h - compute pivot point
+
+The default tools are:
+0 - The Heimer measurement tool
+1 - A 14 mm diameter silicon carbide end mill  
+2-  A D=50 Face milling cutter sillicon carbide inserts.
+3-  An end mill with sillicon carbide inserts.
+
+The used Heindenhain conversational programing is defined in ( in particular 310 series)
+http://content.heidenhain.de/doku/tnc_guide/html/en/index/1242135142456/1242135142456.html
