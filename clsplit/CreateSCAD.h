@@ -1,6 +1,6 @@
 ﻿// CreateSCAD.h :
 
-int  AddLineSCAD(double x, double y, double z,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum) {
+int  AddLineSCAD(double *coord,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum) {
 
 	static double old_x, old_y , old_z;
 	static int old_nsetup = -1;
@@ -9,20 +9,18 @@ int  AddLineSCAD(double x, double y, double z,  int lnumber, int toolcall, int n
 	if ((nsetup != old_nsetup) || (op != old_op)) {
 		old_nsetup = nsetup  ;
 		old_op = op ;
-		old_x = x; old_y = y; old_z = z;
+		old_x = coord[0]; old_y = coord[1]; old_z = coord[2];
 		return 0;
 	}
 
-	const double Xpim = -200.66;
-	const double Ypim = -193.7836;
-	const double Zpim = -338.3841;
-
-	if ((x+Datum[0]+Xpim >= 0) || (x+Datum[0]+Xpim <= -500) || (y+Datum[1]+Ypim >= 0) || (y+Datum[1]+Ypim <= -400)
-			|| (z+Datum[2]+Zpim >= 0) || (z+Datum[2]+Zpim <= -400)) {
+	if ((coord[0]+Datum[0]+Pivot[0] >= MachineLimits[1]) || (coord[0]+Datum[0]+Pivot[0] <= MachineLimits[0]) ||
+			 (coord[1]+Datum[1]+Pivot[1] >= MachineLimits[3]) || (coord[1]+Datum[1]+Pivot[1] <= MachineLimits[2])
+			|| (coord[2]+Datum[2]+Pivot[2] >=  MachineLimits[5]) || (coord[2]+Datum[2]+Pivot[2] <= MachineLimits[4])) {
 		fprintf(SCAD, "//x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
-			x + Datum[0] + Xpim, y + Datum[1] + Ypim, z + Datum[2] + Zpim, lnumber);
+			coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2], lnumber);
 		printf("ERROR:out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
-			x+Datum[0]+Xpim, y+Datum[1]+Ypim, z+Datum[2]+Zpim, lnumber, nsetup+11, op, toolcall);
+			coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2],
+			 lnumber, nsetup+11, op, toolcall);
 		*fpause = 1;
 	}
 
@@ -31,7 +29,7 @@ int  AddLineSCAD(double x, double y, double z,  int lnumber, int toolcall, int n
 	if (feed <= 0) fprintf(SCAD, "color(\"blue\",0.3) ");
 	else fprintf(SCAD, "color(\"yellow\",0.3) ");
 	fprintf(SCAD, "translate([xd,yd,zd]) hull(){translate([%.2f,%.2f,%.2f]) cylinder(1,rtool); translate([%.2f,%.2f,%.2f]) cylinder(1,rtool);}\n",
-	old_x, old_y, old_z, x, y, z);
+	old_x, old_y, old_z, coord[0], coord[1], coord[2]);
 
 	/*
 	d1 = 50 - (xgo[i] + x + tl[tool].rcad) * sin(thetab * AM_PI / 180.) + (zgo[i] + z) * cos(thetab * AM_PI / 180.);
@@ -40,11 +38,12 @@ int  AddLineSCAD(double x, double y, double z,  int lnumber, int toolcall, int n
 	if (d2 <= d2min) { d2min = d2; x2 = xgo[i]; y2 = ygo[i]; z2 = zgo[i]; }
 	fprintf(SCAD, "x=%.3lf;y=%.3lf;z=%.3lf; Near the table d=%.3lf\n", x1 + x, y1 + y, z1 + z, d1min);
 	*/
-	old_x = x; old_y = y; old_z = z;
+	old_x = coord[0]; old_y = coord[1]; old_z = coord[2];
 	return 0;
 }
 
 int AddCircleSCAD( double* CC,double CCR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum) {
+	double coord[3];
 
 	if (Sense == '-') {
 		if (theta2 >= theta1) theta2 -= 2 * AM_PI;
@@ -58,28 +57,19 @@ int AddCircleSCAD( double* CC,double CCR,double theta1,double theta2, double old
 
 	for (int i = 1; i <= n; ++i) {
 		double theta = theta1 + i * (theta2 - theta1) / n;
-		AddLineSCAD( CC[0]+CCR*cos(theta), CC[1]+CCR*sin(theta),
-			old_z+(theta-theta1)/(theta2-theta1)*(z-old_z),
-			 lnumber, toolcall, nsetup, op, feed, fpause, Datum);
+		coord[0]=CC[0]+CCR*cos(theta);
+		coord[1]=CC[1]+CCR*sin(theta);
+                coord[2]=old_z+(theta-theta1)/(theta2-theta1)*(z-old_z),
+		AddLineSCAD( coord, lnumber, toolcall, nsetup, op, feed, fpause, Datum);
 	}
 	return 0;
 }
 
-int openSCAD(char* name, int nsetup, int op, int tool,double * Stock, struct TOOL *tl, double *Shift, double *Datum, double thetab, double thetac) {
-	/* x0,y0,z0 is the original Datum relative to the Pivot x,y,z is the (rotate) displaced Datum relative to the Pivot */
+int openSCAD(char* name, int nsetup, int op, int tool, double * Stock, struct TOOL *tl, double *Shift, double *Datum, double thetab, double thetac) {
 
 	//double d1, d2, d1min = 1000., d2min = 1000.;
 	size_t st;
 	static int prev_ns;
-	double x0, y0, z0;
-	double x, y, z;
-
-	x0 = Datum[0];
-	y0 = Datum[1];
-	z0 = Datum[2];
-	x = Datum[0] + Shift[0];
-	y = Datum[1] + Shift[1];
-	z = Datum[2] + Shift[2];
 
 	char filename[MAXLINE];
 
@@ -89,17 +79,18 @@ int openSCAD(char* name, int nsetup, int op, int tool,double * Stock, struct TOO
 		return 1;
 	}
 
-	fprintf(SCAD, "xd=%f; yd=%f; zd=%f; /* Datum shifted (Rotated) relative to pivot  */\n", x, y, z);
-	fprintf(SCAD, "xd0=%f; yd0=%f; zd0=%f; /* Datum relative to pivot unrotated */\n", x0, y0, z0);
+	fprintf(SCAD, "xd=%f; yd=%f; zd=%f; /* Datum shifted (Rotated) relative to pivot  */\n", 
+		Datum[0] + Shift[0], Datum[1] + Shift[1], Datum[2] + Shift[2]);
+	fprintf(SCAD, "xd0=%f; yd0=%f; zd0=%f; /* Datum relative to pivot unrotated */\n", Datum[0], Datum[1], Datum[2]);
 	fprintf(SCAD, "l=%f; ltool=%f; rtool=%f;\n", tl[tool].ltable, tl[tool].lcad, tl[tool].rcad);
 	/* table */
 	fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) color(\"grey\") difference(){\ntranslate([0,0,-75]) cylinder(50,350,350,center = true);\ntranslate([-500,0,-125]) linear_extrude(100) square(500,center=true);\ntranslate([500,0,-125]) linear_extrude(100) square(500,center=true);}\n", -thetab, -thetac);
 	/* vice1 */
 	fprintf(SCAD, "rotate([0,%f,0])rotate([0,0,%f])color(\"black\")translate([%f,%f,-12.5])cube([160,20,75],center=true);\n",
-		-thetab, -thetac, x0, y0 + 10 + Stock[1]);
+		-thetab, -thetac, Datum[0], Datum[1]+ 10 + Stock[1]);
 	/* vice2 */
 	fprintf(SCAD, "rotate([0,%f,0])rotate([0,0,%f])color(\"black\")translate([%f,%f,-12.5])cube([160,20,75],center=true);\n",
-		-thetab, -thetac, x0, y0 - 10);
+		-thetab, -thetac, Datum[0], Datum[1] - 10);
 
 	/* STL of the part */
 #if defined(_WIN64)
@@ -123,13 +114,6 @@ int openSCAD(char* name, int nsetup, int op, int tool,double * Stock, struct TOO
 }
 
 int closeSCAD(int tool, double *Stock, struct TOOL *tl, double *Datum, double thetab, double thetac) {
-	double x0, y0, z0;
-	const double Xpim = -200.66;
-	const double Ypim = -193.7836;
-	const double Zpim = -338.3841;
-	x0 = Datum[0];
-	y0 = Datum[1];
-	z0 = Datum[2];
 
 	if (SCAD == NULL) return -1;
 
@@ -138,11 +122,11 @@ int closeSCAD(int tool, double *Stock, struct TOOL *tl, double *Datum, double th
 
 	/* stock transparent */
 	fprintf(SCAD, "color(\"blue\",0.6) rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) cube([%f,%f,%f],center=true);\n",
-		-thetab, -thetac, x0 + Stock[0] / 2, y0 + Stock[1] / 2, z0 - Stock[2] / 2, Stock[0], Stock[1], Stock[2]);
+		-thetab, -thetac, Datum[0]+Stock[0]/2, Datum[1]+Stock[1]/2, Datum[2]-Stock[2]/2, Stock[0], Stock[1], Stock[2]);
 
 	/* machine range volume transparent */
 	fprintf(SCAD, "color(\"brown\",0.25) translate([%f,%f,%f]) cube([500,400,400],center=true);\n",
-		-(Xpim + 250.0), -(200.0+Ypim), -(Zpim+200.0 + tl[tool].lcad));
+		-(Pivot[0]+250.0), -(200.0+Pivot[1]), -(Pivot[2]+200.0 + tl[tool].lcad));
 
 	fclose(SCAD);
 	SCAD = NULL;

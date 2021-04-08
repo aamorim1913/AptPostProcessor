@@ -1,7 +1,7 @@
  // ccirpivot.cpp
 // Antonio Amorim CENTRA-FCUL 2021
 
-const double PIVOT[3] = { -200.66, -193.7836, -338.3841};
+const double Pivot[3] = { -200.66, -193.7836, -338.3841};
 
 //managed by CMAKE
 //#define NUMREC 
@@ -81,9 +81,9 @@ int main(int argc, char** argv) {
 
 	ncoord = ReadCoord(argv[1], xd, yd, zd, Datum);
 	for (int i = 0; i < ncoord; i++) {
-		xm[i] = xd[i] + Datum[0] + PIVOT[0];
-		ym[i] = yd[i] + Datum[1] + PIVOT[1];
-		zm[i] = zd[i] + Datum[2] + PIVOT[2];
+		xm[i] = xd[i] + Datum[0] + Pivot[0];
+		ym[i] = yd[i] + Datum[1] + Pivot[1];
+		zm[i] = zd[i] + Datum[2] + Pivot[2];
 	}
 
 	for (int i = 0; i < ncoord; i++) {
@@ -191,7 +191,7 @@ if (WW(3) >= 0.01) {
 
 	for (int i=0; i<3; i++){
 		M[i] = n[i] / 2.0;
-		S[i] = M[i] - (Datum[i]+PIVOT[i]);
+		S[i] = M[i] - (Datum[i]+Pivot[i]);
 	}
 
 	WriteSetup(axis, S, M);

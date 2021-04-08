@@ -1,6 +1,11 @@
  // clsplit.cpp
 // Antonio Amorim CENTRA-FCUL 2021
 
+// Pivot coordinates only for the machine limits CreateSCAD.h  */
+const double Pivot[3]={-200.66, -193.7836, -338.3841};
+/* machine limits in machine coordinates xmin, xmax, ymin, ymax, zmin, zmax */
+const double MachineLimits[6]={-500,0,-400,0,-400,0};
+
 #include <cinttypes>
 #include <stdio.h>
 #include <string.h>
@@ -18,17 +23,18 @@
 #define COMSIZE 256
 
 #if defined(_WIN64)
+#include <filesystem>
 #define DMUDIR "C:/AptPostProcessor/machine-code/%d.h"
 #define DMUDIRSCAD "C:/AptPostProcessor/machine-code/%dop%d.scad"
 #define DMUDIRSETUP "C:/AptPostProcessor/machine-code/%dsetup.h"
 #define SETCOORNAME "C:/AptPostProcessor/machine-code/%FN15RUN.A"
 #define TOOLFILE "C:/AptPostProcessor/machine-code/TOOL.T"
 #else
-#define DMUDIR "/Users/aamorim/AptPostProcessor/machine-code/%d.h"
-#define DMUDIRSCAD "/Users/aamorim/AptPostProcessor/machine-code/%dop%d.scad"
-#define DMUDIRSETUP "/Users/aamorim/AptPostProcessor/machine-code/%dsetup.h"
-#define SETCOORNAME "/Users/aamorim/AptPostProcessor/machine-code/%FN15RUN.A"
-#define TOOLFILE "/Users/aamorim/AptPostProcessor/machine-code/TOOL.T"
+#define DMUDIR "../machine-code/%d.h"
+#define DMUDIRSCAD "../machine-code/%dop%d.scad"
+#define DMUDIRSETUP "../machine-code/%dsetup.h"
+#define SETCOORNAME "../machine-code/%FN15RUN.A"
+#define TOOLFILE "../machine-code/TOOL.T"
 #endif
  
 using namespace std;
@@ -252,7 +258,7 @@ int main(int argc, char **argv) {
 			updated |= NEW_TOOL;
 			tl[toolcall].rcad = rtool; tl[toolcall].lcad = ltool;
 			if (tl[toolcall].rtable != tl[toolcall].rcad) {
-				printf("Error: Tool %d - lenght %f not matching tool table %f\n",toolcall, tl[toolcall].rcad,tl[toolcall].rtable);
+				printf("Error: Tool %d - length %f not matching tool table %f\n",toolcall, tl[toolcall].rcad,tl[toolcall].rtable);
 				fpause=1;
 			}
 
@@ -370,7 +376,7 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, spindl); ++lnumber;
-				if (old_coord[2] != -9999.0) { fprintf(OUT, "%d L Z %.3f FMAX\n", lnumber, old_coord[2]); ++lnumber; }
+				if (old_coord[2] != -9999.0) { fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]); ++lnumber; }
 				updated |= NEW_FLOOD;
 				if (spinsense==1) fprintf(OUT, "%d M03\n",lnumber); 
 				else fprintf(OUT, "%d M04\n",lnumber); ++lnumber;
@@ -399,7 +405,8 @@ int main(int argc, char **argv) {
 				if ( sqrt((old_coord[0] -CC[0])*(old_coord[0] -CC[0])+(old_coord[1]-CC[1])*(old_coord[1] -CC[1]))-
 				     sqrt((coord[0]-CC[0])*(coord[0]-CC[0])+(coord[1]-CC[1])*(coord[1]-CC[1])) > 0.0001 ){
 					printf("ERROR: circle not matching radious (%.7f,%.7f) on line %d of setup %d.\n",
-						sqrt((old_coord[0]-CC[0])*(old_coord[0]-CC[0]) + (old_coord[1]-CC[1])*(old_coord[1]-CC[1])),
+						sqrt((old_coord[0]-CC[0])*(old_coord[0]-CC[0]) +
+						 (old_coord[1]-CC[1])*(old_coord[1]-CC[1])),
 						sqrt((coord[0]-CC[0])*(coord[0]-CC[0])+(coord[1]-CC[1])*(coord[1]-CC[1])),
 						lnumber,nsetup+11);
 					fpause=1;
@@ -421,11 +428,16 @@ int main(int argc, char **argv) {
 				if (updated & CYCLE_ON) fprintf(OUT," M99");
 				fprintf(OUT, "\n"); ++lnumber;
 
-				AddLineSCAD(coord[0],coord[1],coord[2], lnumber, toolcall, nsetup, op, feed, &fpause, Datum);
+				AddLineSCAD(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum);
 				/* if there is a drill cycle */
 				if (dist != 0 ){
-					AddLineSCAD(coord[0],coord[1],coord[2]-dist-length,lnumber,toolcall,nsetup,op,feed,&fpause, Datum);
-					AddLineSCAD(coord[0],coord[1],coord[2],lnumber,toolcall,nsetup,op,feed,&fpause, Datum);
+					double ShiftCoord[3];
+					ShiftCoord[0]=coord[0];
+					ShiftCoord[1]=coord[1];
+					ShiftCoord[2]=coord[2]-dist-length;
+					AddLineSCAD(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum);
+					ShiftCoord[2]=coord[2];
+					AddLineSCAD(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum);
 				}
 			 /* draw circle or spiral */
 			} else {
@@ -497,7 +509,7 @@ int main(int argc, char **argv) {
 			fpause = 1;
 		}
 	}
-	printf("Found %d setups.\n", nsetup+1);
+	printf("Found %d setups. Output in ../machine-code/ directory.\n", nsetup+1);
 
 	fclose(APT);
 	fclose(OUT);
