@@ -157,14 +157,12 @@ int main(int argc, char **argv) {
 			axis[1] = A[6];
 			axis[2] = A[10];
 
-			/* jump if milling from bellow */
-			if (axis[2] < 0) fprintf(OUT,"STOP\n; Milling from below\n");
-			
 			
 			if ((axis[0] != prev_axis[0]) || (axis[1] != prev_axis[1]) || (axis[2] != prev_axis[2])) {
 
 				/* this is the end of the previous setup */
 				++nsetup;
+
 				
 				/* set axis for RotateArray */
 				A[3]=axis[0];
@@ -215,7 +213,9 @@ int main(int argc, char **argv) {
 					fclose(OUT);
 
 					/* open file for new setup */
-					sprintf(filename, DMUDIR, nsetup+11);
+					/* if milling from bellow generate file with number 900+ */
+					if ( thetab > 90 ) sprintf(filename, DMUDIR, nsetup+900+11);
+					else sprintf(filename, DMUDIR, nsetup+11);
 					OUT=fopen(filename, "w");
 					fprintf(OUT, "0 BEGIN PGM %d MM\n1 ;setup of file %s\n", nsetup+11,argv[1]);
 					lnumber = 2;

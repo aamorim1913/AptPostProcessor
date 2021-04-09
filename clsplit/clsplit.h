@@ -29,22 +29,34 @@ int CleanFiles(char* filename) {
 		sprintf(filename, DMUDIR, i);
 #if defined(_WIN64)
 		/* remove i.h */
-		if (_unlink(filename) != 0) break;
+		_unlink(filename); 
+		sprintf(filename, DMUDIR, i+900);
+		_unlink(filename);
 #else
-		if (unlink(filename) != 0) break;
+		unlink(filename);
+		sprintf(filename, DMUDIR, i+900);
+		unlink(filename);
 #endif
 		sprintf(filename, DMUDIRSETUP, i);
 #if defined(_WIN64)
-		if (_unlink(filename) != 0) break;
+		_unlink(filename); 
+		sprintf(filename, DMUDIRSETUP, i+900);
+		_unlink(filename);
 #else
-		if (unlink(filename) != 0) break;
+		unlink(filename);
+		sprintf(filename, DMUDIRSETUP, i+900);
+		unlink(filename);
 #endif
 		/* remove itj.SCAD */
 		for (int j = 1; j < 64; j++) {
 			sprintf(filename, DMUDIRSCAD, i, j);
 #if defined(_WIN64)
 			_unlink(filename);
+			sprintf(filename, DMUDIRSCAD, i+900, j);
+			_unlink(filename);
 #else
+			unlink(filename);
+			sprintf(filename, DMUDIRSCAD, i+900, j);
 			unlink(filename);
 #endif
 		}
