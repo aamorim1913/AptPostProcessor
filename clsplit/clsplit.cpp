@@ -22,19 +22,11 @@ const double MachineLimits[6]={-500,0,-400,0,-400,0};
 #define MAXTOOL 256
 #define COMSIZE 256
 
-#if defined(_WIN64)
-#define DMUDIR "C:/AptPostProcessor/machine-code/%d.h"
-#define DMUDIRSCAD "C:/AptPostProcessor/machine-code/%dop%d.scad"
-#define DMUDIRSETUP "C:/AptPostProcessor/machine-code/%dsetup.h"
-#define SETCOORNAME "C:/AptPostProcessor/machine-code/%FN15RUN.A"
-#define TOOLFILE "C:/AptPostProcessor/machine-code/TOOL.T"
-#else
 #define DMUDIR "../machine-code/%d.h"
 #define DMUDIRSCAD "../machine-code/%dop%d.scad"
 #define DMUDIRSETUP "../machine-code/%dsetup.h"
 #define SETCOORNAME "../machine-code/%FN15RUN.A"
 #define TOOLFILE "../machine-code/TOOL.T"
-#endif
  
 using namespace std;
 
@@ -87,16 +79,20 @@ int main(int argc, char **argv) {
 		cout<<" The %FN15RUN.A file syntax (relative to the Pivot): DatumX DatumY DatumZ"<< endl;
 		cout<<"reference sphere relative to Datum (for each setup): X   Y  Z"<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
+		cout<<"                                    (another setup):... ... ..."<< endl;
+		cout<<"  clean - to remove all generated files "<< endl;
 		exit(1);
 	}
+
+	/* Erase 11.h ... files */
+	CleanFiles(filename);
+	if (strstr(argv[1],"clean")!=0) return 0;
 
 	if ( (APT=fopen(argv[1], "r")) == NULL) {
 		printf("cannot open apt file %s\n", argv[1]);
 		return -1;
 	}
 
-	/* Erase 11.h ... files */
-	CleanFiles(filename);
 
 	/* read the tool table TOOL.h */
 	ReadTool(tl);
