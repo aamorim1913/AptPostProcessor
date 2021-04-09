@@ -169,7 +169,8 @@ int WriteSetup(int ns, double axis[3], double S[3]) {
 	char filename[MAXLINE];
 	FILE* SETUP;
 
-	sprintf(filename, DMUDIRSETUP, ns);
+	if (axis[2]<0 ) sprintf(filename, DMUDIRSETUP, 900+ns);
+	else sprintf(filename, DMUDIRSETUP, ns);
 	if ( (SETUP=fopen(filename, "w") ) == NULL ) {
 		printf("cannot write SETUP file %s\n", filename);
 		return 1;
