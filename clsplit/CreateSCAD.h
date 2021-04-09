@@ -1,6 +1,6 @@
 ﻿// CreateSCAD.h :
 double x1min, y1min, z1min;
-double x2, y2, z2;
+double x2min, y2min, z2min;
 
 int  AddLineSCAD(double *coord, int lnumber, int toolcall, int nsetup, int op, 
 			double feed, int *fpause, double *Datum, double thetab) {
@@ -43,7 +43,7 @@ int  AddLineSCAD(double *coord, int lnumber, int toolcall, int nsetup, int op,
 	if (d1 <= d1min) { d1min = d1; x1min = coord[0]; y1min = coord[1]; z1min = coord[2]; }
 	d2 = 50 - (coord[0]+Datum[0]+Pivot[0])*sin(thetab*AM_PI/180.) + 
 			(coord[2]+Datum[2]+Pivot[2])*cos(thetab*AM_PI/180.);
-	if (d2 <= d2min) { d2min = d2; x2 = coord[0]; y2 = coord[1]; z2 = coord[2]; }
+	if (d2 <= d2min) { d2min = d2; x2min = coord[0]; y2min = coord[1]; z2min = coord[2]; }
 
 	for (int i=0; i<3 ; i++) old_coord[i]=coord[i];
 	return 0;
@@ -124,8 +124,8 @@ int closeSCAD(int tool, double *Stock, struct TOOL *tl, double *Datum, double th
 
 	if (SCAD == NULL) return -1;
 
-	fprintf(SCAD,"x=%.3lf;y=%.3lf;z=%.3lf; Near the table\n", x1min+Datum[0]+Shift[0], y1min+Datum[1]+Shift[1],
-			 z1min+Datum[2]+Shift[2]);
+	fprintf(SCAD,"x=%.3lf;y=%.3lf;z=%.3lf; /* Near the table */\n", 
+			x1min+Datum[0]+Shift[0], y1min+Datum[1]+Shift[1], z1min+Datum[2]+Shift[2]);
 
 	/* machine head xd to be replaced by x */
 	fprintf(SCAD, "color(\"white\") translate([x,y,z]) union(){\ntranslate([7.5,0,280-l]) linear_extrude(500) square(295,center=true);\ntranslate([0,0,230-l]) cylinder(100,75,75,center=true);\ntranslate([0,0,90-l/2+ltool/2]) cylinder(180-l-ltool,35,35,center=true);\ntranslate([0,0,ltool/2]) cylinder(ltool,rtool,rtool,center=true);}\n");

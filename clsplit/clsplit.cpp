@@ -23,7 +23,6 @@ const double MachineLimits[6]={-500,0,-400,0,-400,0};
 #define COMSIZE 256
 
 #if defined(_WIN64)
-#include <filesystem>
 #define DMUDIR "C:/AptPostProcessor/machine-code/%d.h"
 #define DMUDIRSCAD "C:/AptPostProcessor/machine-code/%dop%d.scad"
 #define DMUDIRSETUP "C:/AptPostProcessor/machine-code/%dsetup.h"

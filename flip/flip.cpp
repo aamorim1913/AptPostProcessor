@@ -111,25 +111,26 @@ int CheckSTL(char * filein, double xb, double yb, double zb){
         FILE *STLIN;
         char buff[MAXLINE];
         uint32_t nTri;
-        float n[3];
+        float p[3];
         uint16_t attr;
 
         st=strlen(filein);
         filein[st-3]='S'; filein[st-2]='T'; filein[st-1]='L';
         if ((STLIN = fopen(filein, "r")) == NULL) {
                 printf("cannot read STL file %s\n", filein);
-                return -1;
+                return -4;
         }
 
         fread(buff,80,1,STLIN);
         fread(&nTri,4,1,STLIN);
 
 	for (uint32_t i=0; i< nTri; i++) {
-		for (uint32_t j=0; j<4; j++) {
-                	fread(n,4,3,STLIN);
-			if ((n[0]<0) || (n[0]>xb))  return -1;
-			if ((n[1]<0) || (n[1]>yb))  return -1;
-			if ((n[2]<-zb) || (n[2]>0))  return -1;
+                	fread(p,4,3,STLIN);
+		for (uint32_t j=1; j<4; j++) {
+                	fread(p,4,3,STLIN);
+			if ((p[0]<-0.001) || (p[0]>xb+0.001))  return -1;
+			if ((p[1]<-0.001) || (p[1]>yb+0.001))  return -2;
+			if ((p[2]<-zb-0.001) || (p[2]>0.001))  return -3;
 		}
                 fread(&attr,2,1,STLIN);
 	}
@@ -153,6 +154,8 @@ int CleanFiles(char *file){
 
 	strcpy(name,file);
 	name[strlen(name)-4]='\0';
+	sprintf(fn,"%s-val.apt",name); rm(fn);
+	sprintf(fn,"%s-val.STL",name); rm(fn);
 
 	for (int i=1; i<=3; i++) {
 		sprintf(fn,"%s-F%dX.STL",name,i); rm(fn);
@@ -198,7 +201,7 @@ int main(int argc, char **argv) {
 		cout <<"     - rotate along XX; F1X 90 deg; F2X 180 deg; F3X -90 deg" << endl;
 		cout <<"     - scale divide by 2 or 4: D2; D4" << endl;
 		cout <<"              invoke twice for combinations.." << endl;
-		cout <<"       values to correct xb yb zb of stock from the ../machine-code/%FN15SIM.A." << endl;
+		cout <<"       val to correct xb yb zb of stock from the ../machine-code/%FN15SIM.A." << endl;
 		cout <<"	      part to original datum is unchanged." << endl;
 		cout <<"       clean to remove all file-F1X... and file-FiX-F2X... apt and stl files" << endl;
 		return -1;
@@ -253,9 +256,19 @@ int main(int argc, char **argv) {
                                 counter++;
                         }
                         sscanf(lineapt+strlen("INSERT/Stock Size"),"%lf %lf %lf",&xb,&yb,&zb);
-			if ( strcmp(argv[2],"clean") == 0 ) {
+			if ( strcmp(argv[2],"val") == 0 ) {
 				ReadCoord(&xb, &yb, &zb);
-				if (CheckSTL(filein,xb,yb,zb)!=0 ){ printf("Error: STL does not fit in Stock\n"); return -1; }
+				int error=CheckSTL(filein,xb,yb,zb);
+				if (error==-1 ){ 
+					printf("Error: STL does not fit 0 to xb in Stock\n"); 
+					return -1; 
+				} else if (error==-2 ){ 
+					printf("Error: STL does not fit 0 to yb in Stock\n"); 
+					return -1; 
+				} else if (error==-3 ){ 
+					printf("Error: STL does not fit -zb to 0 in Stock\n"); 
+					return -1; 
+				}
 			}
 
 			if ( strcmp(argv[2],"I")==0 ){
@@ -293,20 +306,20 @@ int main(int argc, char **argv) {
 				T[4]=0; T[5]=-1; T[6]=0; T[7]=yb;
 				T[8]=0; T[9]=0; T[10]=1; T[11]=0;
 				fprintf(OUT,"INSERT/Stock Size %lf %lf %lf\n",xb,yb,zb);
-            } else if ( strcmp(argv[2],"F1X")==0 ){
-                  T[0]=1; T[1]=0; T[2]=0; T[3]=0;
-                  T[4]=0; T[5]=0; T[6]=1; T[7]=zb;
-                  T[8]=0; T[9]=-1; T[10]=0; T[11]=0;
-                        fprintf(OUT,"INSERT/Stock Size %lf %lf %lf\n",xb,zb,yb);
-            } else if ( strcmp(argv[2],"F3X")==0 ){
-                  T[0]=1; T[1]=0; T[2]=0; T[3]=0;
-                  T[4]=0; T[5]=0; T[6]=-1; T[7]=0;
-                  T[8]=0; T[9]=1; T[10]=0; T[11]=-yb;
-                        fprintf(OUT,"INSERT/Stock Size %lf %lf %lf\n",xb,zb,xb);
-            } else if ( strcmp(argv[2],"F2X")==0 ){
-                  T[0]=1; T[1]=0; T[2]=0; T[3]=0;
-                  T[4]=0; T[5]=-1; T[6]=0; T[7]=yb;
-                  T[8]=0; T[9]=0; T[10]=-1; T[11]=-zb;
+			} else if ( strcmp(argv[2],"F1X")==0 ){
+         			T[0]=1; T[1]=0; T[2]=0; T[3]=0;
+				T[4]=0; T[5]=0; T[6]=1; T[7]=zb;
+				T[8]=0; T[9]=-1; T[10]=0; T[11]=0;
+				fprintf(OUT,"INSERT/Stock Size %lf %lf %lf\n",xb,zb,yb);
+			} else if ( strcmp(argv[2],"F3X")==0 ){
+				T[0]=1; T[1]=0; T[2]=0; T[3]=0;
+				T[4]=0; T[5]=0; T[6]=-1; T[7]=0;
+				T[8]=0; T[9]=1; T[10]=0; T[11]=-yb;
+				fprintf(OUT,"INSERT/Stock Size %lf %lf %lf\n",xb,zb,xb);
+			} else if ( strcmp(argv[2],"F2X")==0 ){
+				T[0]=1; T[1]=0; T[2]=0; T[3]=0;
+				T[4]=0; T[5]=-1; T[6]=0; T[7]=yb;
+				T[8]=0; T[9]=0; T[10]=-1; T[11]=-zb;
 				fprintf(OUT,"INSERT/Stock Size %lf %lf %lf\n",xb,yb,zb);
 			} else if ( strcmp(argv[2],"D2")==0 ){
 				T[0]=0.5; T[1]=0; T[2]=0; T[3]=0;
