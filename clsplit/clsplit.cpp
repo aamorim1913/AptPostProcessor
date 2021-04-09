@@ -253,7 +253,8 @@ int main(int argc, char **argv) {
 			updated |= NEW_TOOL;
 			tl[toolcall].rcad = rtool; tl[toolcall].lcad = ltool;
 			if (tl[toolcall].rtable != tl[toolcall].rcad) {
-				printf("Error: Tool %d - length %f not matching tool table %f\n",toolcall, tl[toolcall].rcad,tl[toolcall].rtable);
+				printf("Error: Tool %d - radius %f not matching tool table %f\n",
+						toolcall, tl[toolcall].rcad,tl[toolcall].rtable);
 				fpause=1;
 			}
 
