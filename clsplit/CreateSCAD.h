@@ -80,7 +80,8 @@ int openSCAD(char* name, int nsetup, int op, int tool, double * Stock, struct TO
 
 	char filename[MAXLINE];
 
-	sprintf(filename, DMUDIRSCAD, nsetup + 11, op);
+	if (thetab >90 )  sprintf(filename, DMUDIRSCAD, 900 + nsetup + 11, op);
+	else sprintf(filename, DMUDIRSCAD, nsetup + 11, op);
 	if ((SCAD = fopen(filename, "w")) == NULL) {
 		printf("cannot write SCAD file %s\n", filename);
 		return 1;
