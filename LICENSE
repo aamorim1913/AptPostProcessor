@@ -1,4 +1,12 @@
-                    GNU GENERAL PUBLIC LICENSE
+ The code here presented proves a possible skeleton of software to drive heavy machinery.
+ The authors are by no means responsible for any damage to machinery or people resulting 
+ from this code or possible changes to it.
+ Please use it wisely and always test the milling paths in the machine by defining a datum 
+ that is far from any parts or holders and trying it under human supervision with immediate 
+ access the machine break button. 
+ Regarding copying the code the license bellow applies.
+ 
+                GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
