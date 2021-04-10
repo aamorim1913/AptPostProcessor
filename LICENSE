@@ -1,4 +1,4 @@
- The code here presented proves a possible skeleton of software to drive heavy machinery.
+ The code here presented provides a possible skeleton of software to drive heavy machinery.
  The authors are by no means responsible for any damage to machinery or people resulting 
  from this code or possible changes to it.
  Please use it wisely and always test the milling paths in the machine by defining a datum 
