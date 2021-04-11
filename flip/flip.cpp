@@ -1,4 +1,4 @@
-// falta as traxlacos para o F1Z .. F1X..
+// falta as tranlacoes para o F1Z .. F1X..
 
 #include "cinttypes"
 #include <stdio.h>
@@ -53,49 +53,49 @@ int RotateSTL(char * filein, char *fileout, double *T){
 
         st=strlen(filein);
         filein[st-3]='S'; filein[st-2]='T'; filein[st-1]='L';
-        if ((STLIN = fopen(filein, "r")) == NULL) {
+        if ((STLIN = fopen(filein, "rb")) == NULL) {
                 printf("cannot read STL file %s\n", filein);
                 return -1;
         }
 	
         st=strlen(fileout);
         fileout[st-3]='S'; fileout[st-2]='T'; fileout[st-1]='L';
-        if ((STLOUT = fopen(fileout, "w")) == NULL) {
+        if ((STLOUT = fopen(fileout, "wb")) == NULL) {
                 printf("cannot write STL file %s\n", fileout);
                 return -1;
         }
 
-	fread(buff,80,1,STLIN);
+	if (fread(buff,80,1,STLIN)<1) printf("Error reading 80 bytes from STL\n");
 	fwrite(buff,80,1,STLOUT);
-	fread(&nTri,4,1,STLIN);
+	if (fread(&nTri,4,1,STLIN)<1) printf("Error reading nTri\n");
 	fwrite(&nTri,4,1,STLOUT);
 
 	for (uint32_t i=0; i< nTri; i++) {
-		fread(n,4,3,STLIN);
+		if (fread(n,4,3,STLIN)<3) printf("Error reading n STL %d of %d\n",i,nTri);
 		temp[0]=(float)(T[0]*n[0]+T[1]*n[1]+T[2]*n[2]);	
 		temp[1]=(float)(T[4]*n[0]+T[5]*n[1]+T[6]*n[2]);	
 		temp[2]=(float)(T[8]*n[0]+T[9]*n[1]+T[10]*n[2]);	
 		fwrite(temp,4,3,STLOUT);
 
-		fread(p1,4,3,STLIN);
+		if (fread(p1,4,3,STLIN)<3) printf("Error reading p1 STL %d of %d\n",i,nTri);
 		temp[0]=(float)(T[0]*p1[0]+T[1]*p1[1]+T[2]*p1[2]+T[3]);	
 		temp[1]=(float)(T[4]*p1[0]+T[5]*p1[1]+T[6]*p1[2]+T[7]);	
 		temp[2]=(float)(T[8]*p1[0]+T[9]*p1[1]+T[10]*p1[2]+T[11]);	
 		fwrite(temp,4,3,STLOUT);
 
-		fread(p2,4,3,STLIN);
+		if (fread(p2,4,3,STLIN)<3) printf("Error reading p2 STL %d of %d\n",i,nTri);
 		temp[0]=(float)(T[0]*p2[0]+T[1]*p2[1]+T[2]*p2[2]+T[3]);	
 		temp[1]=(float)(T[4]*p2[0]+T[5]*p2[1]+T[6]*p2[2]+T[7]);	
 		temp[2]=(float)(T[8]*p2[0]+T[9]*p2[1]+T[10]*p2[2]+T[11]);	
 		fwrite(temp,4,3,STLOUT);
 
-		fread(p3,4,3,STLIN);
+		if (fread(p3,4,3,STLIN)<3) printf("Error reading p3 STL %d of %d\n",i,nTri);
 		temp[0]=(float)(T[0]*p3[0]+T[1]*p3[1]+T[2]*p3[2]+T[3]);	
 		temp[1]=(float)(T[4]*p3[0]+T[5]*p3[1]+T[6]*p3[2]+T[7]);	
 		temp[2]=(float)(T[8]*p3[0]+T[9]*p3[1]+T[10]*p3[2]+T[11]);	
 		fwrite(temp,4,3,STLOUT);
 
-		fread(&attr,2,1,STLIN);
+		if (fread(&attr,2,1,STLIN)<1) printf("Error reading attr STL %d of %d\n",i,nTri);
 		fwrite(&attr,2,1,STLOUT);
 	}
 
@@ -116,7 +116,7 @@ int CheckSTL(char * filein, double xb, double yb, double zb){
 
         st=strlen(filein);
         filein[st-3]='S'; filein[st-2]='T'; filein[st-1]='L';
-        if ((STLIN = fopen(filein, "r")) == NULL) {
+        if ((STLIN = fopen(filein, "rb")) == NULL) {
                 printf("cannot read STL file %s\n", filein);
                 return -4;
         }
@@ -227,7 +227,6 @@ int main(int argc, char **argv) {
                 printf("cannot open OUT file %s\n", fileout);
                 return -1;
         }
-
 	while (ReadLine(lineapt, APT)) {
 		if ( strstr(lineapt, "GOTO/") != 0) { 
  			nA=ReadArray(A, lineapt + strlen("GOTO/"), ',');
@@ -259,17 +258,6 @@ int main(int argc, char **argv) {
 			if ( strcmp(argv[2],"val") == 0 ) {
 				double zbmea;
 				ReadCoord(&xb, &yb, &zbmea);
-				int error=CheckSTL(filein,xb,yb,zbmea);
-				if (error==-1 ){ 
-					printf("Error: STL does not fit 0 to xb in Stock\n"); 
-					return -1; 
-				} else if (error==-2 ){ 
-					printf("Error: STL does not fit 0 to yb in Stock\n"); 
-					return -1; 
-				} else if (error==-3 ){ 
-					printf("Error: STL does not fit -zb to 0 in Stock\n"); 
-					return -1; 
-				}
 				T[0]=1; T[1]=0; T[2]=0; T[3]=0;
 				T[4]=0; T[5]=1; T[6]=0; T[7]=0;
 				T[8]=0; T[9]=0; T[10]=1; T[11]=zb-zbmea;
@@ -335,8 +323,24 @@ int main(int argc, char **argv) {
 				T[4]=0; T[5]=0.25; T[6]=0; T[7]=0;
 				T[8]=0; T[9]=0; T[10]=0.25; T[11]=0;
 				fprintf(OUT,"INSERT/Stock Size %lf %lf %lf\n",xb/4,yb/4,zb/4);
+			} else { 
+				printf("Invalid option \n"); 
+				return -1;
 			}
 			RotateSTL(filein,fileout,T);
+			if ( strcmp(argv[2],"val") == 0 ) {
+				int error=CheckSTL(fileout,xb,yb,zb);
+				if (error==-1 ){ 
+					printf("Error: STL does not fit 0 to xb in Stock\n"); 
+					return -1; 
+				} else if (error==-2 ){ 
+					printf("Error: STL does not fit 0 to yb in Stock\n"); 
+					return -1; 
+				} else if (error==-3 ){ 
+					printf("Error: STL does not fit -zb to 0 in Stock\n"); 
+					return -1; 
+				}
+			}
 
 		} else if (strstr(lineapt, "CSYS/") != 0) {
 
@@ -427,12 +431,13 @@ int main(int argc, char **argv) {
 			else fprintf(OUT,"%s\n",lineapt);
 
                } else if (strstr(lineapt, "CUTTER/") != 0) { 
-                        nA=ReadArray(A, lineapt + strlen("CUTTER/"), ',');
-			if ( strcmp(argv[2],"D2")==0 ) 
+			if ( strcmp(argv[2],"D2")==0 ) { 
+                        	nA=ReadArray(A, lineapt + strlen("CUTTER/"), ',');
 				fprintf(OUT,"CUTTER/%f,%f,%f,%f,%f,%f,%f\n",A[0]/2,A[1],A[2],A[3],A[4],A[5],A[6]/2);
-			else if ( strcmp(argv[2],"D4")==0 ) 
+			} else if ( strcmp(argv[2],"D4")==0 ) {
+                        	nA=ReadArray(A, lineapt + strlen("CUTTER/"), ',');
 				fprintf(OUT,"CUTTER/%f,%f,%f,%f,%f,%f,%f\n",A[0]/4,A[1],A[2],A[3],A[4],A[5],A[6]/4);
-			else fprintf(OUT,"%s\n",lineapt);
+			} else fprintf(OUT,"%s\n",lineapt);
 
 		} else  {
 
