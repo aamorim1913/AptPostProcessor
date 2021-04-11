@@ -257,8 +257,9 @@ int main(int argc, char **argv) {
                         }
                         sscanf(lineapt+strlen("INSERT/Stock Size"),"%lf %lf %lf",&xb,&yb,&zb);
 			if ( strcmp(argv[2],"val") == 0 ) {
-				ReadCoord(&xb, &yb, &zb);
-				int error=CheckSTL(filein,xb,yb,zb);
+				double zbmea;
+				ReadCoord(&xb, &yb, &zbmea);
+				int error=CheckSTL(filein,xb,yb,zbmea);
 				if (error==-1 ){ 
 					printf("Error: STL does not fit 0 to xb in Stock\n"); 
 					return -1; 
@@ -269,9 +270,12 @@ int main(int argc, char **argv) {
 					printf("Error: STL does not fit -zb to 0 in Stock\n"); 
 					return -1; 
 				}
-			}
-
-			if ( strcmp(argv[2],"I")==0 ){
+				T[0]=1; T[1]=0; T[2]=0; T[3]=0;
+				T[4]=0; T[5]=1; T[6]=0; T[7]=0;
+				T[8]=0; T[9]=0; T[10]=1; T[11]=zb-zbmea;
+				zb=zbmea;
+			        fprintf(OUT,"INSERT/Stock Size %lf %lf %lf\n",xb,yb,zb);
+			} else if ( strcmp(argv[2],"I")==0 ){
 				T[0]=1; T[1]=0; T[2]=0; T[3]=0;
 				T[4]=0; T[5]=1; T[6]=0; T[7]=0;
 				T[8]=0; T[9]=0; T[10]=1; T[11]=0;
