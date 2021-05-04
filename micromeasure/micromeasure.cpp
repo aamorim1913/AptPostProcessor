@@ -1,4 +1,4 @@
-/* part of the code is from tutorial_charuco in the opencv modules
+/* part of the code is from tutorial_charuco in the opencv modules */
 
 #define AM_PI 3.14159265358979323846   // pi
 
@@ -114,12 +114,10 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
 	       if (iteration > niteration ) { iteration=1; accuij.clear(); accucor.clear(); cout << "it ";}
  	       cout << iteration << " ";
 	       for (int k=0; k<charucoCorners.size(); k++) {
-		    float x=charucoCorners[k].x;
-		    float y=sz.height-charucoCorners[k].y-1;
+		    float x=charucoCorners[k].x-sz.width/2;
+		    float y=sz.height/2-charucoCorners[k].y-1;
 		    int i =  charucoIds[k] % 9;
 		    int j =  charucoIds[k] / 9 ;
-//		    if ((x-center.x>-350) && (x-center.x<350) && (y-center.y>-350) && (y-center.y<350))
-//		    	cout << "i " << i << " j " << j << " id "<< charucoIds[k] << " x " << x << " y " << y << endl ;
 
 		    accuij.push_back(cv::Point2f(measure*i,measure*j));
 		    accucor.push_back(cv::Point2f(x,y));
@@ -129,9 +127,9 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
  	           cout << endl;
 		   if (accuij.size() < 3*niteration) continue;
 	           vector<uchar> inliers(accuij.size(), 0);
+	           cv::Mat A = cv::estimateAffine2D(accucor, accuij ,inliers);
 //	       	   cout << "accucor " << accucor << endl;
 //	       	   cout << "accuij " << accuij << endl;
-	           cv::Mat A = cv::estimateAffine2D(accucor, accuij ,inliers);
 //	       	   cout << "A " << A << endl;
 		   B1= A.at<double>(0,2);
 		   B2= A.at<double>(1,2);
