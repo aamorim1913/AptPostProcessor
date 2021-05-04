@@ -10,12 +10,12 @@ set(CMAKE_CXX_STANDARD 11)
 add_executable (cirpivot "cirpivot.cpp" "cirpivot.h")
 
 # choose only one of the below and uncoment armadillo setting if udsing it
-#add_compile_definitions(NUMREC)
-add_compile_definitions(ARMADILLO)
+add_compile_definitions(NUMREC)
+#add_compile_definitions(ARMADILLO)
 
-find_package(Armadillo REQUIRED)
-include_directories(${ARMADILLO_INCLUDE_DIRS})
-target_link_libraries(cirpivot ${ARMADILLO_LIBRARIES})
+#find_package(Armadillo REQUIRED)
+#include_directories(${ARMADILLO_INCLUDE_DIRS})
+#target_link_libraries(cirpivot ${ARMADILLO_LIBRARIES})
 
 # Add source to this project's executable.
 

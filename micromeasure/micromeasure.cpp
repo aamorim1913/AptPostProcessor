@@ -19,8 +19,8 @@ const char* about = "A tutorial code on charuco board creation and detection of 
 const char* keys = 
 	"{c        |2      | Put value of c=1 to create charuco board;\nc=2 to detect charuco board without camera calibration;}"
 	"{u        |1      | Put value of u=1 cameraid }"
-	"{i        |10      | Put value of i=1 niterations used to estimate a single matrix }"
-        "{m        |1.0    | Put value of distance between symbols -m=}"
+	"{i        |10     | Put value of i=1 niterations used to estimate a single matrix }"
+        "{m        |5.174  | Put value of distance between symbols -m=}"
         "{w        |10     | Number of squares in X direction }"
         "{h        |5      | Number of squares in Y direction }";
 }
@@ -114,8 +114,8 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
 	       if (iteration > niteration ) { iteration=1; accuij.clear(); accucor.clear(); cout << "it ";}
  	       cout << iteration << " ";
 	       for (int k=0; k<charucoCorners.size(); k++) {
-		    float x=charucoCorners[k].x-sz.width/2;
-		    float y=sz.height/2-charucoCorners[k].y-1;
+		    float x=charucoCorners[k].x;
+		    float y=sz.height-charucoCorners[k].y-1;
 		    int i =  charucoIds[k] % 9;
 		    int j =  charucoIds[k] / 9 ;
 
@@ -133,7 +133,7 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
 //	       	   cout << "A " << A << endl;
 		   B1= A.at<double>(0,2);
 		   B2= A.at<double>(1,2);
-		   sprintf(text,"x %lf, y %lf rho %lf theta %lf",B1,B2,sqrt(B1*B1+B2*B2),atan2(B2,B1));
+		   sprintf(text,"x %.3lf, y %.3lf rho %.3lf theta %.3lf",B1,B2,sqrt(B1*B1+B2*B2),atan2(B2,B1));
 	       	   cout << "B1 " << B1 << " B2 " << B2 << endl;
 		   if ( dumpfile) {
 			   fout <<  B1 << "," << B2 << endl;
