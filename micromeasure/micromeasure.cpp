@@ -45,7 +45,7 @@ void createBoard(int w, int h)
     //! [createBoard]
     cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(w, h, 0.02f, 0.01f, dictionary);
     cv::Mat boardImage;
-    board->draw(cv::Size(600, 500), boardImage, 10, 1);
+    board->draw(cv::Size(7680,4320), boardImage, 10, 1);
     //! [createBoard]
     cv::imwrite("BoardImage.jpg", boardImage);
 }
