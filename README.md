@@ -12,3 +12,8 @@ To generate the STL export in options:
 2- In saving file as STL open options and Choose the coordinate system created in solidcam using the "create SW coordinate system"
 3- Select the "Do not translate stl output data to positive space".
 
+
+
+To use the micro...
+ - copy the opencv installation dir (after compilation)
+	- in an administrator promp execute: setx -m OPenCV_DIR <the instalation directory>
