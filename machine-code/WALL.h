@@ -1,6 +1,6 @@
 BEGIN PGM WALL MM
 ; steps of 1 mm
-L Z-10 M91
+L Z-10 FMAX M91
 TOOL CALL 3 Z S2500
 STOP
 ; Tool bottom Z xmax, ymax (out)
@@ -18,7 +18,7 @@ Q4 = Q23 +  Q5 + 1
 FN12: IF +Q4 LT +Q13 GOTO LBL 2
 Q13 = Q4
 L Z + Q13 FMAX
-Q23 = Q23 - 1
+Q23 = Q23 + 0.1
 M3 M8
 LBL 1
 L IZ-0.5 F100
