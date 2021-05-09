@@ -195,6 +195,10 @@ int main(int argc, char **argv) {
 	char com[12*COMSIZE];
 
        if (argc < 3 ) { 
+	        if (argc==2) {
+	          cout << "Tool len " << 338.285 - atof(argv[1]) << " into tool table" << endl;
+		  return 0;
+	        }
 		cout << "Give original apt file name and option:" << endl;
 		cout <<"     - rotate along YY; F1Y 90 deg; F2Y 180 deg; F3Y -90 deg" << endl;
 		cout <<"     - rotate along ZZ; F1Z 90 deg; F2Z 180 deg; F3Z -90 deg"<< endl;
@@ -204,6 +208,7 @@ int main(int argc, char **argv) {
 		cout <<"       val to correct xb yb zb of stock from the ../machine-code/%FN15SIM.A." << endl;
 		cout <<"	      part to original datum is unchanged." << endl;
 		cout <<"       clean to remove all file-F1X... and file-FiX-F2X... apt and stl files" << endl;
+		cout <<"       or give a single value of the machine coordinate when tool measure=0" << endl;
 		return -1;
 	}
 
