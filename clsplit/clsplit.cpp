@@ -151,7 +151,7 @@ int main(int argc, char **argv) {
 			else fprintf(OUT, "%d M04\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L ",lnumber); 
 			printVAR(OUT,"Z",old_coord[2]);
-			fprintf(OUT,"\n"); ++lnumber;
+			fprintf(OUT," FMAX\n"); ++lnumber;
 
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
 		} else if (strstr(lineapt, "CSYS/") != 0) { 
