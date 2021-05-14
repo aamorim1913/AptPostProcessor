@@ -27,7 +27,7 @@ Q6 = Q41 * ( Q42 - Q32 ) - Q42 * ( Q41 - Q31)
 Q7 = Q42 - Q32
 Q7 = SGN Q7
 Q6 = Q7 * Q6
-Q7 = Q2 + Q6 / Q5 - Q21 + Q23
+Q7 = Q1 + Q6 / Q5 - Q21 + Q23
 CYCL DEF 7.0 DATUM SHIFT
 CYCL DEF 7.1  X+Q7
 CYCL DEF 7.2  Y+0
