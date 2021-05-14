@@ -140,10 +140,18 @@ int main(int argc, char **argv) {
 			sscanf(lineapt+strlen("INSERT/Stock Size"),"%lf %lf %lf",Stock,Stock+1,Stock+2);
 			updated |= NEW_BLK;
 
-		/* When one inserts a comment at the begining of a feature that invol;ved manuall operation */
+		/* When one inserts a comment at the begining of a feature that is invoked in manuall operation */
 		} else if (strstr(lineapt, "INSERT/STOP") != 0) {
+			fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
+			fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber);  ++lnumber;
 			fprintf(OUT, "%d STOP\n",lnumber);  ++lnumber;
 			fprintf(OUT, "%d ;%s\n", lnumber, lineapt + strlen("INSERT/STOP"));  ++lnumber;
+			updated |= NEW_FLOOD;
+			if (spinsense==1) fprintf(OUT, "%d M03\n",lnumber); 
+			else fprintf(OUT, "%d M04\n",lnumber); ++lnumber;
+			fprintf(OUT, "%d L ",lnumber); 
+			printVAR(OUT,"Z",old_coord[2]);
+			fprintf(OUT,"\n"); ++lnumber;
 
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
 		} else if (strstr(lineapt, "CSYS/") != 0) { 
