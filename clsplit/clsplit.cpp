@@ -31,7 +31,9 @@ const double MachineLimits[6]={-500,0,-400,0,-400,0};
 using namespace std;
 
 struct TOOL{
-    double ltable,rtable,rcad,lcad;
+    char name[19];
+    double ltable,rtable,rcad,lcad,DL,DR;
+    int T1,T2,T3;
 };
 
 #include "clsplit.h"
@@ -59,6 +61,7 @@ int main(int argc, char **argv) {
 	double CC[2], old_CC[2], coord[6], old_coord[3];
 	double axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
 	double prev_axis[3] = {0,0,0}, dist=0, length=0;
+	char last_comment[19];
 
 	double thetabtemp,thetactemp, thetab, thetac;
 	double theta1, theta2, CCR;
@@ -70,6 +73,7 @@ int main(int argc, char **argv) {
 	int toolcall, spindl = 0; 
 	double feed = -1, rtool,ltool,temp;
 
+	last_comment[18]='\0';
 	int spinsense=1;
 	int op=0;
 	fpause = 0;
@@ -95,7 +99,7 @@ int main(int argc, char **argv) {
 
 
 	/* read the tool table TOOL.h */
-	ReadTool(tl);
+	ReadTool(tl,fpause);
 
 	/* -------------------- enter APT processing option ------------------------------------------------ */
 
@@ -236,10 +240,10 @@ int main(int argc, char **argv) {
 			}
 			openSCAD(argv[1], nsetup, op, toolcall, Stock, tl, Shift, Datum, thetab, thetac);
 
-		/* general comment copy to comment */
-		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is translated to comments*/
-			fprintf(OUT, "%d ;%s\n", lnumber, lineapt);
-			++lnumber;
+		/* comment copy  */
+		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is copyed to comment (maybe tool name)*/
+			fprintf(OUT, "%d ;%s\n", lnumber, lineapt+strlen("INSERT/")); ++lnumber;
+			strncpy(last_comment,lineapt+strlen("INSERT/"),18);
 
 		/* properties of the tool */
 		} else if (strstr(lineapt, "CUTTER/") != 0) {
@@ -258,13 +262,19 @@ int main(int argc, char **argv) {
 		} else if (strstr(lineapt, "LOAD/TOOL,") != 0) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
 			if (toolcall != -1) {} /* close SCAD  for this tool */
 			toolcall = atoi(lineapt + strlen("LOAD/TOOL,"));
+			strncpy(tl[toolcall].name,last_comment,18);
 			updated |= NEW_TOOL;
 			tl[toolcall].rcad = rtool; tl[toolcall].lcad = ltool;
-			if (tl[toolcall].rtable != tl[toolcall].rcad) {
-				printf("Error: Tool %d - radius %f not matching tool table %f\n",
+			if ((tl[toolcall].rtable != 0) && (tl[toolcall].rtable != tl[toolcall].rcad)) {
+				printf("Error: Tool %d - radius %f not 0 and not matching tool table %f\n",
 						toolcall, tl[toolcall].rcad,tl[toolcall].rtable);
 				fpause=1;
 			}
+			if (tl[toolcall].ltable == 0) {
+				printf("Need to measure lenght of Tool %d\n", toolcall);
+				fpause=1;
+			}
+
 
 		/* used for authomatic feeder */
 		} else if (strstr(lineapt, "SELECT/TOOL,") != 0) { /* SELECT/TOOL defines the next tool to be used - carrousel */
@@ -514,6 +524,9 @@ int main(int argc, char **argv) {
 		}
 	}
 	printf("Found %d setups. Output in ../machine-code/ directory.\n", nsetup+1);
+
+	/* write the tool table TOOL.h */
+	WriteTool(tl,fpause);
 
 	fclose(APT);
 	fclose(OUT);

@@ -17,3 +17,15 @@ To generate the STL export in options:
 To use the micro...
  - copy the opencv installation dir (after compilation)
 	- in an administrator promp execute: setx -m OPenCV_DIR <the instalation directory>
+Tool measurement from apt Ex:
+INSERT/8MM CRB 2FL 20 LOC
+CUTTER/8.,0,4.,0,0,0,40.
+LOAD/TOOL,17
+CUTTER / d, r [, e, f, a, b, h]
+ where:  d = cutter diameter
+         r = cutter radius
+         e = radial corner offset
+         f = axial corner offset
+         a = tip angle
+         b = flank angle
+         h = cutter height
