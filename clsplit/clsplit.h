@@ -231,8 +231,8 @@ int ReadTool(struct TOOL *tl, int &fpause) {
 			printf("Error in TOOL.T for tool %d\n",i);
 			fpause=1;
 		}
-		strncpy(tl[i].name,sbuff+3,18); 
-		tl[i].name[18]='\0';
+		strncpy(tl[i].name,sbuff+5,16); 
+		tl[i].name[16]='\0';
 		sscanf(sbuff+21, "%lf %lf %lf %lf %d %d %d", &(tl[i].l), &(tl[i].rtable), 
 			&(tl[i].DL), &(tl[i].DR), &(tl[i].T1), &(tl[i].T2), &(tl[i].T3));
 		if (tl[i].rtable != 0) {
@@ -257,7 +257,9 @@ int WriteTool(struct TOOL *tl,int &fpause) {
 	fprintf(FTOOL,"BEGIN TOOL    .T       MM\n");
 	fprintf(FTOOL,"T    NAME             L          R          DL      DR      TL RT  TIME1 TIME2 CUR.TIME DOC\n");
 	for (int i = 0; i < 100; i++) {
-		sprintf(sbuff, "%-2d %s %-+10.3lf +0,000     %-+7.3lf %-+7.3lf        %d     %d     %d",
+		if (strcmp(tl[i].name,"                ")!=0) 
+			for (int j = 0; j < 16; j++)  if (tl[i].name[j] == ' ') tl[i].name[j]='_';
+		sprintf(sbuff, "%-4d %s %-+10.3lf +0,000     %-+7.3lf %-+7.3lf        %d     %d     %d",
 			i,tl[i].name,tl[i].l,tl[i].DL,tl[i].DR,tl[i].T1,tl[i].T2,tl[i].T3);
 		for (int j = 0; j < 1024; j++) {
 			if (sbuff[j] == '\0') break;

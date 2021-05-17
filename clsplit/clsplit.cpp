@@ -31,7 +31,7 @@ const double MachineLimits[6]={-500,0,-400,0,-400,0};
 using namespace std;
 
 struct TOOL{
-    char name[19];
+    char name[17];
     double l,rtable,rcad,DL,DR;
     int T1,T2,T3;
 };
@@ -267,7 +267,7 @@ int main(int argc, char **argv) {
 		} else if (strstr(lineapt, "LOAD/TOOL,") != 0) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
 			if (toolcall != -1) {} /* close SCAD  for this tool */
 			toolcall = atoi(lineapt + strlen("LOAD/TOOL,"));
-			strncpy(tl[toolcall].name,last_comment,18);
+			strncpy(tl[toolcall].name,last_comment,16);
 			updated |= NEW_TOOL;
 			tl[toolcall].rcad = rtool; 
 			if ((tl[toolcall].rtable != 0) && (tl[toolcall].rtable != tl[toolcall].rcad)) {
