@@ -32,7 +32,7 @@ using namespace std;
 
 struct TOOL{
     char name[19];
-    double ltable,rtable,rcad,lcad,DL,DR;
+    double l,rtable,rcad,DL,DR;
     int T1,T2,T3;
 };
 
@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
 	}
 
 
-	/* read the tool table TOOL.h */
+	/* read the tool table TOOL.T */
 	ReadTool(tl,fpause);
 
 	/* -------------------- enter APT processing option ------------------------------------------------ */
@@ -264,16 +264,19 @@ int main(int argc, char **argv) {
 			toolcall = atoi(lineapt + strlen("LOAD/TOOL,"));
 			strncpy(tl[toolcall].name,last_comment,18);
 			updated |= NEW_TOOL;
-			tl[toolcall].rcad = rtool; tl[toolcall].lcad = ltool;
+			tl[toolcall].rcad = rtool; 
 			if ((tl[toolcall].rtable != 0) && (tl[toolcall].rtable != tl[toolcall].rcad)) {
 				printf("Error: Tool %d - radius %f not 0 and not matching tool table %f\n",
 						toolcall, tl[toolcall].rcad,tl[toolcall].rtable);
 				fpause=1;
 			}
-			if (tl[toolcall].ltable == 0) {
+			temp =  tl[toolcall].l + tl[toolcall].DL;
+			if ( temp == 0) {
 				printf("Need to measure lenght of Tool %d\n", toolcall);
 				fpause=1;
 			}
+			tl[toolcall].l = ltool ;
+			tl[toolcall].DL = temp - ltool ;
 
 
 		/* used for authomatic feeder */

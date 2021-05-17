@@ -208,7 +208,7 @@ int ReadTool(struct TOOL *tl, int &fpause) {
 		}
 		strncpy(tl[i].name,sbuff+3,18); 
 		tl[i].name[18]='\0';
-		sscanf(sbuff+21, "%lf %lf %lf %lf %d %d %d", &(tl[i].ltable), &(tl[i].rtable), 
+		sscanf(sbuff+21, "%lf %lf %lf %lf %d %d %d", &(tl[i].l), &(tl[i].rtable), 
 			&(tl[i].DL), &(tl[i].DR), &(tl[i].T1), &(tl[i].T2), &(tl[i].T3));
 		if (tl[i].rtable != 0) {
 			printf("Tool %d in TOOL.T will be set with r=0\n",i);
@@ -233,7 +233,7 @@ int WriteTool(struct TOOL *tl,int &fpause) {
 	fprintf(FTOOL,"T    NAME             L          R          DL      DR      TL RT  TIME1 TIME2 CUR.TIME DOC\n");
 	for (int i = 0; i < 100; i++) {
 		sprintf(sbuff, "%-2d %s %-+10.3lf +0,000     %-+7.3lf %-+7.3lf        %d     %d     %d",
-			i,tl[i].name,tl[i].ltable,tl[i].DL,tl[i].DR,tl[i].T1,tl[i].T2,tl[i].T3);
+			i,tl[i].name,tl[i].l,tl[i].DL,tl[i].DR,tl[i].T1,tl[i].T2,tl[i].T3);
 		for (int j = 0; j < 1024; j++) {
 			if (sbuff[j] == '\0') break;
 			if (sbuff[j] == '.') sbuff[j] = ',';

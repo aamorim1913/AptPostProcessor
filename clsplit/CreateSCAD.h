@@ -90,7 +90,7 @@ int openSCAD(char* name, int nsetup, int op, int tool, double * Stock, struct TO
 	fprintf(SCAD, "xd=%f; yd=%f; zd=%f; /* Datum shifted (Rotated) relative to pivot  */\n", 
 		Datum[0] + Shift[0], Datum[1] + Shift[1], Datum[2] + Shift[2]);
 	fprintf(SCAD, "xd0=%f; yd0=%f; zd0=%f; /* Datum relative to pivot unrotated */\n", Datum[0], Datum[1], Datum[2]);
-	fprintf(SCAD, "l=%f; ltool=%f; rtool=%f;\n", tl[tool].ltable, tl[tool].lcad, tl[tool].rcad);
+	fprintf(SCAD, "l=%f; ltool=%f; rtool=%f;\n", tl[tool].l + tl[tool].DL, tl[tool].l, tl[tool].rcad);
 	/* table */
 	fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) color(\"grey\") difference(){\ntranslate([0,0,-75]) cylinder(50,350,350,center = true);\ntranslate([-500,0,-125]) linear_extrude(100) square(500,center=true);\ntranslate([500,0,-125]) linear_extrude(100) square(500,center=true);}\n", -thetab, -thetac);
 	/* vice1 */
@@ -137,7 +137,7 @@ int closeSCAD(int tool, double *Stock, struct TOOL *tl, double *Datum, double th
 
 	/* machine range volume transparent */
 	fprintf(SCAD, "color(\"brown\",0.25) translate([%f,%f,%f]) cube([500,400,400],center=true);\n",
-		-(Pivot[0]+250.0), -(200.0+Pivot[1]), -(Pivot[2]+200.0 + tl[tool].lcad));
+		-(Pivot[0]+250.0), -(200.0+Pivot[1]), -(Pivot[2]+200.0 + tl[tool].l+tl[tool].DL));
 
 	fclose(SCAD);
 	SCAD = NULL;
