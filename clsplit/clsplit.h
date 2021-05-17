@@ -158,11 +158,36 @@ int ReadCoord(double* xd, double* yd, double* zd, double* Datum) {
 	sscanf(linecoor, "%lf %lf %lf", Datum, Datum+1, Datum+2);
 	while (ReadLine(linecoor, SETCOOR)) {
 		for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
-		if (sscanf(linecoor, "%lf %lf %lf", xd+ns, yd+ns, zd+ns) != 3) break;
+		if ((sscanf(linecoor, "%lf %lf %lf", xd+ns, yd+ns, zd+ns) != 3) ||
+			(xd[ns]==-999 && yd[ns] == -999 && zd[ns] == -999)) break;
 		ns++;
 	}
 	fclose(SETCOOR);
 	return ns;
+}
+
+int ReadToolCoord(int* it, double* DL, double* DR) {
+	int nt = 0;
+	double x,y,z;
+	FILE* SETCOOR;
+	char line[MAXLINE];
+
+	if ( (SETCOOR=fopen(SETCOORNAME, "r")) == NULL ) {
+		printf("cannot open SETCOOR file %s\n", SETCOORNAME);
+		return 1;
+	}
+	/* ignore lines describing coordinates */
+	while (ReadLine(line, SETCOOR)) {
+		for (int i = 0; i < strlen(line); i++) if (line[i] == ',') line[i] = '.';
+		if ((sscanf(line, "%lf %lf %lf", &x, &y, &z) != 3) || (x==-999 && y == -999 && z == -999)) break;
+	}
+	while (ReadLine(line, SETCOOR)) {
+		for (int i = 0; i < strlen(line); i++) if (line[i] == ',') line[i] = '.';
+		if (sscanf(line, "%d %lf %lf", it+nt, DL+nt, DR+nt) != 3) break;
+		nt++;
+	}
+	fclose(SETCOOR);
+	return nt;
 }
 
 int WriteSetup(int ns, double axis[3], double S[3]) {

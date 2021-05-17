@@ -12,7 +12,16 @@ To generate the STL export in options:
 2- In saving file as STL open options and Choose the coordinate system created in solidcam using the "create SW coordinate system"
 3- Select the "Do not translate stl output data to positive space".
 
+The %FN15RUN.A file has syntax:
 
+datumx, datumy,datumz (relative to the pivot)
+x_ref1 y_ref1 z_ref1
+x_ref2 y_ref2 z_ref2
+...
+-999 -999 -999
+ntool1 DL1 DR1
+ntool2 DL2 DR2
+...
 
 To use the micro...
  - copy the opencv installation dir (after compilation)

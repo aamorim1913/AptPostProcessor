@@ -57,6 +57,8 @@ int main(int argc, char **argv) {
 	struct TOOL tl[MAXTOOL];
 	int fpause;
 	double Datum[3], xd[32], yd[32], zd[32];
+	int it[32];
+	double DL[32], DR[32];
 	double Shift[3];
 	double CC[2], old_CC[2], coord[6], old_coord[3];
 	double axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
@@ -68,7 +70,7 @@ int main(int argc, char **argv) {
 	char com[12*COMSIZE];
 	int nA;
 	size_t counter;
-	int nsetup,ncoord,lnumber;
+	int nsetup,ncoord,ntools,lnumber;
 	char RL='0', used_RL='0',Sense='+';
 	int toolcall, spindl = 0; 
 	double feed = -1, rtool,ltool,temp;
@@ -112,8 +114,11 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 
-	/* read all coordinates in the  %FN15RUN.A file */
+	/* read all coordinates in the %FN15RUN.A file */
 	ncoord=ReadCoord(xd,yd,zd,Datum);
+
+	/* read all tool measurements from the %FN15RUN.A file */
+	ntools=ReadToolCoord(it,DL,DR);
 
 	/* iitialize MAIN LOOP OVER LINES of the .apt file */
 	nsetup = -1;
