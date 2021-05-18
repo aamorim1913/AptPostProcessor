@@ -1,5 +1,8 @@
 int nref;
 int ntool;
+int toolnumber[100];
+double toolRs[100];
+int toolS[100];
 
 int openTRef() {
 
@@ -17,9 +20,9 @@ int openTRef() {
         fprintf(TREF,"FN18: SYSREAD Q24 = ID240 NR1 IDX2\n");
         fprintf(TREF,"FN18: SYSREAD Q22 = ID270 NR1 IDX3\n");
         fprintf(TREF,"FN18: SYSREAD Q25 = ID240 NR1 IDX3\n");
-	fprintf(TREF,"Q10 = Q23 - Q20 - Q1\n");
-	fprintf(TREF,"Q11 = Q24 - Q21 - Q2\n");
-	fprintf(TREF,"Q12 = Q25 - Q22 - Q3\n");
+	fprintf(TREF,"Q7 = Q23 - Q20 - Q1\n");
+	fprintf(TREF,"Q8 = Q24 - Q21 - Q2\n");
+	fprintf(TREF,"Q9 = Q25 - Q22 - Q3\n");
 	nref=0;
 	ntool=0;
 
@@ -47,15 +50,34 @@ int AddRef(int nsetup){
 	return 0;
 }
 
-int AddTool(){
-	/* prepare delay to closeTRe()  */
+int AddTool(int tool, int S){
+
+	/* prepare delay to closeTRef()  */
+	/* test if already added */
+	for (int i=0; i<ntool; i++) if (toolnumber[i] == tool) return 0;
+	toolnumber[ntool]=tool;
+	toolS[ntool]=S;
+	++ntool;	
+
 	return 0;
 }
 
-int closeTRef() {
-	fprintf(TREF,"FN15: PRINT Q10/Q11/Q12\n");
+int CloseTRef(struct TOOL *tl) {
+	/* tool measure here */
+	fprintf(TREF,"STOP\n; Set Heimer on top tool measure\n");
+	fprintf(TREF,"FN18: SYSREAD Q6 = ID240 NR1 IDX3\n");
+	for (int i=0; i<ntool; i++){
+		fprintf(TREF,"L Z-10 FMAX M91\n;%s\n",tl[toolnumber[i]].name);
+		fprintf(TREF,"TOOL CALL %d Z S%d\n",toolnumber[i],toolS[i]);
+		fprintf(TREF,"STOP\n; Set tool on 0 of tool measure\n");
+		fprintf(TREF,"FN18: SYSREAD Q%d6 = ID240 NR1 IDX3\n",i+1);
+		fprintf(TREF,"Q%d6 = Q%d6 - Q6\n",i+1,i+1);
+		fprintf(TREF,"FN0 : Q%d7 = %d\nFN0 : Q%d8 = 0\n",i+1,i+1,i+1);
+	}
+	fprintf(TREF,"FN15: PRINT Q7/Q8/Q9\n");
 	for (int i=0; i<nref; i++) fprintf(TREF,"FN15: PRINT Q%d1/Q%d2/Q%d3\n",i+1,i+1,i+1);
 	fprintf(TREF,"FN15: PRINT Q4/Q4/Q4\n");
+	for (int i=0; i<ntool; i++) fprintf(TREF,"FN15: PRINT Q%d7/Q%d6/Q%d8\n",i+1,i+1,i+1);
 	fprintf(TREF,"END PGM 0TREF MM\n");
 	fclose(TREF);
 	return 0;

@@ -233,11 +233,13 @@ int main(int argc, char **argv) {
 					fprintf(OUT,"%d END PGM %d MM\n",lnumber, nsetup+10); ++lnumber;
 					fclose(OUT);
 
-					AddRef(nsetup);
 					/* open file for new setup */
 					/* if milling from bellow generate file with number 900+ */
 					if ( thetab > 90 ) sprintf(filename, DMUDIR, nsetup+900+11);
-					else sprintf(filename, DMUDIR, nsetup+11);
+					else {
+						sprintf(filename, DMUDIR, nsetup+11);
+						AddRef(nsetup);
+					}
 					OUT=fopen(filename, "w");
 					fprintf(OUT, "0 BEGIN PGM %d MM\n1 ;setup of file %s\n", nsetup+11,argv[1]);
 					lnumber = 2;
@@ -287,6 +289,7 @@ int main(int argc, char **argv) {
 			}
 			tl[toolcall].l = ltool ;
 			tl[toolcall].DL = temp - ltool ;
+			if (abs(tl[toolcall].DL)>99) tl[toolcall].DL=0;
 
 
 		/* used for authomatic feeder */
@@ -403,6 +406,7 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, spindl); ++lnumber;
+				AddTool(toolcall,spindl);
 				if (old_coord[2] != -9999.0) { fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]); ++lnumber; }
 				updated |= NEW_FLOOD;
 				if (spinsense==1) fprintf(OUT, "%d M03\n",lnumber); 
@@ -540,7 +544,7 @@ int main(int argc, char **argv) {
 
 	/* write the tool table TOOL.h */
 	WriteTool(tl,fpause);
-	closeTRef();
+	CloseTRef(tl);
 
 	fclose(APT);
 	fclose(OUT);
