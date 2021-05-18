@@ -24,6 +24,7 @@ const double MachineLimits[6]={-500,0,-400,0,-400,0};
 
 #define DMUDIR "../machine-code/%d.h"
 #define DMUDIRSCAD "../machine-code/%dop%d.scad"
+#define FILETREF "../machine-code/0TREF.h"
 #define DMUDIRSETUP "../machine-code/%dsetup.h"
 #define SETCOORNAME "../machine-code/%FN15RUN.A"
 #define TOOLFILE "../machine-code/TOOL.T"
@@ -40,6 +41,9 @@ struct TOOL{
 
 FILE* SCAD=NULL;
 #include "CreateSCAD.h"
+
+FILE* TREF=NULL;
+#include "CreateTRef.h"
 
 /*-----------------------------  the main program ------------------------------------------------------*/
 
@@ -138,6 +142,7 @@ int main(int argc, char **argv) {
 		if (strstr(lineapt, "UNIT/MM") != 0) {  /* begining of program */
 			fprintf(OUT, "%d BEGIN PGM 11 MM\n",lnumber);++lnumber;
 			fprintf(OUT, "%d ;First setup of file %s\n", lnumber, argv[1]);++lnumber;
+			openTRef();
 
 		/* Stock Size comment converted to BLK */
 		} else if (strstr(lineapt,"INSERT/Stock Size") != 0) { 
@@ -165,7 +170,7 @@ int main(int argc, char **argv) {
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
 		} else if (strstr(lineapt, "CSYS/") != 0) { 
 
-			if ( op> 0) closeSCAD(toolcall, Stock, tl, Datum, thetab, thetac, Shift);
+			if ( op > 0) closeSCAD(toolcall, Stock, tl, Datum, thetab, thetac, Shift);
 
 			++op;
 			nA = ReadArray(A, lineapt + strlen("CSYS/"), ',');
@@ -179,7 +184,6 @@ int main(int argc, char **argv) {
 
 				/* this is the end of the previous setup */
 				++nsetup;
-
 				
 				/* set axis for RotateArray */
 				A[3]=axis[0];
@@ -229,6 +233,7 @@ int main(int argc, char **argv) {
 					fprintf(OUT,"%d END PGM %d MM\n",lnumber, nsetup+10); ++lnumber;
 					fclose(OUT);
 
+					AddRef(nsetup);
 					/* open file for new setup */
 					/* if milling from bellow generate file with number 900+ */
 					if ( thetab > 90 ) sprintf(filename, DMUDIR, nsetup+900+11);
@@ -535,6 +540,7 @@ int main(int argc, char **argv) {
 
 	/* write the tool table TOOL.h */
 	WriteTool(tl,fpause);
+	closeTRef();
 
 	fclose(APT);
 	fclose(OUT);

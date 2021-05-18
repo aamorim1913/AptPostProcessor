@@ -18,6 +18,7 @@ int printVAR(FILE* OUT, const char* VAR, double x) {
 }
 
 int CleanFiles(char* filename) {
+
 	/* remove 0t0.SCAD */
 	sprintf(filename, DMUDIRSCAD, 0, 0);
 #if defined(_WIN64)
@@ -25,6 +26,15 @@ int CleanFiles(char* filename) {
 #else
 	unlink(filename);
 #endif
+
+	/* remove 0TRef.h */
+	sprintf(filename, FILETREF);
+#if defined(_WIN64)
+	_unlink(filename);
+#else
+	unlink(filename);
+#endif
+
 	for (int i = 11; i < 32; i++) {
 		sprintf(filename, DMUDIR, i);
 #if defined(_WIN64)
