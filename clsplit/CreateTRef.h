@@ -30,7 +30,7 @@ int AddTool(int tool, int S, int spinsense, struct TOOL *tl){
 	/* test if already added */
 	for (int i=0; i<ntool; i++) if (toolnumber[i] == tool) return 0;
 	toolnumber[ntool]=tool;
-	fprintf(TREF,"FN0 : Q%d7 = %d\n",ntool+1,tool);
+	fprintf(TREF,"FN0: Q%d7 = %d\n",ntool+1,tool);
 	fprintf(TREF,"L Z-10 FMAX M91\n;%s\n",tl[tool].name);
 	fprintf(TREF,"TOOL CALL %d Z S%d\n",tool,S);
 	fprintf(TREF,"STOP\n; Set tool on zero of tool sensor\n");
@@ -55,7 +55,7 @@ int AddTool(int tool, int S, int spinsense, struct TOOL *tl){
 }
 
 int CloseTRef() {
-	fprintf(TREF,"FN0 : Q1 = -200.66\nFN0 : Q2 = -193.7836\nFN0 : Q3 = -338.3841\nFN0 : Q4 = -999\n");
+	fprintf(TREF,"FN0: Q1 = -200.66\nFN0: Q2 = -193.7836\nFN0: Q3 = -338.3841\nFN0: Q4 = -999\n");
 	fprintf(TREF,"TOOL CALL 0 Z S5\n");
 	fprintf(TREF,"FN18: SYSREAD Q20 = ID270 NR1 IDX1\n");
         fprintf(TREF,"FN18: SYSREAD Q23 = ID240 NR1 IDX1\n");
@@ -73,7 +73,7 @@ int CloseTRef() {
 	for (int i=0; i< ntool ; i++){
 		fprintf(TREF,"Q%d8 = Q%d8 -  Q5\n",i+1,i+1);
 		if ( toolrmeas[i]!=0) {
-			fprintf(TREF,"STOP\n; Set Heimer on xmax of tool measure\n");
+			fprintf(TREF,"STOP\n; Set Heimer on xmin - tool %d the %d in order.\n",toolnumber[i],i);
 			fprintf(TREF,"FN18: SYSREAD Q6 = ID240 NR1 IDX1\n");
 			fprintf(TREF,"Q%d6 = Q%d6 -  Q6\n",i+1,i+1);
 		}
