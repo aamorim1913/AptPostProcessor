@@ -206,7 +206,7 @@ int main(int argc, char **argv) {
 		cout <<"     - scale divide by 2 or 4: D2; D4" << endl;
 		cout <<"              invoke twice for combinations.." << endl;
 		cout <<"       M to correct xb yb zb of stock from the ../machine-code/%FN15SIM.A." << endl;
-		cout <<"	      part to original datum is unchanged." << endl;
+		cout <<"	      part to original datum. Path coordinates are unchanged." << endl;
 		cout <<"       clean to remove all file-F1X... and file-FiX-F2X... apt and stl files" << endl;
 		cout <<"       or give a single value of the machine coordinate when tool measure=0" << endl;
 		return -1;
