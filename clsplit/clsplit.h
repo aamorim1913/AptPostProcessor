@@ -18,6 +18,7 @@ int printVAR(FILE* OUT, const char* VAR, double x) {
 }
 
 int CleanFiles(char* filename) {
+
 	/* remove 0t0.SCAD */
 	sprintf(filename, DMUDIRSCAD, 0, 0);
 #if defined(_WIN64)
@@ -25,6 +26,15 @@ int CleanFiles(char* filename) {
 #else
 	unlink(filename);
 #endif
+
+	/* remove 0TRef.h */
+	sprintf(filename, FILETREF);
+#if defined(_WIN64)
+	_unlink(filename);
+#else
+	unlink(filename);
+#endif
+
 	for (int i = 11; i < 32; i++) {
 		sprintf(filename, DMUDIR, i);
 #if defined(_WIN64)
@@ -158,11 +168,36 @@ int ReadCoord(double* xd, double* yd, double* zd, double* Datum) {
 	sscanf(linecoor, "%lf %lf %lf", Datum, Datum+1, Datum+2);
 	while (ReadLine(linecoor, SETCOOR)) {
 		for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
-		if (sscanf(linecoor, "%lf %lf %lf", xd+ns, yd+ns, zd+ns) != 3) break;
+		if ((sscanf(linecoor, "%lf %lf %lf", xd+ns, yd+ns, zd+ns) != 3) ||
+			(xd[ns]==-999 && yd[ns] == -999 && zd[ns] == -999)) break;
 		ns++;
 	}
 	fclose(SETCOOR);
 	return ns;
+}
+
+int ReadToolCoord(int* it, double* DL, double* DR) {
+	int nt = 0;
+	double x,y,z;
+	FILE* SETCOOR;
+	char line[MAXLINE];
+
+	if ( (SETCOOR=fopen(SETCOORNAME, "r")) == NULL ) {
+		printf("cannot open SETCOOR file %s\n", SETCOORNAME);
+		return 1;
+	}
+	/* ignore lines describing coordinates */
+	while (ReadLine(line, SETCOOR)) {
+		for (int i = 0; i < strlen(line); i++) if (line[i] == ',') line[i] = '.';
+		if ((sscanf(line, "%lf %lf %lf", &x, &y, &z) != 3) || (x==-999 && y == -999 && z == -999)) break;
+	}
+	while (ReadLine(line, SETCOOR)) {
+		for (int i = 0; i < strlen(line); i++) if (line[i] == ',') line[i] = '.';
+		if (sscanf(line, "%d %lf %lf", it+nt, DL+nt, DR+nt) != 3) break;
+		nt++;
+	}
+	fclose(SETCOOR);
+	return nt;
 }
 
 int WriteSetup(int ns, double axis[3], double S[3]) {
@@ -184,13 +219,13 @@ int WriteSetup(int ns, double axis[3], double S[3]) {
 	return 0;
 }
 
-int ReadTool(struct TOOL *tl) {
+int ReadTool(struct TOOL *tl, int &fpause) {
 	FILE* FTOOL;
 	int ibuff;
-	double buff;
 	char sbuff[1024];
 	if ((FTOOL=fopen(TOOLFILE, "r")) == NULL) {
 		printf("cannot read Tool file TOOLFILE\n");
+		fpause=1;
 		return 1;
 	}
 	fgets(sbuff, 1024, FTOOL);
@@ -201,7 +236,47 @@ int ReadTool(struct TOOL *tl) {
 			if (sbuff[j] == '\0') break;
 			if (sbuff[j] == ',') sbuff[j] = '.';
 		}
-		sscanf(sbuff, "%d %lf %lf %lf %lf %d %d %d", &ibuff, &(tl[i].ltable), &(tl[i].rtable), &buff, &buff, &ibuff, &ibuff, &ibuff);
+		sscanf(sbuff, "%d", &ibuff); 
+		if (ibuff != i) {
+			printf("Error in TOOL.T for tool %d\n",i);
+			fpause=1;
+		}
+		strncpy(tl[i].name,sbuff+5,16); 
+		tl[i].name[16]='\0';
+		sscanf(sbuff+21, "%lf %lf %lf %lf %d %d %d", &(tl[i].l), &(tl[i].rtable), 
+			&(tl[i].DL), &(tl[i].DR), &(tl[i].T1), &(tl[i].T2), &(tl[i].T3));
+		if (tl[i].rtable != 0) {
+			printf("Tool %d in TOOL.T will be set with r=0\n",i);
+			fpause=1;
+		}
 	}
+	fclose(FTOOL);
+	return 0;
+}
+
+int WriteTool(struct TOOL *tl,int &fpause) {
+	FILE* FTOOL;
+	int ibuff;
+	double buff;
+	char sbuff[1024];
+	if ((FTOOL=fopen(TOOLFILE, "w")) == NULL) {
+		printf("cannot write Tool file TOOLFILE\n");
+		fpause=1;
+		return 1;
+	}
+	fprintf(FTOOL,"BEGIN TOOL    .T       MM\n");
+	fprintf(FTOOL,"T    NAME             L          R          DL      DR      TL RT  TIME1 TIME2 CUR.TIME DOC\n");
+	for (int i = 0; i < 100; i++) {
+		if (strncmp(tl[i].name,"                ",16)!=0) 
+			for (int j = 0; j < 16; j++)  if (tl[i].name[j] == ' ') tl[i].name[j]='_';
+		sprintf(sbuff, "%-4d %16s %-+10.3lf +0,000     %-+7.3lf %-+7.3lf        %d     %d     %d",
+			i,tl[i].name,tl[i].l,tl[i].DL,tl[i].DR,tl[i].T1,tl[i].T2,tl[i].T3);
+		for (int j = 0; j < 1024; j++) {
+			if (sbuff[j] == '\0') break;
+			if (sbuff[j] == '.') sbuff[j] = ',';
+		}
+		fprintf(FTOOL,"%s\n", sbuff);
+	}
+	fclose(FTOOL);
 	return 0;
 }

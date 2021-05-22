@@ -24,6 +24,7 @@ const double MachineLimits[6]={-500,0,-400,0,-400,0};
 
 #define DMUDIR "../machine-code/%d.h"
 #define DMUDIRSCAD "../machine-code/%dop%d.scad"
+#define FILETREF "../machine-code/0TREF.h"
 #define DMUDIRSETUP "../machine-code/%dsetup.h"
 #define SETCOORNAME "../machine-code/%FN15RUN.A"
 #define TOOLFILE "../machine-code/TOOL.T"
@@ -31,13 +32,18 @@ const double MachineLimits[6]={-500,0,-400,0,-400,0};
 using namespace std;
 
 struct TOOL{
-    double ltable,rtable,rcad,lcad;
+    char name[100];
+    double l,rtable,rcad,DL,DR;
+    int T1,T2,T3;
 };
 
 #include "clsplit.h"
 
 FILE* SCAD=NULL;
 #include "CreateSCAD.h"
+
+FILE* TREF=NULL;
+#include "CreateTRef.h"
 
 /*-----------------------------  the main program ------------------------------------------------------*/
 
@@ -55,17 +61,20 @@ int main(int argc, char **argv) {
 	struct TOOL tl[MAXTOOL];
 	int fpause;
 	double Datum[3], xd[32], yd[32], zd[32];
+	int it[32];
+	double DL[32], DR[32];
 	double Shift[3];
 	double CC[2], old_CC[2], coord[6], old_coord[3];
 	double axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
 	double prev_axis[3] = {0,0,0}, dist=0, length=0;
+	char last_comment[100];
 
 	double thetabtemp,thetactemp, thetab, thetac;
 	double theta1, theta2, CCR;
 	char com[12*COMSIZE];
 	int nA;
 	size_t counter;
-	int nsetup,ncoord,lnumber;
+	int nsetup,ncoord,ntools,lnumber;
 	char RL='0', used_RL='0',Sense='+';
 	int toolcall, spindl = 0; 
 	double feed = -1, rtool,ltool,temp;
@@ -94,8 +103,8 @@ int main(int argc, char **argv) {
 	}
 
 
-	/* read the tool table TOOL.h */
-	ReadTool(tl);
+	/* read the tool table TOOL.T */
+	ReadTool(tl,fpause);
 
 	/* -------------------- enter APT processing option ------------------------------------------------ */
 
@@ -108,8 +117,11 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 
-	/* read all coordinates in the  %FN15RUN.A file */
+	/* read all coordinates in the %FN15RUN.A file */
 	ncoord=ReadCoord(xd,yd,zd,Datum);
+
+	/* read all tool measurements from the %FN15RUN.A file */
+	ntools=ReadToolCoord(it,DL,DR);
 
 	/* iitialize MAIN LOOP OVER LINES of the .apt file */
 	nsetup = -1;
@@ -129,6 +141,7 @@ int main(int argc, char **argv) {
 		if (strstr(lineapt, "UNIT/MM") != 0) {  /* begining of program */
 			fprintf(OUT, "%d BEGIN PGM 11 MM\n",lnumber);++lnumber;
 			fprintf(OUT, "%d ;First setup of file %s\n", lnumber, argv[1]);++lnumber;
+			OpenTRef();
 
 		/* Stock Size comment converted to BLK */
 		} else if (strstr(lineapt,"INSERT/Stock Size") != 0) { 
@@ -156,7 +169,7 @@ int main(int argc, char **argv) {
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
 		} else if (strstr(lineapt, "CSYS/") != 0) { 
 
-			if ( op> 0) closeSCAD(toolcall, Stock, tl, Datum, thetab, thetac, Shift);
+			if ( op > 0) closeSCAD(toolcall, Stock, tl, Datum, thetab, thetac, Shift);
 
 			++op;
 			nA = ReadArray(A, lineapt + strlen("CSYS/"), ',');
@@ -170,7 +183,6 @@ int main(int argc, char **argv) {
 
 				/* this is the end of the previous setup */
 				++nsetup;
-
 				
 				/* set axis for RotateArray */
 				A[3]=axis[0];
@@ -223,7 +235,10 @@ int main(int argc, char **argv) {
 					/* open file for new setup */
 					/* if milling from bellow generate file with number 900+ */
 					if ( thetab > 90 ) sprintf(filename, DMUDIR, nsetup+900+11);
-					else sprintf(filename, DMUDIR, nsetup+11);
+					else {
+						sprintf(filename, DMUDIR, nsetup+11);
+						AddRef(nsetup);
+					}
 					OUT=fopen(filename, "w");
 					fprintf(OUT, "0 BEGIN PGM %d MM\n1 ;setup of file %s\n", nsetup+11,argv[1]);
 					lnumber = 2;
@@ -236,10 +251,10 @@ int main(int argc, char **argv) {
 			}
 			openSCAD(argv[1], nsetup, op, toolcall, Stock, tl, Shift, Datum, thetab, thetac);
 
-		/* general comment copy to comment */
-		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is translated to comments*/
-			fprintf(OUT, "%d ;%s\n", lnumber, lineapt);
-			++lnumber;
+		/* comment copy  */
+		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is copyed to comment (maybe tool name)*/
+			fprintf(OUT, "%d ;%s\n", lnumber, lineapt+strlen("INSERT/")); ++lnumber;
+			strcpy(last_comment,lineapt+strlen("INSERT/"));
 
 		/* properties of the tool */
 		} else if (strstr(lineapt, "CUTTER/") != 0) {
@@ -258,13 +273,23 @@ int main(int argc, char **argv) {
 		} else if (strstr(lineapt, "LOAD/TOOL,") != 0) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
 			if (toolcall != -1) {} /* close SCAD  for this tool */
 			toolcall = atoi(lineapt + strlen("LOAD/TOOL,"));
+			strcpy(tl[toolcall].name,last_comment);
 			updated |= NEW_TOOL;
-			tl[toolcall].rcad = rtool; tl[toolcall].lcad = ltool;
-			if (tl[toolcall].rtable != tl[toolcall].rcad) {
-				printf("Error: Tool %d - radius %f not matching tool table %f\n",
+			tl[toolcall].rcad = rtool; 
+			if ((tl[toolcall].rtable != 0) && (tl[toolcall].rtable != tl[toolcall].rcad)) {
+				printf("Error: Tool %d - radius %f not 0 and not matching tool table %f\n",
 						toolcall, tl[toolcall].rcad,tl[toolcall].rtable);
 				fpause=1;
 			}
+			temp =  tl[toolcall].l + tl[toolcall].DL;
+			if ( temp == 0) {
+				printf("Need to measure lenght of Tool %d\n", toolcall);
+				fpause=1;
+			}
+			tl[toolcall].l = ltool ;
+			tl[toolcall].DL = temp - ltool ;
+			if (abs(tl[toolcall].DL)>99) tl[toolcall].DL=0;
+
 
 		/* used for authomatic feeder */
 		} else if (strstr(lineapt, "SELECT/TOOL,") != 0) { /* SELECT/TOOL defines the next tool to be used - carrousel */
@@ -380,10 +405,11 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, spindl); ++lnumber;
+				AddTool(toolcall,spindl,spinsense,tl);
 				if (old_coord[2] != -9999.0) { fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]); ++lnumber; }
 				updated |= NEW_FLOOD;
-				if (spinsense==1) fprintf(OUT, "%d M03\n",lnumber); 
-				else fprintf(OUT, "%d M04\n",lnumber); ++lnumber;
+				if (spinsense==1) fprintf(OUT, "%d M3\n",lnumber); 
+				else fprintf(OUT, "%d M4\n",lnumber); ++lnumber;
 				updated &= ~NEW_TOOL;
 			}
 			if (updated & CIRCLE_ON) {
@@ -422,7 +448,8 @@ int main(int argc, char **argv) {
 				if (updated & NEW_X) printVAR(OUT,"X",coord[0]); 
 				if (updated & NEW_Y) printVAR(OUT,"Y",coord[1]);
 				if (updated & NEW_Z) printVAR(OUT,"Z",coord[2]);
-			//VERY CONFUSING ON THE APT FILE DO NOT USE! if (used_RL != RL ) fprintf(OUT, " R%c",RL);
+				/* use only with tool R=0 to correct DR */
+				if (used_RL != RL ) fprintf(OUT, " R%c",RL);
 				if (feed == -1) fprintf(OUT, " FMAX");
 				else if ( updated & NEW_FEED ) fprintf(OUT, " F%.0f", feed);
 				if (updated & NEW_FLOOD) {
@@ -514,6 +541,10 @@ int main(int argc, char **argv) {
 		}
 	}
 	printf("Found %d setups. Output in ../machine-code/ directory.\n", nsetup+1);
+
+	/* write the tool table TOOL.h */
+	WriteTool(tl,fpause);
+	CloseTRef();
 
 	fclose(APT);
 	fclose(OUT);

@@ -47,7 +47,7 @@ void createBoard(int w, int h)
     cv::Mat boardImage;
     board->draw(cv::Size(7680,4320), boardImage, 10, 1);
     //! [createBoard]
-    cv::imwrite("BoardImage.jpg", boardImage);
+    cv::imwrite("BoardImage.bmp", boardImage);
 }
 
 void detectCharucoBoardWithoutCalibration(int camid, float measure, int niteration, int w, int h)
@@ -227,7 +227,7 @@ int main(int argc, char* argv[]) {
     switch (choose) {
     case 1:
         createBoard(w,h);
-        std::cout << "An image named BoardImg.jpg is generated in folder containing this file" << std::endl;
+        std::cout << "An image named BoardImg.bmp is generated in folder containing this file" << std::endl;
         break;
     case 2:
 	measure = parser.get<float>("m");
