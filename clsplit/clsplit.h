@@ -256,8 +256,6 @@ int ReadTool(struct TOOL *tl, int &fpause) {
 
 int WriteTool(struct TOOL *tl,int &fpause) {
 	FILE* FTOOL;
-	int ibuff;
-	double buff;
 	char sbuff[1024];
 	if ((FTOOL=fopen(TOOLFILE, "w")) == NULL) {
 		printf("cannot write Tool file TOOLFILE\n");
