@@ -154,8 +154,8 @@ int CleanFiles(char *file){
 
 	strcpy(name,file);
 	name[strlen(name)-4]='\0';
-	sprintf(fn,"%s-val.apt",name); rm(fn);
-	sprintf(fn,"%s-val.STL",name); rm(fn);
+	sprintf(fn,"%s-M.apt",name); rm(fn);
+	sprintf(fn,"%s-M.STL",name); rm(fn);
 
 	for (int i=1; i<=3; i++) {
 		sprintf(fn,"%s-F%dX.STL",name,i); rm(fn);
@@ -205,7 +205,7 @@ int main(int argc, char **argv) {
 		cout <<"     - rotate along XX; F1X 90 deg; F2X 180 deg; F3X -90 deg" << endl;
 		cout <<"     - scale divide by 2 or 4: D2; D4" << endl;
 		cout <<"              invoke twice for combinations.." << endl;
-		cout <<"       val to correct xb yb zb of stock from the ../machine-code/%FN15SIM.A." << endl;
+		cout <<"       M to correct xb yb zb of stock from the ../machine-code/%FN15SIM.A." << endl;
 		cout <<"	      part to original datum is unchanged." << endl;
 		cout <<"       clean to remove all file-F1X... and file-FiX-F2X... apt and stl files" << endl;
 		cout <<"       or give a single value of the machine coordinate when tool measure=0" << endl;
@@ -260,7 +260,7 @@ int main(int argc, char **argv) {
                                 counter++;
                         }
                         sscanf(lineapt+strlen("INSERT/Stock Size"),"%lf %lf %lf",&xb,&yb,&zb);
-			if ( strcmp(argv[2],"val") == 0 ) {
+			if ( strcmp(argv[2],"M") == 0 ) {
 				double zbmea;
 				ReadCoord(&xb, &yb, &zbmea);
 				T[0]=1; T[1]=0; T[2]=0; T[3]=0;
@@ -333,7 +333,7 @@ int main(int argc, char **argv) {
 				return -1;
 			}
 			RotateSTL(filein,fileout,T);
-			if ( strcmp(argv[2],"val") == 0 ) {
+			if ( strcmp(argv[2],"M") == 0 ) {
 				int error=CheckSTL(fileout,xb,yb,zb);
 				if (error==-1 ){ 
 					printf("Error: STL does not fit 0 to xb in Stock\n"); 

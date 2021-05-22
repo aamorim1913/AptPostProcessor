@@ -5,9 +5,6 @@
 
 #include <iostream>
 
-// TODO: Reference additional headers your program requires here.
-
-
 int ReadArray (double *x, char* s, char del) {
         int i=0;
         char* found;

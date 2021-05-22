@@ -32,7 +32,7 @@ const double MachineLimits[6]={-500,0,-400,0,-400,0};
 using namespace std;
 
 struct TOOL{
-    char name[17];
+    char name[100];
     double l,rtable,rcad,DL,DR;
     int T1,T2,T3;
 };
@@ -67,7 +67,7 @@ int main(int argc, char **argv) {
 	double CC[2], old_CC[2], coord[6], old_coord[3];
 	double axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
 	double prev_axis[3] = {0,0,0}, dist=0, length=0;
-	char last_comment[19];
+	char last_comment[100];
 
 	double thetabtemp,thetactemp, thetab, thetac;
 	double theta1, theta2, CCR;
@@ -79,7 +79,6 @@ int main(int argc, char **argv) {
 	int toolcall, spindl = 0; 
 	double feed = -1, rtool,ltool,temp;
 
-	last_comment[18]='\0';
 	int spinsense=1;
 	int op=0;
 	fpause = 0;
@@ -142,7 +141,7 @@ int main(int argc, char **argv) {
 		if (strstr(lineapt, "UNIT/MM") != 0) {  /* begining of program */
 			fprintf(OUT, "%d BEGIN PGM 11 MM\n",lnumber);++lnumber;
 			fprintf(OUT, "%d ;First setup of file %s\n", lnumber, argv[1]);++lnumber;
-			openTRef();
+			OpenTRef();
 
 		/* Stock Size comment converted to BLK */
 		} else if (strstr(lineapt,"INSERT/Stock Size") != 0) { 
@@ -255,7 +254,7 @@ int main(int argc, char **argv) {
 		/* comment copy  */
 		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is copyed to comment (maybe tool name)*/
 			fprintf(OUT, "%d ;%s\n", lnumber, lineapt+strlen("INSERT/")); ++lnumber;
-			strncpy(last_comment,lineapt+strlen("INSERT/"),18);
+			strcpy(last_comment,lineapt+strlen("INSERT/"));
 
 		/* properties of the tool */
 		} else if (strstr(lineapt, "CUTTER/") != 0) {
@@ -274,7 +273,7 @@ int main(int argc, char **argv) {
 		} else if (strstr(lineapt, "LOAD/TOOL,") != 0) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
 			if (toolcall != -1) {} /* close SCAD  for this tool */
 			toolcall = atoi(lineapt + strlen("LOAD/TOOL,"));
-			strncpy(tl[toolcall].name,last_comment,16);
+			strcpy(tl[toolcall].name,last_comment);
 			updated |= NEW_TOOL;
 			tl[toolcall].rcad = rtool; 
 			if ((tl[toolcall].rtable != 0) && (tl[toolcall].rtable != tl[toolcall].rcad)) {
@@ -406,11 +405,11 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, spindl); ++lnumber;
-				AddTool(toolcall,spindl);
+				AddTool(toolcall,spindl,spinsense,tl);
 				if (old_coord[2] != -9999.0) { fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]); ++lnumber; }
 				updated |= NEW_FLOOD;
-				if (spinsense==1) fprintf(OUT, "%d M03\n",lnumber); 
-				else fprintf(OUT, "%d M04\n",lnumber); ++lnumber;
+				if (spinsense==1) fprintf(OUT, "%d M3\n",lnumber); 
+				else fprintf(OUT, "%d M4\n",lnumber); ++lnumber;
 				updated &= ~NEW_TOOL;
 			}
 			if (updated & CIRCLE_ON) {
@@ -449,7 +448,8 @@ int main(int argc, char **argv) {
 				if (updated & NEW_X) printVAR(OUT,"X",coord[0]); 
 				if (updated & NEW_Y) printVAR(OUT,"Y",coord[1]);
 				if (updated & NEW_Z) printVAR(OUT,"Z",coord[2]);
-			//VERY CONFUSING ON THE APT FILE DO NOT USE! if (used_RL != RL ) fprintf(OUT, " R%c",RL);
+				/* use only with tool R=0 to correct DR */
+				if (used_RL != RL ) fprintf(OUT, " R%c",RL);
 				if (feed == -1) fprintf(OUT, " FMAX");
 				else if ( updated & NEW_FEED ) fprintf(OUT, " F%.0f", feed);
 				if (updated & NEW_FLOOD) {
@@ -544,7 +544,7 @@ int main(int argc, char **argv) {
 
 	/* write the tool table TOOL.h */
 	WriteTool(tl,fpause);
-	CloseTRef(tl);
+	CloseTRef();
 
 	fclose(APT);
 	fclose(OUT);
