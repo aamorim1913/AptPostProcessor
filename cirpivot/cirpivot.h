@@ -35,7 +35,8 @@ int ReadCoord(char *filename, double* xd, double* yd, double* zd, double *Datum)
 	sscanf(linecoor, "%lf %lf %lf", Datum, Datum+1, Datum+2);
 	while (ReadLine(linecoor, SETCOOR)) {
 		for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
-		if (sscanf(linecoor, "%lf %lf %lf", xd+ns, yd+ns, zd+ns) != 3) break;
+		if ((sscanf(linecoor, "%lf %lf %lf", xd+ns, yd+ns, zd+ns) != 3) ||
+                        (xd[ns]==-999 && yd[ns] == -999 && zd[ns] == -999)) break;
 		ns++;
 	}
 	fclose(SETCOOR);
