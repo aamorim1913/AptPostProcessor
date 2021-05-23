@@ -1,7 +1,7 @@
  // clsplit.cpp
 // Antonio Amorim CENTRA-FCUL 2021
 
-// Pivot coordinates only for the machine limits CreateSCAD.h  */
+// Pivot coordinates only for the machine limits CreateSCAD.h and ref file CreateTRef.h  */
 const double Pivot[3]={-200.66, -193.7836, -338.3841};
 /* machine limits in machine coordinates xmin, xmax, ymin, ymax, zmin, zmax */
 const double MachineLimits[6]={-500,0,-400,0,-400,0};
@@ -25,6 +25,7 @@ const double MachineLimits[6]={-500,0,-400,0,-400,0};
 #define DMUDIR "../machine-code/%d.h"
 #define DMUDIRSCAD "../machine-code/%dop%d.scad"
 #define FILETREF "../machine-code/0TREF.h"
+#define FILEREF "../machine-code/0REF.h"
 #define DMUDIRSETUP "../machine-code/%dsetup.h"
 #define SETCOORNAME "../machine-code/%FN15RUN.A"
 #define TOOLFILE "../machine-code/TOOL.T"
@@ -61,8 +62,6 @@ int main(int argc, char **argv) {
 	struct TOOL tl[MAXTOOL];
 	int fpause;
 	double Datum[3], xd[32], yd[32], zd[32];
-	int it[32];
-	double DL[32], DR[32];
 	double Shift[3];
 	double CC[2], old_CC[2], coord[6], old_coord[3];
 	double axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
@@ -121,7 +120,7 @@ int main(int argc, char **argv) {
 	ncoord=ReadCoord(xd,yd,zd,Datum);
 
 	/* read all tool measurements from the %FN15RUN.A file */
-	ntools=ReadToolCoord(it,DL,DR);
+	ntools=ReadToolCoord(tl,fpause);
 
 	/* iitialize MAIN LOOP OVER LINES of the .apt file */
 	nsetup = -1;
@@ -288,7 +287,11 @@ int main(int argc, char **argv) {
 			}
 			tl[toolcall].l = ltool ;
 			tl[toolcall].DL = temp - ltool ;
-			if (abs(tl[toolcall].DL)>99) tl[toolcall].DL=0;
+			if (abs(tl[toolcall].DL)>99.0) {
+				printf("Tool %d DL(%.3lf) > 99 set to 0\n", toolcall,tl[toolcall].DL);
+				tl[toolcall].DL=0;
+				fpause=1;
+			}
 
 
 		/* used for authomatic feeder */

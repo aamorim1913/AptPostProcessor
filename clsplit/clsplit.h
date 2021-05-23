@@ -176,9 +176,9 @@ int ReadCoord(double* xd, double* yd, double* zd, double* Datum) {
 	return ns;
 }
 
-int ReadToolCoord(int* it, double* DL, double* DR) {
-	int nt = 0;
-	double x,y,z;
+int ReadToolCoord(struct TOOL *tl,  int &fpause) {
+	int tool;
+	double x, y, z, L, DR;
 	FILE* SETCOOR;
 	char line[MAXLINE];
 
@@ -193,11 +193,18 @@ int ReadToolCoord(int* it, double* DL, double* DR) {
 	}
 	while (ReadLine(line, SETCOOR)) {
 		for (int i = 0; i < strlen(line); i++) if (line[i] == ',') line[i] = '.';
-		if (sscanf(line, "%d %lf %lf", it+nt, DL+nt, DR+nt) != 3) break;
-		nt++;
+		if (sscanf(line, "%d %lf %lf", &tool, &L, &DR) != 3) break;
+		if (tool>99) {
+			printf("Invalid tool number %d in tref file\n",tool);
+			fpause=1;
+		} else {
+			tl[tool].DR=DR;
+			tl[tool].rtable=0;
+			tl[tool].DL=L-tl[tool].l;
+		}
 	}
 	fclose(SETCOOR);
-	return nt;
+	return 0;
 }
 
 int WriteSetup(int ns, double axis[3], double S[3]) {
