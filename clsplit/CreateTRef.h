@@ -33,7 +33,7 @@ int AddTool(int tool, int S, int spinsense, struct TOOL *tl){
 	fprintf(TREF,"FN0: Q%d7 = %d\n",ntool+1,tool);
 	fprintf(TREF,"L Z-10 FMAX M91\n;%s\n",tl[tool].name);
 	fprintf(TREF,"TOOL CALL %d Z S%d\n",tool,S);
-	fprintf(TREF,"STOP\n; Set tool on zero of tool sensor\n");
+	fprintf(TREF,"STOP\n;tool on zero of sensor\n");
 	fprintf(TREF,"FN18: SYSREAD Q%d8 = ID240 NR1 IDX3\n",ntool+1);
 	/* if drill or tap do not measure R */
 	if ((strstr(tl[tool].name,"DRILL")!=0) || (strstr(tl[tool].name,"FACE")!=0)) {
@@ -41,7 +41,7 @@ int AddTool(int tool, int S, int spinsense, struct TOOL *tl){
 		fprintf(TREF,"FN0: Q%d6 = 0\n",ntool+1);
 	} else  {
 		toolrmeas[ntool]=1;
-		fprintf(TREF,"STOP\n; Set tool on xmin side Y=+1cm behind tool measure\n");
+		fprintf(TREF,"STOP\n;tool on xmin, Y=+1cm behind tool measure\n");
 		fprintf(TREF,"FN18: SYSREAD Q%d6 = ID240 NR1 IDX1\n",ntool+1);
 		fprintf(TREF,"Q%d6 = Q%d6 + %lf\n",ntool+1,ntool+1,tl[tool].rcad);
 		if (spinsense==1) fprintf(TREF,"M3\n");
@@ -66,6 +66,7 @@ int CloseTRef() {
 
 	for (int j=0; j<2 ; j++) {
 		fprintf(fls[j],"FN0: Q1 = %.3lf\nFN0: Q2 = %.3lf\nFN0: Q3 = %.3lf\nFN0: Q4 = -999\n",Pivot[0],Pivot[1],Pivot[2]);
+		fprintf(fls[j],"L Z-10 FMAX M91\n");
 		fprintf(fls[j],"TOOL CALL 0 Z S5\n"); 
 		fprintf(fls[j],"FN18: SYSREAD Q20 = ID270 NR1 IDX1\n"); 
         	fprintf(fls[j],"FN18: SYSREAD Q23 = ID240 NR1 IDX1\n");
@@ -78,13 +79,13 @@ int CloseTRef() {
 		fprintf(fls[j],"Q9 = Q25 - Q22 - Q3\n"); 
 	}
 	/* measure tool sensor here */
-	fprintf(TREF,"STOP\n; Set Heimer on top tool sensor\n"); 
+	fprintf(TREF,"STOP\n;Heimer on top tool sensor\n"); 
 	fprintf(TREF,"FN18: SYSREAD Q5 = ID240 NR1 IDX3\n");
 	/* correct tool lenght */
 	for (int i=0; i< ntool ; i++){
 		fprintf(TREF,"Q%d8 = Q%d8 -  Q5\n",i+1,i+1);
 		if ( toolrmeas[i]!=0) {
-			fprintf(TREF,"STOP\n; Set Heimer on xmin - tool %d the %d in order.\n",toolnumber[i],i);
+			fprintf(TREF,"STOP\n;Heimer on xmin - tool %d the %d in order.\n",toolnumber[i],i);
 			fprintf(TREF,"FN18: SYSREAD Q6 = ID240 NR1 IDX1\n");
 			fprintf(TREF,"Q%d6 = Q%d6 -  Q6\n",i+1,i+1);
 		}
@@ -92,17 +93,17 @@ int CloseTRef() {
 	fprintf(TREF,"FN0: Q5 = 1.995\n"); fprintf(REF,"FN0: Q5 = 1.995\n");
 	for (int j=0; j<2 ; j++) {
 	   for (int i=0; i< nref ; i++){
-		fprintf(fls[j],"STOP\n; Set Heimer on top of ball for setup %d\n",setups[i]+1);
+		fprintf(fls[j],"STOP\n;Heimer on top of ball for setup %d\n",setups[i]+1);
 		fprintf(fls[j],"FN18: SYSREAD Q%d2 = ID270 NR1 IDX3\nFN18: SYSREAD Q%d5 = ID240 NR1 IDX3\n",nref,nref);
 		fprintf(fls[j],"Q%d2 = Q%d2 - Q5\nQ%d5 = Q%d5 - Q5\n",nref,nref,nref,nref);
 		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+Q%d2\n",nref);
 		fprintf(fls[j],"L IZ+2 R0 F200\nL IX-Q5 R0 F200\nL IX-2 R0 F200\nL IZ-Q5 R0 F200\nL IZ-2 R0 F200\nL IX+2 R0 F25\n");
-		fprintf(fls[j],"STOP\n; Set Heimer at left of ball for setup %d\n",setups[i]+1);
+		fprintf(fls[j],"STOP\n;Heimer at left of ball for setup %d\n",setups[i]+1);
 		fprintf(fls[j],"FN18: SYSREAD Q%d0 = ID270 NR1 IDX1\nFN18: SYSREAD Q%d3 = ID240 NR1 IDX1\n",nref,nref);
 		fprintf(fls[j],"Q%d0 = Q%d0 + Q5\nQ%d3 = Q%d3 + Q5\n",nref,nref,nref,nref);
 		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1 X+Q%d0\nCYCL DEF 7.2 Y+0\nCYCL DEF 7.3 Z+Q%d2\n",nref,nref);
 		fprintf(fls[j],"L IX-2 R0 F200\nL IY+Q5 R0 F200\nL IY+2 R0 F200\nL IX+Q5 R0 F200\nL IX+2 R0 F200\nL IY-2 R0 F25\n");
-		fprintf(fls[j],"STOP\n; Set Heimer from you to the ball for setup %d\n",setups[i]+1);
+		fprintf(fls[j],"STOP\n;Heimer from you to the ball for setup %d\n",setups[i]+1);
 		fprintf(fls[j],"FN18: SYSREAD Q%d1 = ID270 NR1 IDX2\nFN18: SYSREAD Q%d4 = ID240 NR1 IDX2\n",nref,nref);
 		fprintf(fls[j],"Q%d1 = Q%d1 + Q5\nQ%d4 = Q%d4 + Q5\n",nref,nref,nref,nref);
 		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
