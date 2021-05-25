@@ -68,15 +68,15 @@ int CloseTRef() {
 		fprintf(fls[j],"FN0: Q1 = %.3lf\nFN0: Q2 = %.3lf\nFN0: Q3 = %.3lf\nFN0: Q4 = -999\n",Pivot[0],Pivot[1],Pivot[2]);
 		fprintf(fls[j],"L Z-10 FMAX M91\n");
 		fprintf(fls[j],"TOOL CALL 0 Z S5\n"); 
-		fprintf(fls[j],"FN18: SYSREAD Q20 = ID270 NR1 IDX1\n"); 
-        	fprintf(fls[j],"FN18: SYSREAD Q23 = ID240 NR1 IDX1\n");
-        	fprintf(fls[j],"FN18: SYSREAD Q21 = ID270 NR1 IDX2\n"); 
-        	fprintf(fls[j],"FN18: SYSREAD Q24 = ID240 NR1 IDX2\n"); 
-        	fprintf(fls[j],"FN18: SYSREAD Q22 = ID270 NR1 IDX3\n");
-        	fprintf(fls[j],"FN18: SYSREAD Q25 = ID240 NR1 IDX3\n");
-		fprintf(fls[j],"Q7 = Q23 - Q20 - Q1\n"); 
-		fprintf(fls[j],"Q8 = Q24 - Q21 - Q2\n"); 
-		fprintf(fls[j],"Q9 = Q25 - Q22 - Q3\n"); 
+		fprintf(fls[j],"FN18: SYSREAD Q10 = ID270 NR1 IDX1\n"); 
+        	fprintf(fls[j],"FN18: SYSREAD Q13 = ID240 NR1 IDX1\n");
+        	fprintf(fls[j],"FN18: SYSREAD Q11 = ID270 NR1 IDX2\n"); 
+        	fprintf(fls[j],"FN18: SYSREAD Q14 = ID240 NR1 IDX2\n"); 
+        	fprintf(fls[j],"FN18: SYSREAD Q12 = ID270 NR1 IDX3\n");
+        	fprintf(fls[j],"FN18: SYSREAD Q15 = ID240 NR1 IDX3\n");
+		fprintf(fls[j],"Q7 = Q13 - Q10 - Q1\n"); 
+		fprintf(fls[j],"Q8 = Q14 - Q11 - Q2\n"); 
+		fprintf(fls[j],"Q9 = Q15 - Q12 - Q3\n"); 
 	}
 	/* measure tool sensor here */
 	fprintf(TREF,"STOP\n;Heimer on top tool sensor\n"); 
