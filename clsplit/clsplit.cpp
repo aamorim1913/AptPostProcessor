@@ -36,6 +36,7 @@ struct TOOL{
     char name[100];
     double l,rtable,rcad,DL,DR;
     int T1,T2,T3;
+    int spindl,spinsense;
 };
 
 #include "clsplit.h"
@@ -75,10 +76,9 @@ int main(int argc, char **argv) {
 	size_t counter;
 	int nsetup,ncoord,ntools,lnumber;
 	char RL='0', used_RL='0',Sense='+';
-	int toolcall, spindl = 0; 
+	int toolcall; 
 	double feed = -1, rtool,ltool,temp;
 
-	int spinsense=1;
 	int op=0;
 	fpause = 0;
 	if (argc < 2) {
@@ -159,7 +159,7 @@ int main(int argc, char **argv) {
 			fprintf(OUT, "%d STOP\n",lnumber);  ++lnumber;
 			fprintf(OUT, "%d ;%s\n", lnumber, lineapt + strlen("INSERT/STOP"));  ++lnumber;
 			updated |= NEW_FLOOD;
-			if (spinsense==1) fprintf(OUT, "%d M03\n",lnumber); 
+			if (tl[toolcall].spinsense==1) fprintf(OUT, "%d M03\n",lnumber); 
 			else fprintf(OUT, "%d M04\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L ",lnumber); 
 			printVAR(OUT,"Z", old_coord[2]);
@@ -263,9 +263,9 @@ int main(int argc, char **argv) {
 		/* spindle speed and spinsence */
 		} else if (strstr(lineapt, "SPINDL/") != 0) { /* SPINDLE prints the TOOL statment if tool number is defined */
 			nA=ReadArrayCom(com, lineapt + strlen("SPINDL/"), ',');
-			spindl = atoi(com);
-			if (strstr(com+2*COMSIZE, "CCLW")) spinsense = -1; 
-			else  spinsense = 1;
+			tl[toolcall].spindl = atoi(com);
+			if (strstr(com+2*COMSIZE, "CCLW")) tl[toolcall].spinsense = -1; 
+			else  tl[toolcall].spinsense = 1;
 			updated |= NEW_SPINDLE;
 
 		/* load the tool */
@@ -407,11 +407,11 @@ int main(int argc, char **argv) {
 			if ((updated & NEW_SPINDLE) && (updated & NEW_TOOL)) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, spindl); ++lnumber;
-				AddTool(toolcall,spindl,spinsense,tl);
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, tl[toolcall].spindl); ++lnumber;
+				AddTool(toolcall,tl);
 				if (old_coord[2] != -9999.0) { fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]); ++lnumber; }
 				updated |= NEW_FLOOD;
-				if (spinsense==1) fprintf(OUT, "%d M3\n",lnumber); 
+				if (tl[toolcall].spinsense==1) fprintf(OUT, "%d M3\n",lnumber); 
 				else fprintf(OUT, "%d M4\n",lnumber); ++lnumber;
 				updated &= ~NEW_TOOL;
 			}
@@ -547,7 +547,7 @@ int main(int argc, char **argv) {
 
 	/* write the tool table TOOL.h */
 	WriteTool(tl,fpause);
-	CloseTRef();
+	CloseTRef(tl);
 
 	fclose(APT);
 	fclose(OUT);

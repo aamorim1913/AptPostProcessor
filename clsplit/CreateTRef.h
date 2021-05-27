@@ -1,6 +1,6 @@
 int nref;
 int ntool;
-int toolnumber[100];
+int tnum[100];
 int toolrmeas[100];
 int setups[100];
 
@@ -25,37 +25,23 @@ int AddRef(int nsetup){
 	return 0;
 }
 
-int AddTool(int tool, int S, int spinsense, struct TOOL *tl){
+int AddTool(int tool,  struct TOOL *tl){
 
 	/* test if already added */
-	for (int i=0; i<ntool; i++) if (toolnumber[i] == tool) return 0;
-	toolnumber[ntool]=tool;
-	fprintf(TREF,"FN0: Q%d7 = %d\n",ntool+1,tool);
-	fprintf(TREF,"L Z-10 FMAX M91\n;%s\n",tl[tool].name);
-	fprintf(TREF,"TOOL CALL %d Z S%d\n",tool,S);
-	fprintf(TREF,"STOP\n;tool on zero of sensor\n");
-	fprintf(TREF,"FN18: SYSREAD Q%d8 = ID240 NR1 IDX3\n",ntool+1);
+	for (int i=0; i<ntool; i++) if (tnum[i] == tool) return 0;
+	tnum[ntool]=tool;
 	/* if drill or tap do not measure R */
 	if ((strstr(tl[tool].name,"DRILL")!=0) || (strstr(tl[tool].name,"FACE")!=0)) {
 		toolrmeas[ntool]=0;
-		fprintf(TREF,"FN0: Q%d6 = 0\n",ntool+1);
 	} else  {
 		toolrmeas[ntool]=1;
-		fprintf(TREF,"STOP\n;tool on xmin, Y=+1cm behind tool measure\n");
-		fprintf(TREF,"FN18: SYSREAD Q%d6 = ID240 NR1 IDX1\n",ntool+1);
-		fprintf(TREF,"Q4 = Q%d6 + %lf\n",ntool+1,tl[tool].rcad);
-		fprintf(TREF,"Q%d6 = Q4\n",ntool+1);
-		if (spinsense==1) fprintf(TREF,"M3\n");
-		else fprintf(TREF,"M4\n");
-		fprintf(TREF,"L IY-20 F250\n");
-		fprintf(TREF,"M5\n");
 	}
 	++ntool;	
 
 	return 0;
 }
 
-int CloseTRef() {
+int CloseTRef(struct TOOL *tl) {
 	FILE *REF;
         if ((REF = fopen(FILEREF, "w")) == NULL) {
                 printf("cannot write FILEREF file %s\n", FILEREF);
@@ -64,6 +50,26 @@ int CloseTRef() {
 	FILE *fls[]= { TREF , REF };
 
         fprintf(REF,"BEGIN PGM 0REF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
+
+	for (int i=0 ; i<ntool; i++) {
+		fprintf(TREF,"FN0: Q%d7 = %d\n",i+1,tnum[i]);
+		fprintf(TREF,"L Z-10 FMAX M91\n;%s\n",tl[tnum[i]].name);
+		fprintf(TREF,"TOOL CALL %d Z S%d\n",tnum[i],tl[tnum[i]].spindl);
+		fprintf(TREF,"STOP\n;tool on zero of sensor\n");
+		fprintf(TREF,"FN18: SYSREAD Q%d8 = ID240 NR1 IDX3\n",i+1);
+		if (toolrmeas[i]==0) fprintf(TREF,"FN0: Q%d6 = 0\n",i+1);
+		else  {
+			fprintf(TREF,"STOP\n;tool on xmin, Y=+1cm on top tool measure\n");
+			fprintf(TREF,"FN18: SYSREAD Q%d6 = ID240 NR1 IDX1\n",i+1);
+			fprintf(TREF,"Q4 = Q%d6 + %lf\n",i+1,tl[tnum[i]].rcad);
+			fprintf(TREF,"Q%d6 = Q4\n",i+1);
+			if (tl[tnum[i]].spinsense==1) fprintf(TREF,"M3\n");
+			else fprintf(TREF,"M4\n");
+			fprintf(TREF,"L IZ%+d F50\n",-3*(ntool-i));
+			fprintf(TREF,"L IY-20 F250\n");
+			fprintf(TREF,"M5\n");
+		}
+	}
 
 	for (int j=0; j<2 ; j++) {
 		fprintf(fls[j],"FN0: Q1 = %.3lf\nFN0: Q2 = %.3lf\nFN0: Q3 = %.3lf\n",Pivot[0],Pivot[1],Pivot[2]);
@@ -87,7 +93,7 @@ int CloseTRef() {
 		fprintf(TREF,"Q4 = Q%d8 -  Q5\n",i+1);
 		fprintf(TREF,"Q%d8 = Q4\n",i+1);
 		if ( toolrmeas[i]!=0) {
-			fprintf(TREF,"STOP\n;Heimer on xmin - tool %d the %d in order.\n",toolnumber[i],i);
+			fprintf(TREF,"STOP\n;Heimer on xmin - tool %d the %d in order.\n",tnum[i],i);
 			fprintf(TREF,"FN18: SYSREAD Q6 = ID240 NR1 IDX1\n");
 			fprintf(TREF,"Q4 = Q%d6 -  Q6\n",i+1);
 			fprintf(TREF,"Q%d6 = Q4\n",i+1);
