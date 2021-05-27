@@ -43,6 +43,7 @@ int AddTool(int tool,  struct TOOL *tl){
 
 int CloseTRef(struct TOOL *tl) {
 	FILE *REF;
+	int first;
         if ((REF = fopen(FILEREF, "w")) == NULL) {
                 printf("cannot write FILEREF file %s\n", FILEREF);
                 return 1;
@@ -50,7 +51,7 @@ int CloseTRef(struct TOOL *tl) {
 	FILE *fls[]= { TREF , REF };
 
         fprintf(REF,"BEGIN PGM 0REF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
-
+	first=1;
 	for (int i=0 ; i<ntool; i++) {
 		fprintf(TREF,"FN0: Q%d7 = %d\n",i+1,tnum[i]);
 		fprintf(TREF,"L Z-10 FMAX M91\n;%s\n",tl[tnum[i]].name);
@@ -59,12 +60,25 @@ int CloseTRef(struct TOOL *tl) {
 		fprintf(TREF,"FN18: SYSREAD Q%d8 = ID240 NR1 IDX3\n",i+1);
 		if (toolrmeas[i]==0) fprintf(TREF,"FN0: Q%d6 = 0\n",i+1);
 		else  {
-			fprintf(TREF,"STOP\n;tool on xmin, Y=+1cm on top tool measure\n");
+			if (first==1) {
+				fprintf(TREF,"STOP\n;tool on xmin, Y=+1cm on top tool measure\n");
+				fprintf(TREF,"FN18: SYSREAD Q7 = ID240 NR1 IDX2\n");
+				fprintf(TREF,"FN18: SYSREAD Q8 = ID240 NR1 IDX3\n");
+				fprintf(TREF,"Q4 = Q8 - Q%d8\n",i+1);
+				fprintf(TREF,"Q8 = Q4\n");
+			}
+			if (tl[tnum[i]].spinsense==1) fprintf(TREF,"M3\n");
+			else fprintf(TREF,"M4\n");
+			if (first==0) { 
+				fprintf(TREF,"Q4 = Q%d6 - %lf + 0.5\n",i,tl[tnum[i]].rcad);
+				fprintf(TREF,"L IZ+50 FMAX\nL X+Q4 Y+Q7 FMAX M91\n");
+				fprintf(TREF,"Q4 = Q8 - 50\n");
+				fprintf(TREF,"L IZ+Q4 F50\n");
+			}
+			first=0;
 			fprintf(TREF,"FN18: SYSREAD Q%d6 = ID240 NR1 IDX1\n",i+1);
 			fprintf(TREF,"Q4 = Q%d6 + %lf\n",i+1,tl[tnum[i]].rcad);
 			fprintf(TREF,"Q%d6 = Q4\n",i+1);
-			if (tl[tnum[i]].spinsense==1) fprintf(TREF,"M3\n");
-			else fprintf(TREF,"M4\n");
 			fprintf(TREF,"L IZ%+d F50\n",-3*(ntool-i));
 			fprintf(TREF,"L IY-20 F250\n");
 			fprintf(TREF,"M5\n");
@@ -118,12 +132,12 @@ int CloseTRef(struct TOOL *tl) {
 		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
 	   }
 	}
-	fprintf(TREF,"FN0: Q4 = -999\n"); fprintf(REF,"FN0: Q4 = -999\n");
 	fprintf(TREF,"FN15: PRINT Q7/Q8/Q9\n"); fprintf(REF,"FN15: PRINT Q7/Q8/Q9\n");
 	for (int i=0; i<nref; i++) {
 		fprintf(TREF,"FN15: PRINT Q%d1/Q%d2/Q%d3\n",i+1,i+1,i+1);
 		fprintf(REF,"FN15: PRINT Q%d1/Q%d2/Q%d3\n",i+1,i+1,i+1);
 	}
+	fprintf(TREF,"FN0: Q4 = -999\n"); fprintf(REF,"FN0: Q4 = -999\n");
 	fprintf(TREF,"FN15: PRINT Q4/Q4/Q4\n"); fprintf(REF,"FN15: PRINT Q4/Q4/Q4\n");
 	for (int i=0; i<ntool; i++) fprintf(TREF,"FN15: PRINT Q%d7/Q%d6/Q%d8\n",i+1,i+1,i+1);
 	fprintf(TREF,"END PGM 0TREF MM\n"); fprintf(REF,"END PGM 0REF MM\n");
