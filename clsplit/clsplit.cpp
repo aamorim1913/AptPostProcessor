@@ -85,9 +85,12 @@ int main(int argc, char **argv) {
 		cout<< endl;
 		cout<<"Provide the APT (....apt) file name. A %FN15RUN.A file must be present."<< endl;
 		cout<<" The %FN15RUN.A file syntax (relative to the Pivot): DatumX DatumY DatumZ"<< endl;
-		cout<<"reference sphere relative to Datum (for each setup): X   Y  Z"<< endl;
+		cout<<" reference sphere relative to Datum (for each setup): X   Y  Z"<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
+		cout<<"                                                   :-9999 -9999 -9999"<< endl;
+		cout<<"                                                   :tooln DR DL"<< endl;
+		cout<<"                                                   :... ... ..."<< endl;
 		cout<<"  clean - to remove all generated files "<< endl;
 		exit(1);
 	}
@@ -547,7 +550,7 @@ int main(int argc, char **argv) {
 
 	/* write the tool table TOOL.h */
 	WriteTool(tl,fpause);
-	CloseTRef(tl);
+	CloseTRef(tl,Datum);
 
 	fclose(APT);
 	fclose(OUT);
