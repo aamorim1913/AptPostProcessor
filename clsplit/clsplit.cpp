@@ -88,13 +88,18 @@ int main(int argc, char **argv) {
 		cout<<" reference sphere relative to Datum (for each setup): X   Y  Z"<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
-		cout<<"                                                   :-9999 -9999 -9999"<< endl;
+		cout<<"                                                   :-999 -999 -999"<< endl;
 		cout<<"                                                   :tooln DR DL"<< endl;
 		cout<<"                                                   :... ... ..."<< endl;
 		cout<<"  clean - to remove all generated files "<< endl;
+		cout<<"  ... apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> "<< endl;
 		exit(1);
 	}
 
+	if (strstr(argv[1],".apt")==0) {
+		printf(" argument must be an .apt file\n");
+		return -1;
+	}
 	/* Erase 11.h ... files */
 	CleanFiles(filename);
 	if (strstr(argv[1],"clean")!=0) return 0;
@@ -121,6 +126,11 @@ int main(int argc, char **argv) {
 
 	/* read all coordinates in the %FN15RUN.A file */
 	ncoord=ReadCoord(xd,yd,zd,Datum);
+	if (argc>=5 ) {
+		Datum[0]=atof(argv[2]);
+		Datum[1]=atof(argv[3]);
+		Datum[2]=atof(argv[4]);
+	}
 
 	/* read all tool measurements from the %FN15RUN.A file */
 	ntools=ReadToolCoord(tl,fpause);
@@ -261,7 +271,7 @@ int main(int argc, char **argv) {
 		/* properties of the tool */
 		} else if (strstr(lineapt, "CUTTER/") != 0) {
 			sscanf(lineapt+strlen("CUTTER/"),"%lf,%lf,%lf,%lf,%lf,%lf,%lf",
-				&rtool,&temp,&temp,&temp,&temp,&temp,&ltool); rtool=rtool/2;
+				&rtool,&temp,&temp,&temp,&temp,&temp,&ltool); rtool=rtool/2; ltool=ltool-deltatool;
 
 		/* spindle speed and spinsence */
 		} else if (strstr(lineapt, "SPINDL/") != 0) { /* SPINDLE prints the TOOL statment if tool number is defined */

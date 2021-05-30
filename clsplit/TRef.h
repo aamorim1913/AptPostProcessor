@@ -96,7 +96,7 @@ int Close(struct TOOL *tl, double *Datum) {
 		fprintf(fls[j],"FN0: Q1 = %.3lf\nFN0: Q2 = %.3lf\nFN0: Q3 = %.3lf\n",Pivot[0],Pivot[1],Pivot[2]);
 		fprintf(fls[j],"L Z-10 FMAX M91\n");
 		fprintf(fls[j],"TOOL CALL 0 Z S5\n"); 
-		fprintf(fls[j],"STOP\n;Set Datum- Old X%+.3lf Y%+.3lf Z%+.3lf\n",Datum[0]+Pivot[0],
+		fprintf(fls[j],"STOP\n;Set Datum- X%+.3lf Y%+.3lf Z%+.3lf\n",Datum[0]+Pivot[0],
 				Datum[1]+Pivot[1],Datum[2]+Pivot[2]);
 		fprintf(fls[j],"FN18: SYSREAD Q10 = ID270 NR1 IDX1\n"); 
         	fprintf(fls[j],"FN18: SYSREAD Q13 = ID240 NR1 IDX1\n");
