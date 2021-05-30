@@ -1,7 +1,7 @@
  // ccirpivot.cpp
 // Antonio Amorim CENTRA-FCUL 2021
 
-const double Pivot[3] = { -200.66, -193.7836, -338.3841};
+#include "../machine.h"
 
 //managed by CMAKE
 //#define NUMREC 

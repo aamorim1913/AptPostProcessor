@@ -1,8 +1,13 @@
-﻿// CreateSCAD.h :
+﻿// CSCAD.h :
+
+class CSCAD{
+
+private:
 double x1min, y1min, z1min;
 double x2min, y2min, z2min;
 
-int  AddLineSCAD(double *coord, int lnumber, int toolcall, int nsetup, int op, 
+public:
+int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op, 
 			double feed, int *fpause, double *Datum, double thetab) {
 
 	static double old_coord[3];
@@ -49,7 +54,7 @@ int  AddLineSCAD(double *coord, int lnumber, int toolcall, int nsetup, int op,
 	return 0;
 }
 
-int AddCircleSCAD( double* CC,double CCR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum, double thetab) {
+int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum, double thetab) {
 	double coord[3];
 
 	if (Sense == '-') {
@@ -67,12 +72,12 @@ int AddCircleSCAD( double* CC,double CCR,double theta1,double theta2, double old
 		coord[0]=CC[0]+CCR*cos(theta);
 		coord[1]=CC[1]+CCR*sin(theta);
                 coord[2]=old_z+(theta-theta1)/(theta2-theta1)*(z-old_z),
-		AddLineSCAD( coord, lnumber, toolcall, nsetup, op, feed, fpause, Datum, thetab);
+		AddLine( coord, lnumber, toolcall, nsetup, op, feed, fpause, Datum, thetab);
 	}
 	return 0;
 }
 
-int openSCAD(char* name, int nsetup, int op, int tool, double * Stock, struct TOOL *tl, double *Shift, double *Datum, double thetab, double thetac) {
+int open(char* name, int nsetup, int op, int tool, double * Stock, struct TOOL *tl, double *Shift, double *Datum, double thetab, double thetac) {
 
 	//double d1, d2, d1min = 1000., d2min = 1000.;
 	size_t st;
@@ -121,7 +126,7 @@ int openSCAD(char* name, int nsetup, int op, int tool, double * Stock, struct TO
 	return 0;
 }
 
-int closeSCAD(int tool, double *Stock, struct TOOL *tl, double *Datum, double thetab, double thetac, double *Shift) {
+int close(int tool, double *Stock, struct TOOL *tl, double *Datum, double thetab, double thetac, double *Shift) {
 
 	if (SCAD == NULL) return -1;
 
@@ -143,3 +148,4 @@ int closeSCAD(int tool, double *Stock, struct TOOL *tl, double *Datum, double th
 	SCAD = NULL;
 	return 0;
 }
+};

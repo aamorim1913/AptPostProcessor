@@ -1,10 +1,16 @@
+class TRef{
+
+private:
+
 int nref;
 int ntool;
 int tnum[100];
 int toolrmeas[100];
 int setups[100];
 
-int OpenTRef() {
+public:
+
+int Open() {
 
         if ((TREF = fopen(FILETREF, "w")) == NULL) {
                 printf("cannot write FILETREF file %s\n", FILETREF);
@@ -41,7 +47,7 @@ int AddTool(int tool,  struct TOOL *tl){
 	return 0;
 }
 
-int CloseTRef(struct TOOL *tl, double *Datum) {
+int Close(struct TOOL *tl, double *Datum) {
 	FILE *REF;
 	int first;
         if ((REF = fopen(FILEREF, "w")) == NULL) {
@@ -147,3 +153,4 @@ int CloseTRef(struct TOOL *tl, double *Datum) {
 	fclose(REF);
 	return 0;
 }
+};

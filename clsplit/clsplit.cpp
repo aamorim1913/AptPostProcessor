@@ -1,10 +1,7 @@
  // clsplit.cpp
 // Antonio Amorim CENTRA-FCUL 2021
 
-// Pivot coordinates only for the machine limits CreateSCAD.h and ref file CreateTRef.h  */
-const double Pivot[3]={-200.66, -193.7836, -338.3841};
-/* machine limits in machine coordinates xmin, xmax, ymin, ymax, zmin, zmax */
-const double MachineLimits[6]={-500,0,-400,0,-400,0};
+#include "../machine.h"
 
 #include <cinttypes>
 #include <stdio.h>
@@ -42,10 +39,10 @@ struct TOOL{
 #include "clsplit.h"
 
 FILE* SCAD=NULL;
-#include "CreateSCAD.h"
+#include "CSCAD.h"
 
 FILE* TREF=NULL;
-#include "CreateTRef.h"
+#include "TRef.h"
 
 /*-----------------------------  the main program ------------------------------------------------------*/
 
@@ -78,6 +75,9 @@ int main(int argc, char **argv) {
 	char RL='0', used_RL='0',Sense='+';
 	int toolcall; 
 	double feed = -1, rtool,ltool,temp;
+
+	TRef tref;
+	CSCAD scad;
 
 	int op=0;
 	fpause = 0;
@@ -143,7 +143,7 @@ int main(int argc, char **argv) {
 		if (strstr(lineapt, "UNIT/MM") != 0) {  /* begining of program */
 			fprintf(OUT, "%d BEGIN PGM 11 MM\n",lnumber);++lnumber;
 			fprintf(OUT, "%d ;First setup of file %s\n", lnumber, argv[1]);++lnumber;
-			OpenTRef();
+			tref.Open();
 
 		/* Stock Size comment converted to BLK */
 		} else if (strstr(lineapt,"INSERT/Stock Size") != 0) { 
@@ -171,7 +171,7 @@ int main(int argc, char **argv) {
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
 		} else if (strstr(lineapt, "CSYS/") != 0) { 
 
-			if ( op > 0) closeSCAD(toolcall, Stock, tl, Datum, thetab, thetac, Shift);
+			if ( op > 0) scad.close(toolcall, Stock, tl, Datum, thetab, thetac, Shift);
 
 			++op;
 			nA = ReadArray(A, lineapt + strlen("CSYS/"), ',');
@@ -239,7 +239,7 @@ int main(int argc, char **argv) {
 					if ( thetab > 90 ) sprintf(filename, DMUDIR, nsetup+900+11);
 					else {
 						sprintf(filename, DMUDIR, nsetup+11);
-						AddRef(nsetup);
+						tref.AddRef(nsetup);
 					}
 					OUT=fopen(filename, "w");
 					fprintf(OUT, "0 BEGIN PGM %d MM\n1 ;setup of file %s\n", nsetup+11,argv[1]);
@@ -251,7 +251,7 @@ int main(int argc, char **argv) {
 			} else {
 				fprintf(OUT, "%d ;NewFeature\n", lnumber); ++lnumber;
 			}
-			openSCAD(argv[1], nsetup, op, toolcall, Stock, tl, Shift, Datum, thetab, thetac);
+			scad.open(argv[1], nsetup, op, toolcall, Stock, tl, Shift, Datum, thetab, thetac);
 
 		/* comment copy  */
 		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is copyed to comment (maybe tool name)*/
@@ -411,7 +411,7 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, tl[toolcall].spindl); ++lnumber;
-				AddTool(toolcall,tl);
+				tref.AddTool(toolcall,tl);
 				if (old_coord[2] != -9999.0) { fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]); ++lnumber; }
 				updated |= NEW_FLOOD;
 				if (tl[toolcall].spinsense==1) fprintf(OUT, "%d M3\n",lnumber); 
@@ -465,16 +465,16 @@ int main(int argc, char **argv) {
 				if (updated & CYCLE_ON) fprintf(OUT," M99");
 				fprintf(OUT, "\n"); ++lnumber;
 
-				AddLineSCAD(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab);
+				scad.AddLine(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab);
 				/* if there is a drill cycle */
 				if (dist != 0 ){
 					double ShiftCoord[3];
 					ShiftCoord[0]=coord[0];
 					ShiftCoord[1]=coord[1];
 					ShiftCoord[2]=coord[2]-dist-length;
-					AddLineSCAD(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum, thetab);
+					scad.AddLine(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum, thetab);
 					ShiftCoord[2]=coord[2];
-					AddLineSCAD(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum, thetab);
+					scad.AddLine(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum, thetab);
 				}
 			 /* draw circle or spiral */
 			} else {
@@ -516,7 +516,7 @@ int main(int argc, char **argv) {
 				fprintf(OUT,"\n");
 				++lnumber;
 
-				 AddCircleSCAD(CC,CCR,theta1,theta2,old_coord[2], coord[2],Sense,
+				 scad.AddCircle(CC,CCR,theta1,theta2,old_coord[2], coord[2],Sense,
 					  lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab);
 			}
 
@@ -532,7 +532,7 @@ int main(int argc, char **argv) {
 			fprintf(OUT, "%d L Z-10 R0 FMAX M91 M9\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d M30\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d END PGM %d MM\n", lnumber, nsetup + 11); ++lnumber;
-			closeSCAD(toolcall, Stock, tl, Datum, thetab, thetac,Shift);
+			scad.close(toolcall, Stock, tl, Datum, thetab, thetac,Shift);
 
 		/* do nothing for part number */
 		} else if (strstr(lineapt, "PARTNO/") != 0) {
@@ -550,7 +550,7 @@ int main(int argc, char **argv) {
 
 	/* write the tool table TOOL.h */
 	WriteTool(tl,fpause);
-	CloseTRef(tl,Datum);
+	tref.Close(tl,Datum);
 
 	fclose(APT);
 	fclose(OUT);
