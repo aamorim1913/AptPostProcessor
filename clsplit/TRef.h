@@ -73,11 +73,12 @@ int Close(struct TOOL *tl, double *Datum) {
 				fprintf(TREF,"Q4 = Q8 - Q%d8\n",i+1);
 				fprintf(TREF,"Q8 = Q4\n");
 			}
+			if (first==0) fprintf(TREF,"L IZ+50 FMAX\n");
 			if (tl[tnum[i]].spinsense==1) fprintf(TREF,"M3\n");
 			else fprintf(TREF,"M4\n");
 			if (first==0) { 
 				fprintf(TREF,"Q4 = Q%d6 - %lf + 0.5\n",i,tl[tnum[i]].rcad);
-				fprintf(TREF,"L IZ+50 FMAX\nL X+Q4 Y+Q7 FMAX M91\n");
+				fprintf(TREF,"L X+Q4 Y+Q7 FMAX M91\n");
 				fprintf(TREF,"Q4 = Q8 - 50\n");
 				fprintf(TREF,"L IZ+Q4 F50\n");
 			}
