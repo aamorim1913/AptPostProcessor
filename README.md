@@ -19,8 +19,8 @@ x_ref1 y_ref1 z_ref1
 x_ref2 y_ref2 z_ref2
 ...
 -999 -999 -999
-ntool1 DL1 DR1
-ntool2 DL2 DR2
+ntool1 DR1 DL1
+ntool2 DR1 DL2
 ...
 
 To use the micro...

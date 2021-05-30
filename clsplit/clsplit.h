@@ -201,7 +201,7 @@ int ReadToolCoord(struct TOOL *tl,  int &fpause) {
 	}
 	while (ReadLine(line, SETCOOR)) {
 		for (int i = 0; i < strlen(line); i++) if (line[i] == ',') line[i] = '.';
-		if (sscanf(line, "%d %lf %lf", &tool, &L, &DR) != 3) break;
+		if (sscanf(line, "%d %lf %lf", &tool, &DR, &L) != 3) break;
 		if (tool>99) {
 			printf("Invalid tool number %d in tref file\n",tool);
 			fpause=1;

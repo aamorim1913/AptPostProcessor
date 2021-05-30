@@ -118,33 +118,34 @@ int Close(struct TOOL *tl, double *Datum) {
 		if ( toolrmeas[i]!=0) {
 			fprintf(TREF,"STOP\n;Heimer on xmin - tool %d the %d in order.\n",tnum[i],i);
 			fprintf(TREF,"FN18: SYSREAD Q6 = ID240 NR1 IDX1\n");
-			fprintf(TREF,"Q4 = Q%d6 -  Q6\n",i+1);
+			fprintf(TREF,"Q4 = Q6 - Q%d6\n",i+1);
 			fprintf(TREF,"Q%d6 = Q4\n",i+1);
 		}
 	}
+	/* measure references */
 	fprintf(TREF,"FN0: Q5 = 1.995\n"); fprintf(REF,"FN0: Q5 = 1.995\n");
 	for (int j=0; j<2 ; j++) {
 	   for (int i=0; i< nref ; i++){
 		fprintf(fls[j],"STOP\n;Heimer on top of ball for setup %d\n",setups[i]+1);
-		fprintf(fls[j],"FN18: SYSREAD Q%d2 = ID270 NR1 IDX3\nFN18: SYSREAD Q%d5 = ID240 NR1 IDX3\n",nref,nref);
-		fprintf(fls[j],"Q4 = Q%d2 - Q5\nQ%d2 = Q4\nQ4 = Q%d5 - Q5\nQ%d5 = Q4\n",nref,nref,nref,nref);
-		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+Q%d2\n",nref);
+		fprintf(fls[j],"FN18: SYSREAD Q%d2 = ID270 NR1 IDX3\nFN18: SYSREAD Q%d5 = ID240 NR1 IDX3\n",i+1,i+1);
+		fprintf(fls[j],"Q4 = Q%d2 - Q5\nQ%d2 = Q4\nQ4 = Q%d5 - Q5\nQ%d5 = Q4\n",i+1,i+1,i+1,i+1);
+		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+Q%d2\n",i+1);
 		fprintf(fls[j],"L IZ+2 R0 F200\nL IX-Q5 R0 F200\nL IX-2 R0 F200\nL IZ-Q5 R0 F200\nL IZ-2 R0 F200\nL IX+2 R0 F25\n");
 		fprintf(fls[j],"STOP\n;Heimer at left of ball for setup %d\n",setups[i]+1);
-		fprintf(fls[j],"FN18: SYSREAD Q%d0 = ID270 NR1 IDX1\nFN18: SYSREAD Q%d3 = ID240 NR1 IDX1\n",nref,nref);
-		fprintf(fls[j],"Q4 = Q%d0 + Q5\nQ%d0 = Q4\nQ4 = Q%d3 + Q5\nQ%d3 = Q4\n",nref,nref,nref,nref);
-		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1 X+Q%d0\nCYCL DEF 7.2 Y+0\nCYCL DEF 7.3 Z+Q%d2\n",nref,nref);
+		fprintf(fls[j],"FN18: SYSREAD Q%d0 = ID270 NR1 IDX1\nFN18: SYSREAD Q%d3 = ID240 NR1 IDX1\n",i+1,i+1);
+		fprintf(fls[j],"Q4 = Q%d0 + Q5\nQ%d0 = Q4\nQ4 = Q%d3 + Q5\nQ%d3 = Q4\n",i+1,i+1,i+1,i+1);
+		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1 X+Q%d0\nCYCL DEF 7.2 Y+0\nCYCL DEF 7.3 Z+Q%d2\n",i+1,i+1);
 		fprintf(fls[j],"L IX-2 R0 F200\nL IY+Q5 R0 F200\nL IY+2 R0 F200\nL IX+Q5 R0 F200\nL IX+2 R0 F200\nL IY-2 R0 F25\n");
-		fprintf(fls[j],"STOP\n;Heimer from you to the ball for setup %d\n",setups[i]+1);
-		fprintf(fls[j],"FN18: SYSREAD Q%d1 = ID270 NR1 IDX2\nFN18: SYSREAD Q%d4 = ID240 NR1 IDX2\n",nref,nref);
-		fprintf(fls[j],"Q4 = Q%d1 + Q5\nQ%d1 = Q4\nQ4 = Q%d4 + Q5\nQ%d4 = Q4\n",nref,nref,nref,nref);
+		fprintf(fls[j],"STOP\n;Heimer to the ball for setup %d\n",setups[i]+1);
+		fprintf(fls[j],"FN18: SYSREAD Q%d1 = ID270 NR1 IDX2\nFN18: SYSREAD Q%d4 = ID240 NR1 IDX2\n",i+1,i+1);
+		fprintf(fls[j],"Q4 = Q%d1 + Q5\nQ%d1 = Q4\nQ4 = Q%d4 + Q5\nQ%d4 = Q4\n",i+1,i+1,i+1,i+1);
 		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
 	   }
 	}
 	fprintf(TREF,"FN15: PRINT Q7/Q8/Q9\n"); fprintf(REF,"FN15: PRINT Q7/Q8/Q9\n");
 	for (int i=0; i<nref; i++) {
-		fprintf(TREF,"FN15: PRINT Q%d1/Q%d2/Q%d3\n",i+1,i+1,i+1);
-		fprintf(REF,"FN15: PRINT Q%d1/Q%d2/Q%d3\n",i+1,i+1,i+1);
+		fprintf(TREF,"FN15: PRINT Q%d0/Q%d1/Q%d2\n",i+1,i+1,i+1);
+		fprintf(REF,"FN15: PRINT Q%d0/Q%d1/Q%d2\n",i+1,i+1,i+1);
 	}
 	fprintf(TREF,"FN0: Q4 = -999\n"); fprintf(REF,"FN0: Q4 = -999\n");
 	fprintf(TREF,"FN15: PRINT Q4/Q4/Q4\n"); fprintf(REF,"FN15: PRINT Q4/Q4/Q4\n");
