@@ -177,7 +177,7 @@ int ReadCoord(double* xd, double* yd, double* zd, double* Datum) {
 	while (ReadLine(linecoor, SETCOOR)) {
 		for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
 		if ((sscanf(linecoor, "%lf %lf %lf", xd+ns, yd+ns, zd+ns) != 3) ||
-			(xd[ns]==-999 && yd[ns] == -999 && zd[ns] == -999)) break;
+			(xd[ns]==-999 && yd[ns] == -999)) break;
 		ns++;
 	}
 	fclose(SETCOOR);
@@ -197,7 +197,7 @@ int ReadToolCoord(struct TOOL *tl,  int &fpause) {
 	/* ignore lines describing coordinates */
 	while (ReadLine(line, SETCOOR)) {
 		for (int i = 0; i < strlen(line); i++) if (line[i] == ',') line[i] = '.';
-		if ((sscanf(line, "%lf %lf %lf", &x, &y, &z) != 3) || (x==-999 && y == -999 && z == -999)) break;
+		if ((sscanf(line, "%lf %lf %lf", &x, &y, &z) != 3) || (x==-999 && y == -999)) break;
 	}
 	while (ReadLine(line, SETCOOR)) {
 		for (int i = 0; i < strlen(line); i++) if (line[i] == ',') line[i] = '.';

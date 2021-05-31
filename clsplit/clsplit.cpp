@@ -87,9 +87,9 @@ int main(int argc, char **argv) {
 		cout<<" reference sphere relative to Datum (for each setup): X   Y  Z"<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
-		cout<<"                                                   :-999 -999 -999"<< endl;
-		cout<<"                                                   :tooln DR DL"<< endl;
-		cout<<"                                                   :... ... ..."<< endl;
+		cout<<"                                         :-999 -999 zd(ns)=tool"<< endl;
+		cout<<"                                         :tooln DR DL"<< endl;
+		cout<<"                                         :... ... ..."<< endl;
 		cout<<"  clean - to remove all generated files "<< endl;
 		cout<<"  ... apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> "<< endl;
 		exit(1);
@@ -129,6 +129,9 @@ int main(int argc, char **argv) {
 		Datum[0]=atof(argv[2]);
 		Datum[1]=atof(argv[3]);
 		Datum[2]=atof(argv[4]);
+	} else if (argc>=4) {
+		printf("Set tool lenght to %.3f\n",zd[ncoord]-atof(argv[2])); 
+		fpause=1;
 	}
 
 	/* read all tool measurements from the %FN15RUN.A file */

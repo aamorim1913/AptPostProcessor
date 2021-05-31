@@ -18,7 +18,7 @@ datumx, datumy,datumz (relative to the pivot)
 x_ref1 y_ref1 z_ref1
 x_ref2 y_ref2 z_ref2
 ...
--999 -999 -999
+-999 -999 zm[ns]=tool sensor
 ntool1 DR1 DL1
 ntool2 DR1 DL2
 ...
