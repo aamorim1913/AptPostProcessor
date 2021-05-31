@@ -41,7 +41,6 @@ struct TOOL{
 FILE* SCAD=NULL;
 #include "CSCAD.h"
 
-FILE* TREF=NULL;
 #include "TRef.h"
 
 /*-----------------------------  the main program ------------------------------------------------------*/
@@ -135,7 +134,7 @@ int main(int argc, char **argv) {
 	/* read all tool measurements from the %FN15RUN.A file */
 	ntools=ReadToolCoord(tl,fpause);
 
-	/* iitialize MAIN LOOP OVER LINES of the .apt file */
+	/* initialize MAIN LOOP OVER LINES of the .apt file */
 	nsetup = -1;
 	updated=0;
 	lnumber=0;
@@ -153,7 +152,7 @@ int main(int argc, char **argv) {
 		if (strstr(lineapt, "UNIT/MM") != 0) {  /* begining of program */
 			fprintf(OUT, "%d BEGIN PGM 11 MM\n",lnumber);++lnumber;
 			fprintf(OUT, "%d ;First setup of file %s\n", lnumber, argv[1]);++lnumber;
-			tref.Open();
+			tref.Open(Datum);
 
 		/* Stock Size comment converted to BLK */
 		} else if (strstr(lineapt,"INSERT/Stock Size") != 0) { 
@@ -560,7 +559,7 @@ int main(int argc, char **argv) {
 
 	/* write the tool table TOOL.h */
 	WriteTool(tl,fpause);
-	tref.Close(tl,Datum);
+	tref.Close(tl);
 
 	fclose(APT);
 	fclose(OUT);

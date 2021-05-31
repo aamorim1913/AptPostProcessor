@@ -7,16 +7,24 @@ int ntool;
 int tnum[100];
 int toolrmeas[100];
 int setups[100];
+FILE *REF;
+FILE *TREF;
 
 public:
 
-int Open() {
+int Open(double *Datum) {
 
         if ((TREF = fopen(FILETREF, "w")) == NULL) {
                 printf("cannot write FILETREF file %s\n", FILETREF);
                 return 1;
         }
+        if ((REF = fopen(FILEREF, "w")) == NULL) {
+                printf("cannot write FILEREF file %s\n", FILEREF);
+                return 1;
+        }
 
+	fprintf(TREF,";Set Datum- X%+.3lf Y%+.3lf Z%+.3lf\n",Datum[0]+Pivot[0],Datum[1]+Pivot[1],Datum[2]+Pivot[2]);
+	fprintf(REF,";Set Datum- X%+.3lf Y%+.3lf Z%+.3lf\n",Datum[0]+Pivot[0],Datum[1]+Pivot[1],Datum[2]+Pivot[2]);
         fprintf(TREF,"BEGIN PGM 0TREF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
 	nref=0;
 	ntool=0;
@@ -47,13 +55,8 @@ int AddTool(int tool,  struct TOOL *tl){
 	return 0;
 }
 
-int Close(struct TOOL *tl, double *Datum) {
-	FILE *REF;
+int Close(struct TOOL *tl) {
 	int first;
-        if ((REF = fopen(FILEREF, "w")) == NULL) {
-                printf("cannot write FILEREF file %s\n", FILEREF);
-                return 1;
-        }
 	FILE *fls[]= { TREF , REF };
 
         fprintf(REF,"BEGIN PGM 0REF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
@@ -96,8 +99,7 @@ int Close(struct TOOL *tl, double *Datum) {
 		fprintf(fls[j],"FN0: Q1 = %.3lf\nFN0: Q2 = %.3lf\nFN0: Q3 = %.3lf\n",Pivot[0],Pivot[1],Pivot[2]);
 		fprintf(fls[j],"L Z-10 FMAX M91\n");
 		fprintf(fls[j],"TOOL CALL 0 Z S5\n"); 
-		fprintf(fls[j],"STOP\n;Set Datum- X%+.3lf Y%+.3lf Z%+.3lf\n",Datum[0]+Pivot[0],
-				Datum[1]+Pivot[1],Datum[2]+Pivot[2]);
+		fprintf(fls[j],"STOP\n; Set Datum in machine\n");
 		fprintf(fls[j],"FN18: SYSREAD Q10 = ID270 NR1 IDX1\n"); 
         	fprintf(fls[j],"FN18: SYSREAD Q13 = ID240 NR1 IDX1\n");
         	fprintf(fls[j],"FN18: SYSREAD Q11 = ID270 NR1 IDX2\n"); 
