@@ -1,3 +1,6 @@
+// Class TRef to measure Datum, tools and references
+#pragma once
+
 class TRef{
 
 private:
@@ -26,6 +29,7 @@ int Open(double *Datum) {
 	fprintf(TREF,";Set Datum- X%+.3lf Y%+.3lf Z%+.3lf\n",Datum[0]+Pivot[0],Datum[1]+Pivot[1],Datum[2]+Pivot[2]);
 	fprintf(REF,";Set Datum- X%+.3lf Y%+.3lf Z%+.3lf\n",Datum[0]+Pivot[0],Datum[1]+Pivot[1],Datum[2]+Pivot[2]);
         fprintf(TREF,"BEGIN PGM 0TREF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
+        fprintf(REF,"BEGIN PGM 0REF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
 	nref=0;
 	ntool=0;
 
@@ -59,7 +63,6 @@ int Close(struct TOOL *tl) {
 	int first;
 	FILE *fls[]= { TREF , REF };
 
-        fprintf(REF,"BEGIN PGM 0REF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
 	first=1;
 	for (int i=0 ; i<ntool; i++) {
 		fprintf(TREF,"FN0: Q%d7 = %d\n",i+1,tnum[i]);
@@ -70,7 +73,8 @@ int Close(struct TOOL *tl) {
 		if (toolrmeas[i]==0) fprintf(TREF,"FN0: Q%d6 = 0\n",i+1);
 		else  {
 			if (first==1) {
-				fprintf(TREF,"STOP\n;tool on xmin, Y=+1cm on top tool measure\n");
+				fprintf(TREF,"STOP\n;tool xmin, Y(xmin) top tool measure\n");
+				fprintf(TREF,"L IZ+10 FMAX\nL IY+10 FMAX\nL IZ-10 FMAX\n");
 				fprintf(TREF,"FN18: SYSREAD Q7 = ID240 NR1 IDX2\n");
 				fprintf(TREF,"FN18: SYSREAD Q8 = ID240 NR1 IDX3\n");
 				fprintf(TREF,"Q4 = Q8 - Q%d8\n",i+1);
@@ -80,17 +84,19 @@ int Close(struct TOOL *tl) {
 			if (tl[tnum[i]].spinsense==1) fprintf(TREF,"M3\n");
 			else fprintf(TREF,"M4\n");
 			if (first==0) { 
-				fprintf(TREF,"Q4 = Q%d6 - %lf + 0.5\n",i,tl[tnum[i]].rcad);
+				fprintf(TREF,"Q4 = Q%d6 - %.3lf + 1\n",i,tl[tnum[i]].rcad);
 				fprintf(TREF,"L X+Q4 Y+Q7 FMAX M91\n");
 				fprintf(TREF,"Q4 = Q8 - 50\n");
-				fprintf(TREF,"L IZ+Q4 F50\n");
+				fprintf(TREF,"L IZ+Q4 F250\n");
 			}
 			first=0;
 			fprintf(TREF,"FN18: SYSREAD Q%d6 = ID240 NR1 IDX1\n",i+1);
 			fprintf(TREF,"Q4 = Q%d6 + %lf\n",i+1,tl[tnum[i]].rcad);
 			fprintf(TREF,"Q%d6 = Q4\n",i+1);
-			fprintf(TREF,"L IZ%+.3lf F50\n",-3.0*(ntool-i));
-			fprintf(TREF,"L IY-20 F250\n");
+			for (int j=0 ; j<ntool-i ; j++) {
+				fprintf(TREF,"L IZ%+.3lf F50\n",-3.0);
+				fprintf(TREF,"L IY-20 F250\nL IX-1 FMAX\nL IY+20 FMAX\nL IX+1 F250\n");
+			}
 			fprintf(TREF,"M5\n");
 		}
 	}
@@ -138,9 +144,9 @@ int Close(struct TOOL *tl) {
 		fprintf(fls[j],"Q4 = Q%d0 + Q5\nQ%d0 = Q4\nQ4 = Q%d3 + Q5\nQ%d3 = Q4\n",i+1,i+1,i+1,i+1);
 		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1 X+Q%d0\nCYCL DEF 7.2 Y+0\nCYCL DEF 7.3 Z+Q%d2\n",i+1,i+1);
 		fprintf(fls[j],"L IX-2 R0 F200\nL IY+Q5 R0 F200\nL IY+2 R0 F200\nL IX+Q5 R0 F200\nL IX+2 R0 F200\nL IY-2 R0 F25\n");
-		fprintf(fls[j],"STOP\n;Heimer to the ball for setup %d\n",setups[i]+1);
+		fprintf(fls[j],"STOP\n;Heimer Y to the ball for setup %d\n",setups[i]+1);
 		fprintf(fls[j],"FN18: SYSREAD Q%d1 = ID270 NR1 IDX2\nFN18: SYSREAD Q%d4 = ID240 NR1 IDX2\n",i+1,i+1);
-		fprintf(fls[j],"Q4 = Q%d1 + Q5\nQ%d1 = Q4\nQ4 = Q%d4 + Q5\nQ%d4 = Q4\n",i+1,i+1,i+1,i+1);
+		fprintf(fls[j],"Q4 = Q%d1 - Q5\nQ%d1 = Q4\nQ4 = Q%d4 - Q5\nQ%d4 = Q4\n",i+1,i+1,i+1,i+1);
 		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
 	   }
 	}

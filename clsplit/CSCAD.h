@@ -1,4 +1,6 @@
 ﻿// CSCAD.h :
+//
+#pragma once
 
 class CSCAD{
 
