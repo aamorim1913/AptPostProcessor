@@ -88,6 +88,10 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
         cv::Mat image, imageCopy;
         inputVideo.retrieve(image);
         image.copyTo(imageCopy);
+//AAMORIM
+//	cv::cvtColor(image, imageCopy, cv::COLOR_BGR2GRAY);
+//	cv::threshold(imageCopy, image, 125, 255, cv::THRESH_BINARY);
+//      cv::bitwise_not(image, imageCopy);
 
 	cv::Size sz = imageCopy.size();
 	if (first) cout << "image with " << sz.width << " x "<< sz.height << " pixels" << endl;
