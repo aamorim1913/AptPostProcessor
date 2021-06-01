@@ -7,6 +7,7 @@ class CSCAD{
 private:
 double x1min, y1min, z1min;
 double x2min, y2min, z2min;
+FILE* SCAD;
 
 public:
 int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op, 
@@ -79,7 +80,7 @@ int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, 
 	return 0;
 }
 
-int open(char* name, int nsetup, int op, int tool, double * Stock, struct TOOL *tl, double *Shift, double *Datum, double thetab, double thetac) {
+int open(char* name, int nsetup, int op, int tool, double * Stock, struct TOOL *tl, double *Shift, double *Datum, double thetab, double thetac, double thetatable) {
 
 	//double d1, d2, d1min = 1000., d2min = 1000.;
 	size_t st;
@@ -99,7 +100,8 @@ int open(char* name, int nsetup, int op, int tool, double * Stock, struct TOOL *
 	fprintf(SCAD, "xd0=%f; yd0=%f; zd0=%f; /* Datum relative to pivot unrotated */\n", Datum[0], Datum[1], Datum[2]);
 	fprintf(SCAD, "l=%f; ltool=%f; rtool=%f;\n", tl[tool].l + tl[tool].DL, tl[tool].l, tl[tool].rcad);
 	/* table */
-	fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) color(\"grey\") difference(){\ntranslate([0,0,-75]) cylinder(50,350,350,center = true);\ntranslate([-500,0,-125]) linear_extrude(100) square(500,center=true);\ntranslate([500,0,-125]) linear_extrude(100) square(500,center=true);}\n", -thetab, -thetac);
+	fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) color(\"grey\") difference(){\ntranslate([0,0,-75]) cylinder(50,350,350,center = true);\ntranslate([0,-500,-125]) linear_extrude(100) square(500,center=true);\ntranslate([0,500,-125]) linear_extrude(100) square(500,center=true);}\n", 
+		-thetab, -thetac-thetatable);
 	/* vice1 */
 	fprintf(SCAD, "rotate([0,%f,0])rotate([0,0,%f])color(\"black\")translate([%f,%f,-12.5])cube([160,20,75],center=true);\n",
 		-thetab, -thetac, Datum[0], Datum[1]+ 10 + Stock[1]);

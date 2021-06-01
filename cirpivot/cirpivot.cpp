@@ -6,6 +6,7 @@
 //managed by CMAKE
 //#define NUMREC 
 //#define ARMADILLO
+//#define OPENCV
 
 #include "cinttypes"
 #include "stdio.h"
@@ -34,6 +35,12 @@ using namespace std;
 using namespace arma;
 #endif
 
+#if defined(OPENCV)
+#include <opencv2/highgui.hpp>
+#include <opencv2/calib3d.hpp>
+#include <opencv2/core/matx.hpp>
+#endif
+
 int writeCircleSCAD(int ncoord, double* n, double* xm, double* ym, double* zm) {
 	FILE* SCAD;
 	if ((SCAD = fopen("CIRCLE.scad", "w")) == NULL) {
@@ -53,7 +60,7 @@ int writeCircleSCAD(int ncoord, double* n, double* xm, double* ym, double* zm) {
 int main(int argc, char** argv) {
 	time_t current_time;
 	char* c_time_string;
-	double Yi, S[3], M[3] = { 0,0,0 }, Datum[3];
+	double Yi, S[3], M[3] = { 0,0,0 }, Datum[3]; /* In this case the Pivot coordinates are not subtracted to Datum */
 	double n[4], nt[4];
 	double xd[32], yd[32], zd[32];
 	double xm[323], ym[32], zm[32];
@@ -81,9 +88,9 @@ int main(int argc, char** argv) {
 
 	ncoord = ReadCoord(argv[1], xd, yd, zd, Datum);
 	for (int i = 0; i < ncoord; i++) {
-		xm[i] = xd[i] + Datum[0] + Pivot[0];
-		ym[i] = yd[i] + Datum[1] + Pivot[1];
-		zm[i] = zd[i] + Datum[2] + Pivot[2];
+		xm[i] = xd[i] + Datum[0];
+		ym[i] = yd[i] + Datum[1];
+		zm[i] = zd[i] + Datum[2];
 	}
 
 	for (int i = 0; i < ncoord; i++) {
@@ -139,7 +146,7 @@ int main(int argc, char** argv) {
 		for (int j=0; j<4; j++) AA(i,j)=A[i][j];
 	}
 	svd(UU,WW,VV,AA);
-if (WW(3) >= 0.01) {
+	if (WW(3) >= 0.01) {
 		sphere=1;
 		WW=solve(AA, BB);
 		for (int i=0; i<4 ; i++) B[i][0]=WW(i);
@@ -152,6 +159,36 @@ if (WW(3) >= 0.01) {
 		}
 	}
 #endif
+#if defined (OPENCV)
+	cv::Mat AA,BB,UU,VV,WW;
+	AA.create(4,4,CV_64F);
+	BB.create(4,4,CV_64F);
+	UU.create(4,4,CV_64F);
+	VV.create(4,4,CV_64F);
+	for (int i=0; i<4; i++) {
+		BB.at<double>(i,0)=B[i][0];
+		for (int j=0; j<4; j++) AA.at<double>(i,j)=A[i][j];
+	}
+	cv::SVD::compute(AA,WW,UU,VV,cv::SVD::FULL_UV);;
+	if (WW.at<double>(3) >= 0.01) {
+		sphere=1;
+		cv::solve(AA, BB,WW);
+		for (int i=0; i<4 ; i++) B[i][0]=WW.at<double>(i);
+	}
+	for (int i=0; i<4; i++) {
+		W[i]=WW.at<double>(i);
+		for (int j=0; j<4; j++) {
+			/* in OPENCV VV is transposed */
+			V[i][j]=VV.at<double>(j,i);
+			U[i][j]=UU.at<double>(i,j);
+		}
+	}
+#endif
+
+/* DEBUG */
+//printf(" W: "); for (int i=0; i<4; i++) printf("%lf ", W[i]); printf("\n");
+//printf(" V: "); for (int i=0; i<4; i++) { for (int j=0; j<4; j++) printf("%lf ", V[i][j]); printf("\n"); } printf("\n");
+//printf(" U: "); for (int i=0; i<4; i++) { for (int j=0; j<4; j++) printf("%lf ", U[i][j]); printf("\n"); } printf("\n");
 
 	if (sphere == 1){
 		fprintf(TXT, "Using SPHERE instead\ncenter of sphere %f %f %f\n", B[0][0] / 2.0, B[1][0] / 2.0, B[2][0] / 2.0);
@@ -191,7 +228,7 @@ if (WW(3) >= 0.01) {
 
 	for (int i=0; i<3; i++){
 		M[i] = n[i] / 2.0;
-		S[i] = M[i] - (Datum[i]+Pivot[i]);
+		S[i] = M[i] - Datum[i];
 	}
 
 	WriteSetup(axis, S, M);

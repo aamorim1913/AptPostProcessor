@@ -67,7 +67,7 @@ int Close(struct TOOL *tl) {
 	for (int i=0 ; i<ntool; i++) {
 		fprintf(TREF,"FN0: Q%d7 = %d\n",i+1,tnum[i]);
 		fprintf(TREF,"L Z-10 FMAX M91\n;%s\n",tl[tnum[i]].name);
-		fprintf(TREF,"TOOL CALL %d Z S%d\n",tnum[i],tl[tnum[i]].spindl);
+		fprintf(TREF,"TOOL CALL %d Z S%d\n",tnum[i],tl[tnum[i]].speed);
 		fprintf(TREF,"STOP\n;tool on zero of sensor\n");
 		fprintf(TREF,"FN18: SYSREAD Q%d8 = ID240 NR1 IDX3\n",i+1);
 		if (toolrmeas[i]==0) fprintf(TREF,"FN0: Q%d6 = 0\n",i+1);
@@ -81,7 +81,7 @@ int Close(struct TOOL *tl) {
 				fprintf(TREF,"Q8 = Q4\n");
 			}
 			if (first==0) fprintf(TREF,"L IZ+50 FMAX\n");
-			if (tl[tnum[i]].spinsense==1) fprintf(TREF,"M3\n");
+			if (tl[tnum[i]].clockwise==1) fprintf(TREF,"M3\n");
 			else fprintf(TREF,"M4\n");
 			if (first==0) { 
 				fprintf(TREF,"Q4 = Q%d6 - %.3lf + 1\n",i,tl[tnum[i]].rcad);
@@ -102,19 +102,21 @@ int Close(struct TOOL *tl) {
 	}
 
 	for (int j=0; j<2 ; j++) {
-		fprintf(fls[j],"FN0: Q1 = %.3lf\nFN0: Q2 = %.3lf\nFN0: Q3 = %.3lf\n",Pivot[0],Pivot[1],Pivot[2]);
 		fprintf(fls[j],"L Z-10 FMAX M91\n");
 		fprintf(fls[j],"TOOL CALL 0 Z S5\n"); 
-		fprintf(fls[j],"STOP\n; Set Datum in machine\n");
+		fprintf(fls[j],"STOP\n;Set Datum in machine\n;Point to middle of Pivot T slot");
 		fprintf(fls[j],"FN18: SYSREAD Q10 = ID270 NR1 IDX1\n"); 
         	fprintf(fls[j],"FN18: SYSREAD Q13 = ID240 NR1 IDX1\n");
         	fprintf(fls[j],"FN18: SYSREAD Q11 = ID270 NR1 IDX2\n"); 
         	fprintf(fls[j],"FN18: SYSREAD Q14 = ID240 NR1 IDX2\n"); 
         	fprintf(fls[j],"FN18: SYSREAD Q12 = ID270 NR1 IDX3\n");
         	fprintf(fls[j],"FN18: SYSREAD Q15 = ID240 NR1 IDX3\n");
-		fprintf(fls[j],"Q7 = Q13 - Q10 - Q1\n"); 
-		fprintf(fls[j],"Q8 = Q14 - Q11 - Q2\n"); 
-		fprintf(fls[j],"Q9 = Q15 - Q12 - Q3\n"); 
+		fprintf(fls[j],"Q7 = Q13 - Q10\n"); 
+		fprintf(fls[j],"Q8 = Q14 - Q11\n"); 
+		fprintf(fls[j],"Q9 = Q15 - Q12\n"); 
+		fprintf(fls[j],"Q4 = (Q13 - %+.3lf) * (Q13 - %+.3lf) + (Q14 - %+.3lf) * (Q14 - %+.3lf)\n",
+				Pivot[0],Pivot[0],Pivot[1],Pivot[1]); 
+		fprintf(fls[j],"Q2 = (Q14 - %+.3lf) /  SQRT(Q4)\n",Pivot[1]);
 	}
 	/* measure tool sensor here */
 	fprintf(TREF,"STOP\n;Heimer on top tool sensor\n"); 
@@ -155,8 +157,8 @@ int Close(struct TOOL *tl) {
 		fprintf(TREF,"FN15: PRINT Q%d0/Q%d1/Q%d2\n",i+1,i+1,i+1);
 		fprintf(REF,"FN15: PRINT Q%d0/Q%d1/Q%d2\n",i+1,i+1,i+1);
 	}
-	fprintf(TREF,"FN0: Q4 = -999\n"); fprintf(REF,"FN0: Q4 = -999\n");
-	fprintf(TREF,"FN15: PRINT Q4/Q4/Q3\n"); fprintf(REF,"FN15: PRINT Q4/Q4/Q3\n");
+	fprintf(TREF,"FN0: Q4 = %.0lf\n",invalid_coord); fprintf(REF,"FN0: Q4 = %.0lf\n",invalid_coord);
+	fprintf(TREF,"FN15: PRINT Q4/Q4/Q3\n"); fprintf(REF,"FN15: PRINT Q4/Q2/Q3\n");
 	for (int i=0; i<ntool; i++) fprintf(TREF,"FN15: PRINT Q%d7/Q%d6/Q%d8\n",i+1,i+1,i+1);
 	fprintf(TREF,"END PGM 0TREF MM\n"); fprintf(REF,"END PGM 0REF MM\n");
 	fclose(TREF);

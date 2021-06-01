@@ -16,31 +16,21 @@
 
 #define MAXLINE 1024
 #define MAXGO 65536
-#define MAXTOOL 256
 #define COMSIZE 256
 
 #define DMUDIR "../machine-code/%d.h"
 #define DMUDIRSCAD "../machine-code/%dop%d.scad"
-#define FILETREF "../machine-code/0TREF.h"
-#define FILEREF "../machine-code/0REF.h"
 #define DMUDIRSETUP "../machine-code/%dsetup.h"
 #define SETCOORNAME "../machine-code/%FN15RUN.A"
-#define TOOLFILE "../machine-code/TOOL.T"
+#define FILETREF "../machine-code/0TREF.h"
+#define FILEREF "../machine-code/0REF.h"
  
 using namespace std;
 
-struct TOOL{
-    char name[100];
-    double l,rtable,rcad,DL,DR;
-    int T1,T2,T3;
-    int spindl,spinsense;
-};
-
 #include "clsplit.h"
 
-FILE* SCAD=NULL;
+#include "TOOLS.h"
 #include "CSCAD.h"
-
 #include "TRef.h"
 
 /*-----------------------------  the main program ------------------------------------------------------*/
@@ -56,16 +46,15 @@ int main(int argc, char **argv) {
 	char lineapt[MAXLINE];
 	FILE *APT, *OUT;
 	double Stock[3];
-	struct TOOL tl[MAXTOOL];
 	int fpause;
-	double Datum[3], xd[32], yd[32], zd[32];
+	double Datum[3], xd[32], yd[32], zd[32]; /* Datum has the Pivot coordinates subtrated in ReadCoord() */
 	double Shift[3];
 	double CC[2], old_CC[2], coord[6], old_coord[3];
 	double axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
 	double prev_axis[3] = {0,0,0}, dist=0, length=0;
 	char last_comment[100];
 
-	double thetabtemp,thetactemp, thetab, thetac;
+	double thetabtemp,thetactemp, thetab, thetac, thetatable;
 	double theta1, theta2, CCR;
 	char com[12*COMSIZE];
 	int nA;
@@ -77,17 +66,18 @@ int main(int argc, char **argv) {
 
 	TRef tref;
 	CSCAD scad;
+	TOOLS tools;
 
 	int op=0;
 	fpause = 0;
 	if (argc < 2) {
 		cout<< endl;
 		cout<<"Provide the APT (....apt) file name. A %FN15RUN.A file must be present."<< endl;
-		cout<<" The %FN15RUN.A file syntax (relative to the Pivot): DatumX DatumY DatumZ"<< endl;
+		cout<<" The %FN15RUN.A file syntax:              DatumX DatumY DatumZ"<< endl;
 		cout<<" reference sphere relative to Datum (for each setup): X   Y  Z"<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
-		cout<<"                                         :-999 -999 zd(ns)=tool"<< endl;
+		cout<<"                                       :-9999 -9999 zd(ns)=tool"<< endl;
 		cout<<"                                         :tooln DR DL"<< endl;
 		cout<<"                                         :... ... ..."<< endl;
 		cout<<"  clean - to remove all generated files "<< endl;
@@ -110,7 +100,7 @@ int main(int argc, char **argv) {
 
 
 	/* read the tool table TOOL.T */
-	ReadTool(tl,fpause);
+	tools.ReadTool(fpause);
 
 	/* -------------------- enter APT processing option ------------------------------------------------ */
 
@@ -125,24 +115,29 @@ int main(int argc, char **argv) {
 
 	/* read all coordinates in the %FN15RUN.A file */
 	ncoord=ReadCoord(xd,yd,zd,Datum);
+	/* yd[ncoord] cos(theta) of table rotation and zd[ncoord] is z0 of tool measure  */
+	if ( xd[ncoord] != invalid_coord ) thetatable=0;
+	else thetatable=asin(yd[ncoord]) * 180.0 / AM_PI;
 	if (argc>=5 ) {
 		Datum[0]=atof(argv[2]);
 		Datum[1]=atof(argv[3]);
 		Datum[2]=atof(argv[4]);
+		if (argc >=6) thetatable=atof(argv[5]);
 	} else if (argc>=4) {
+		if ( xd[ncoord] != invalid_coord ) printf("Invalid sensor position in FN15RUN.A \n"); 
 		printf("Set tool lenght to %.3f\n",zd[ncoord]-atof(argv[2])); 
 		fpause=1;
 	}
 
 	/* read all tool measurements from the %FN15RUN.A file */
-	ntools=ReadToolCoord(tl,fpause);
+	ntools=tools.ReadToolCoord(fpause);
 
 	/* initialize MAIN LOOP OVER LINES of the .apt file */
 	nsetup = -1;
 	updated=0;
 	lnumber=0;
-	for (int i=0; i<3; i++) old_coord[i]=-9999;
-	for (int i=0; i<2; i++) old_CC[i] = -9999;
+	for (int i=0; i<3; i++) old_coord[i]=invalid_coord;
+	for (int i=0; i<2; i++) old_CC[i] = invalid_coord;
 	RL = '0';
 	dist=0.0;
 	length=0.0;
@@ -174,7 +169,7 @@ int main(int argc, char **argv) {
 			fprintf(OUT, "%d STOP\n",lnumber);  ++lnumber;
 			fprintf(OUT, "%d ;%s\n", lnumber, lineapt + strlen("INSERT/STOP"));  ++lnumber;
 			updated |= NEW_FLOOD;
-			if (tl[toolcall].spinsense==1) fprintf(OUT, "%d M03\n",lnumber); 
+			if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d M03\n",lnumber); 
 			else fprintf(OUT, "%d M04\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L ",lnumber); 
 			printVAR(OUT,"Z", old_coord[2]);
@@ -183,7 +178,7 @@ int main(int argc, char **argv) {
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
 		} else if (strstr(lineapt, "CSYS/") != 0) { 
 
-			if ( op > 0) scad.close(toolcall, Stock, tl, Datum, thetab, thetac, Shift);
+			if ( op > 0) scad.close(toolcall, Stock, tools.tl, Datum, thetab, thetac, Shift);
 
 			++op;
 			nA = ReadArray(A, lineapt + strlen("CSYS/"), ',');
@@ -263,7 +258,7 @@ int main(int argc, char **argv) {
 			} else {
 				fprintf(OUT, "%d ;NewFeature\n", lnumber); ++lnumber;
 			}
-			scad.open(argv[1], nsetup, op, toolcall, Stock, tl, Shift, Datum, thetab, thetac);
+			scad.open(argv[1], nsetup, op, toolcall, Stock, tools.tl, Shift, Datum, thetab, thetac, thetatable);
 
 		/* comment copy  */
 		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is copyed to comment (maybe tool name)*/
@@ -278,33 +273,33 @@ int main(int argc, char **argv) {
 		/* spindle speed and spinsence */
 		} else if (strstr(lineapt, "SPINDL/") != 0) { /* SPINDLE prints the TOOL statment if tool number is defined */
 			nA=ReadArrayCom(com, lineapt + strlen("SPINDL/"), ',');
-			tl[toolcall].spindl = atoi(com);
-			if (strstr(com+2*COMSIZE, "CCLW")) tl[toolcall].spinsense = -1; 
-			else  tl[toolcall].spinsense = 1;
+			tools.tl[toolcall].speed = atoi(com);
+			if (strstr(com+2*COMSIZE, "CCLW")) tools.tl[toolcall].clockwise = -1; 
+			else  tools.tl[toolcall].clockwise = 1;
 			updated |= NEW_SPINDLE;
 
 		/* load the tool */
 		} else if (strstr(lineapt, "LOAD/TOOL,") != 0) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
 			if (toolcall != -1) {} /* close SCAD  for this tool */
 			toolcall = atoi(lineapt + strlen("LOAD/TOOL,"));
-			strcpy(tl[toolcall].name,last_comment);
+			strcpy(tools.tl[toolcall].name,last_comment);
 			updated |= NEW_TOOL;
-			tl[toolcall].rcad = rtool; 
-			if ((tl[toolcall].rtable != 0) && (tl[toolcall].rtable != tl[toolcall].rcad)) {
+			tools.tl[toolcall].rcad = rtool; 
+			if ((tools.tl[toolcall].rtable != 0) && (tools.tl[toolcall].rtable != tools.tl[toolcall].rcad)) {
 				printf("Error: Tool %d - radius %f not 0 and not matching tool table %f\n",
-						toolcall, tl[toolcall].rcad,tl[toolcall].rtable);
+						toolcall, tools.tl[toolcall].rcad,tools.tl[toolcall].rtable);
 				fpause=1;
 			}
-			temp =  tl[toolcall].l + tl[toolcall].DL;
+			temp =  tools.tl[toolcall].l + tools.tl[toolcall].DL;
 			if ( temp == 0) {
 				printf("Need to measure lenght of Tool %d\n", toolcall);
 				fpause=1;
 			}
-			tl[toolcall].l = ltool ;
-			tl[toolcall].DL = temp - ltool ;
-			if (abs(tl[toolcall].DL)>99.0) {
-				printf("Tool %d DL(%.3lf) > 99 set to 0\n", toolcall,tl[toolcall].DL);
-				tl[toolcall].DL=0;
+			tools.tl[toolcall].l = ltool ;
+			tools.tl[toolcall].DL = temp - ltool ;
+			if (abs(tools.tl[toolcall].DL)>99.0) {
+				printf("Tool %d DL(%.3lf) > 99 set to 0\n", toolcall,tools.tl[toolcall].DL);
+				tools.tl[toolcall].DL=0;
 				fpause=1;
 			}
 
@@ -422,11 +417,14 @@ int main(int argc, char **argv) {
 			if ((updated & NEW_SPINDLE) && (updated & NEW_TOOL)) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, tl[toolcall].spindl); ++lnumber;
-				tref.AddTool(toolcall,tl);
-				if (old_coord[2] != -9999.0) { fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]); ++lnumber; }
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, tools.tl[toolcall].speed); ++lnumber;
+				tref.AddTool(toolcall,tools.tl);
+				if (old_coord[2]!=invalid_coord) {
+					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]);
+					++lnumber; 
+				}
 				updated |= NEW_FLOOD;
-				if (tl[toolcall].spinsense==1) fprintf(OUT, "%d M3\n",lnumber); 
+				if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d M3\n",lnumber); 
 				else fprintf(OUT, "%d M4\n",lnumber); ++lnumber;
 				updated &= ~NEW_TOOL;
 			}
@@ -544,7 +542,7 @@ int main(int argc, char **argv) {
 			fprintf(OUT, "%d L Z-10 R0 FMAX M91 M9\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d M30\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d END PGM %d MM\n", lnumber, nsetup + 11); ++lnumber;
-			scad.close(toolcall, Stock, tl, Datum, thetab, thetac,Shift);
+			scad.close(toolcall, Stock, tools.tl, Datum, thetab, thetac,Shift);
 
 		/* do nothing for part number */
 		} else if (strstr(lineapt, "PARTNO/") != 0) {
@@ -561,8 +559,8 @@ int main(int argc, char **argv) {
 	printf("Found %d setups. Output in ../machine-code/ directory.\n", nsetup+1);
 
 	/* write the tool table TOOL.h */
-	WriteTool(tl,fpause);
-	tref.Close(tl);
+	tools.WriteTool(fpause);
+	tref.Close(tools.tl);
 
 	fclose(APT);
 	fclose(OUT);
