@@ -41,6 +41,8 @@ using namespace arma;
 #include <opencv2/core/matx.hpp>
 #endif
 
+#define FILEREF "../machine-code/0REF.h"
+
 int writeCircleSCAD(int ncoord, double* n, double* xm, double* ym, double* zm) {
 	FILE* SCAD;
 	if ((SCAD = fopen("CIRCLE.scad", "w")) == NULL) {
@@ -70,11 +72,63 @@ int main(int argc, char** argv) {
 	double B[4][1],W[4];
 	int sphere=0;
 	FILE *TXT;
+	FILE *REF;
 
 	if (argc < 2) {
 		cout << "Provide the .A file name. Output to CIRCLE.txt\nData format of %FN15RUN.A \n" << endl;
+		cout << "or provide nsetup number to generated 0Ref.h\n" << endl;
 		exit(1);
 	}
+
+       if (strstr(argv[1],".A")==0) {
+            printf(" generating 0Ref.h file\n");
+            if ((REF = fopen(FILEREF, "w")) == NULL) {
+	            printf("cannot write FILEREF file %s\n", FILEREF);
+	            return 1;
+            }
+            fprintf(REF,"BEGIN PGM 0REF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
+            fprintf(REF,"L Z-10 FMAX M91\n");
+            fprintf(REF,"TOOL CALL 0 Z S5\n");
+            fprintf(REF,";Set the Datum\n");
+            fprintf(REF,"FN18: SYSREAD Q10 = ID270 NR1 IDX1\n");
+            fprintf(REF,"FN18: SYSREAD Q13 = ID240 NR1 IDX1\n");
+            fprintf(REF,"FN18: SYSREAD Q11 = ID270 NR1 IDX2\n"); 
+	    fprintf(REF,"FN18: SYSREAD Q14 = ID240 NR1 IDX2\n"); 
+	    fprintf(REF,"FN18: SYSREAD Q12 = ID270 NR1 IDX3\n"); 
+	    fprintf(REF,"FN18: SYSREAD Q15 = ID240 NR1 IDX3\n"); 
+	    fprintf(REF,"Q7 = Q13 - Q10\n");
+            fprintf(REF,"Q8 = Q14 - Q11\n"); 
+	    fprintf(REF,"Q9 = Q15 - Q12\n"); 
+	    fprintf(REF,"FN0: Q5 = 0.0\n");
+	    fprintf(REF,"FN0: Q2 = 0.0\n");
+	    fprintf(REF,"FN0: Q3 = 1.995\n");
+	    fprintf(REF,"FN0: Q4 = %.0lf\n",invalid_coord);
+	    for (int i=0; i< atoi(argv[1]) ; i++){ 
+		    fprintf(REF,"STOP\n;Heimer on top of ball for setup %d\n",i+1);
+                    fprintf(REF,"FN18: SYSREAD Q%d2 = ID270 NR1 IDX3\nFN18: SYSREAD Q%d5 = ID240 NR1 IDX3\n",i+1,i+1);
+                    fprintf(REF,"Q4 = Q%d2 - Q3\nQ%d2 = Q4\nQ4 = Q%d5 - Q3\nQ%d5 = Q4\n",i+1,i+1,i+1,i+1);
+                    fprintf(REF,"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+Q%d2\n",i+1);
+                    fprintf(REF,"L IZ+2 R0 F200\nL IX-Q3 R0 F200\nL IX-2 R0 F200\nL IZ-Q3 R0 F200\nL IZ-2 R0 F200\nL IX+2 R0 F25\n");
+		    fprintf(REF,"STOP\n;Heimer at left of ball for setup %d\n",i+1); 
+		    fprintf(REF,"FN18: SYSREAD Q%d0 = ID270 NR1 IDX1\nFN18: SYSREAD Q%d3 = ID240 NR1 IDX1\n",i+1,i+1);
+		    fprintf(REF,"Q4 = Q%d0 + Q3\nQ%d0 = Q4\nQ4 = Q%d3 + Q3\nQ%d3 = Q4\n",i+1,i+1,i+1,i+1);
+                    fprintf(REF,"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1 X+Q%d0\nCYCL DEF 7.2 Y+0\nCYCL DEF 7.3 Z+Q%d2\n",i+1,i+1); 
+		    fprintf(REF,"L IX-2 R0 F200\nL IY+Q3 R0 F200\nL IY+2 R0 F200\nL IX+Q3 R0 F200\nL IX+2 R0 F200\nL IY-2 R0 F25\n"); 
+		    fprintf(REF,"STOP\n;Heimer Y to the ball for setup %d\n",i+1);
+	            fprintf(REF,"FN18: SYSREAD Q%d1 = ID270 NR1 IDX2\nFN18: SYSREAD Q%d4 = ID240 NR1 IDX2\n",i+1,i+1);
+		    fprintf(REF,"Q4 = Q%d1 - Q3\nQ%d1 = Q4\nQ4 = Q%d4 - Q3\nQ%d4 = Q4\n",i+1,i+1,i+1,i+1); 
+		    fprintf(REF,"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
+               }
+               fprintf(REF,"FN15: PRINT Q7/Q8/Q9\n");
+	       for (int i=0; i<atoi(argv[1]); i++) {
+                    fprintf(REF,"FN15: PRINT Q%d0/Q%d1/Q%d2\n",i+1,i+1,i+1);
+	       } 
+               fprintf(REF,"FN15: PRINT Q4/Q2/Q5\n"); 
+	       fprintf(REF,"END PGM 0REF MM\n"); 
+	       fclose(REF);
+            return 0;
+       }
+
 
 	if ( (TXT=fopen("CIRCLE.txt", "a")) == NULL) {
 		printf("cannot open CIRCLE.txt file to append\n");

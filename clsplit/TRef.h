@@ -158,7 +158,7 @@ int Close(struct TOOL *tl) {
 		fprintf(REF,"FN15: PRINT Q%d0/Q%d1/Q%d2\n",i+1,i+1,i+1);
 	}
 	fprintf(TREF,"FN0: Q4 = %.0lf\n",invalid_coord); fprintf(REF,"FN0: Q4 = %.0lf\n",invalid_coord);
-	fprintf(TREF,"FN15: PRINT Q4/Q4/Q3\n"); fprintf(REF,"FN15: PRINT Q4/Q2/Q3\n");
+	fprintf(TREF,"FN15: PRINT Q4/Q2/Q5\n"); fprintf(REF,"FN15: PRINT Q4/Q2/Q5\n");
 	for (int i=0; i<ntool; i++) fprintf(TREF,"FN15: PRINT Q%d7/Q%d6/Q%d8\n",i+1,i+1,i+1);
 	fprintf(TREF,"END PGM 0TREF MM\n"); fprintf(REF,"END PGM 0REF MM\n");
 	fclose(TREF);
