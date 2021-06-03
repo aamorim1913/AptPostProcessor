@@ -85,14 +85,14 @@ int main(int argc, char **argv) {
 		exit(1);
 	}
 
-	if (strstr(argv[1],".apt")==0) {
-		printf(" argument must be an .apt file\n");
-		return -1;
-	}
 	/* Erase 11.h ... files */
 	CleanFiles(filename);
 	if (strstr(argv[1],"clean")!=0) return 0;
 
+	if (strstr(argv[1],".apt")==0) {
+		printf(" argument must be an .apt file\n");
+		return -1;
+	}
 	if ( (APT=fopen(argv[1], "r")) == NULL) {
 		printf("cannot open apt file %s\n", argv[1]);
 		return -1;
