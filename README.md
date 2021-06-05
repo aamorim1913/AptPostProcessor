@@ -39,15 +39,14 @@ CUTTER / d, r [, e, f, a, b, h]
          b = flank angle
          h = cutter height
 
-
 To install the opencv library used by cirpivot and micromeasure follow the items:
-	Clone from github:
-	1 -  create a new directory and: git clone https://github.com/opencv/opencv.git
-	To get the charuco go to github and clone also opencv_contrib:
-	2 - create a different directory and: git clone https://github.com/opencv/opencv_contrib.git
+Clone from github:
+1 -  create a new directory and: git clone https://github.com/opencv/opencv.git
+To get the charuco go to github and clone also opencv_contrib:
+2 - create a different directory and: git clone https://github.com/opencv/opencv_contrib.git
 	2.1 - cd to  modules and remove all but the "aruco" directory
 	To compile and install
-	3 - Create a new install directory; cd to it:
+3 - Create a new install directory; cd to it:
 	if not windows 10:
 		cmake -DBUILD_SHARED_LIBS=OFF -DOPENCV_EXTRA_MODULES_PATH=<opencv_contrib>/modules <opencv_source_directory>
 		make -j5
