@@ -21,7 +21,7 @@ int ReadLine(char* buff, FILE* fp) {
 	return true;
 }
 
-/* Not subtracting pivor coordinates */
+/* Not subtracting pivot coordinates */
 int ReadCoord(char *filename, double* xd, double* yd, double* zd, double *Datum) {
 	int ns = 0;
 	FILE* SETCOOR;
@@ -37,7 +37,7 @@ int ReadCoord(char *filename, double* xd, double* yd, double* zd, double *Datum)
 	while (ReadLine(linecoor, SETCOOR)) {
 		for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
 		if ((sscanf(linecoor, "%lf %lf %lf", xd+ns, yd+ns, zd+ns) != 3) ||
-                        (xd[ns]==invalid_coord && yd[ns] == invalid_coord )) break;
+                        (xd[ns]==invalid_coord) ) break;
 		ns++;
 	}
 	fclose(SETCOOR);
