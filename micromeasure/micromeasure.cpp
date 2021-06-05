@@ -43,7 +43,7 @@ void createBoard(int w, int h)
 {
     cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
     //! [createBoard]
-    cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(w, h, 0.02f, 0.01f, dictionary);
+    cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(w, h, 0.02f, 0.015f, dictionary);
     cv::Mat boardImage;
     board->draw(cv::Size(7680,4320), boardImage, 10, 1);
     //! [createBoard]
@@ -90,8 +90,10 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
         image.copyTo(imageCopy);
 //AAMORIM
 //	cv::cvtColor(image, imageCopy, cv::COLOR_BGR2GRAY);
+//	imageCopy = ~ imageCopy;
+//	imageCopy = 1.5* imageCopy;
 //	cv::threshold(imageCopy, image, 125, 255, cv::THRESH_BINARY);
-//      cv::bitwise_not(image, imageCopy);
+//	cv::bitwise_not(image, imageCopy);
 
 	cv::Size sz = imageCopy.size();
 	if (first) cout << "image with " << sz.width << " x "<< sz.height << " pixels" << endl;
