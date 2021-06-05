@@ -55,3 +55,4 @@ if not windows 10:
 else if windows 10 go to x64 visuall studio command prompt:
     cmake  -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DOPENCV_EXTRA_MODULES_PATH=<opencv_contrib>\modules <opencv_source_directory>
     nmake 
+    set in environment  variable OPENCV_DIR=<opencv_install_dir>
