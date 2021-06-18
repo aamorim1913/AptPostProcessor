@@ -21,8 +21,8 @@ const char* keys =
 	"{u        |1      | Put value of u=1 cameraid }"
 	"{i        |10     | Put value of i=1 niterations used to estimate a single matrix }"
         "{m        |5.174  | Put value of distance between symbols -m=}"
-        "{w        |10     | Number of squares in X direction }"
-        "{h        |5      | Number of squares in Y direction }";
+        "{w        |20     | Number of squares in X direction }"
+        "{h        |10      | Number of squares in Y direction }";
 }
 
 void createBoard();
