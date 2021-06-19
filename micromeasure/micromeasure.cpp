@@ -63,6 +63,7 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
     int camera =0;
 
     ofstream fout("data.txt");
+    ifstream fin;
     cv::VideoCapture inputVideo;
 
     inputVideo.open(camid);
@@ -131,13 +132,13 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
                     {
                         float x = charucoCorners[k].x;
                         float y = sz.height - charucoCorners[k].y - 1;
-                        int i = charucoIds[k] % 9;
-                        int j = charucoIds[k] / 9;
+                        int i = charucoIds[k] % (w-1) ;
+                        int j = charucoIds[k] / (h-1) ;
 
                         accuij.push_back(cv::Point2f(measure * i, measure * j));
                         accucor.push_back(cv::Point2f(x, y));
                     }
-                    putText(imageCopy, text, cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(255, 0, 0), 2);
+                    putText(imageCopy, text, cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(0 , 255, 255), 2);
                     if (iteration == niteration)
                     { /* compute matrix */
                         cout << endl;
@@ -154,7 +155,13 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
                         cout << "B1 " << B1 << " B2 " << B2 << endl;
                         if (dumpfile)
                         {
-                            fout << B1 << "," << B2 << endl;
+			    string line="";
+			    fin.open("properties.txt",ios::in);
+			    while(fin.good()){
+				getline(fin,line);
+			    }
+			    fin.close();
+                            fout << B1 << "," << B2 << "," << line << endl;
                             dumpfile = false;
                         }
                         cv::Mat AA, WW, UU, VV, SS;
@@ -272,10 +279,7 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
             camera = camid+3;
         }
 
-
-
         first = false;
-
     }
 }
 //! [detwc]
