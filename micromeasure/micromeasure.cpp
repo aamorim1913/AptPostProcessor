@@ -17,7 +17,7 @@ namespace
 {
     const char *about = "A code on charuco board creation and detection. It needs to detect at least 6 Ids to add iteration. ";
     const char *keys =
-        "{c        |2      | Put value of c=1 to create charuco board;\nc=2 to detect charuco board without camera calibration;}"
+        "{c        |2      | c=1 create charuco board; c=2 detect without calibration; c=3 compute symbol distance - data.txt}"
         "{u        |1      | Put value of u=1 cameraid of first camera (0,1,2,3) can be added by menu}"
         "{i        |10     | Put value of i=1 niterations used to estimate a single matrix}"
         "{m        |5.174  | Put value of distance between symbols -m=}"
@@ -133,12 +133,12 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
                         float x = charucoCorners[k].x;
                         float y = sz.height - charucoCorners[k].y - 1;
                         int i = charucoIds[k] % (w-1) ;
-                        int j = charucoIds[k] / (h-1) ;
-
+                        int j = charucoIds[k] / (w-1) ;
                         accuij.push_back(cv::Point2f(measure * i, measure * j));
                         accucor.push_back(cv::Point2f(x, y));
                     }
-                    putText(imageCopy, text, cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(0 , 255, 255), 2);
+		    rectangle(imageCopy, cv::Point(10, 30),  cv::Point(675, 14), cv::Scalar(0, 0, 0), cv::FILLED);
+                    putText(imageCopy, text, cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.75, cv::Scalar(0 , 255, 255), 2);
                     if (iteration == niteration)
                     { /* compute matrix */
                         cout << endl;
@@ -146,24 +146,8 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
                             continue;
                         vector<uchar> inliers(accuij.size(), 0);
                         cv::Mat A = cv::estimateAffine2D(accucor, accuij, inliers);
-                        //	       	   cout << "accucor " << accucor << endl;
-                        //	       	   cout << "accuij " << accuij << endl;
-                        //	       	   cout << "A " << A << endl;
                         B1 = A.at<double>(0, 2);
                         B2 = A.at<double>(1, 2);
-                        sprintf(text, "cam %d x %.3lf, y %.3lf rho %.3lf theta %.3lf", camera, B1, B2, sqrt(B1 * B1 + B2 * B2), atan2(B2, B1));
-                        cout << "B1 " << B1 << " B2 " << B2 << endl;
-                        if (dumpfile)
-                        {
-			    string line="";
-			    fin.open("properties.txt",ios::in);
-			    while(fin.good()){
-				getline(fin,line);
-			    }
-			    fin.close();
-                            fout << B1 << "," << B2 << "," << line << endl;
-                            dumpfile = false;
-                        }
                         cv::Mat AA, WW, UU, VV, SS;
                         SS.create(2, 2, CV_64F);
                         for (int i = 0; i < 2; i++)
@@ -199,6 +183,21 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
                         cout << "W " << W1 << "  " << W2 << endl;
                         thetaV = atan2(VV.at<double>(0, 1), VV.at<double>(0, 0));
                         thetaU = atan2(UU.at<double>(0, 1), UU.at<double>(0, 0));
+                        sprintf(text, "cam %d x %.3lf, y %.3lf theta %.3lf tilt %.3lf", 
+				camera, B1, B2, (thetaU+thetaV)*180/AM_PI, (W2-W1)/sqrt(W1*W1+W2*W2) );
+                        cout << "B1 " << B1 << " B2 " << B2 << endl;
+                        if (dumpfile)
+                        {
+			    string line,line2="";
+			    fin.open("properties.txt",ios::in);
+			    while(fin.good()){
+				line = line2;
+				getline(fin,line2);
+			    }
+			    fin.close();
+                            fout << camera << "," << B1 << "," << B2 << "," << (thetaU+thetaV)*180/AM_PI << "," << line << endl;
+                            dumpfile = false;
+                        }
                         cout << "thetaV " << thetaV * 180 / AM_PI << " thetaU " << thetaU * 180 / AM_PI << endl;
                         //		   for (int i=0; i<2; i++) {
                         //			for (int j=0; j<2; j++) cout << "V[" <<i << ","<< j <<"]=" << VV.at<double>(i,j) << " ";
