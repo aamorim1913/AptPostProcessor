@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <stdio.h>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ namespace
         "{c        |2      | c=1 create charuco board; c=2 detect without calibration; c=3 compute symbol distance - data.txt}"
         "{u        |1      | Put value of u=1 cameraid of first camera (0,1,2,3) can be added by menu}"
         "{i        |10     | Put value of i=1 niterations used to estimate a single matrix}"
-        "{m        |5.174  | Put value of distance between symbols -m=}"
+        "{m        |3.462  | Put value of distance between symbols -m=}"
         "{w        |20     | Number of squares in X direction }"
         "{h        |10     | Number of squares in Y direction }"
         "{s        |0.02   | Square Size }"
@@ -30,6 +31,27 @@ namespace
 void createBoard();
 void detectCharucoBoardWithCalibrationPose();
 void detectCharucoBoardWithoutCalibration(float measure);
+
+int computeMeasure(float measure){
+	FILE *fin;
+	float x,y,xm,ym,theta,d,dm;
+	float x0=-9999,y0,xm0,ym0,theta0;
+	int camera,camera0;
+	char comment[256];
+
+	fin=fopen("data.txt","r");
+	if (fscanf(fin,"%d,%f,%f,%f,%f,%f %[^\n]",&camera0,&x0,&y0,&theta0,&xm0,&ym0,comment) < 6)  return -1;
+	printf("x0 %f y0 %f xm0 %f ym0 %f\n",x0,y0,xm0,ym0);
+	while(fscanf(fin,"%d,%f,%f,%f,%f,%f %[^\n]",&camera,&x,&y,&theta,&xm,&ym,comment) >= 6) {
+		d=sqrt((x-x0)*(x-x0)+(y-y0)*(y-y0));
+		dm=sqrt((xm-xm0)*(xm-xm0)+(ym-ym0)*(ym-ym0));
+		printf("x %f y %f xm %f ym %f d %f dm %f m %f \n",x,y,xm,ym,d,dm,dm/d*measure);
+		camera0=camera; x0=x; y0=y; xm0=xm; ym0=ym; theta0=theta;
+	}
+	fclose(fin);
+	return 0;
+
+}
 
 static bool readCameraParameters(std::string filename, cv::Mat &camMatrix, cv::Mat &distCoeffs)
 {
@@ -184,7 +206,7 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
                         thetaV = atan2(VV.at<double>(0, 1), VV.at<double>(0, 0));
                         thetaU = atan2(UU.at<double>(0, 1), UU.at<double>(0, 0));
                         sprintf(text, "cam %d x %.3lf, y %.3lf theta %.3lf tilt %.3lf", 
-				camera, B1, B2, (thetaU+thetaV)*180/AM_PI, (W2-W1)/sqrt(W1*W1+W2*W2) );
+				camera, B1, B2, (thetaU+thetaV)*180/AM_PI, 100.0*(W2-W1)/sqrt(W1*W1+W2*W2) );
                         cout << "B1 " << B1 << " B2 " << B2 << endl;
                         if (dumpfile)
                         {
@@ -298,8 +320,10 @@ int main(int argc, char *argv[])
     int h = parser.get<int>("h");
     float squaresize = parser.get<float>("s");
     float symsize = parser.get<float>("y");
-    float measure;
-    int camid, niteration;
+    float measure = parser.get<float>("m");
+    int camid = parser.get<int>("u");
+    int niteration;
+
     switch (choose)
     {
     case 1:
@@ -307,10 +331,11 @@ int main(int argc, char *argv[])
         std::cout << "An image named BoardImg.bmp is generated in folder containing this file" << std::endl;
         break;
     case 2:
-        measure = parser.get<float>("m");
-        camid = parser.get<int>("u");
         niteration = parser.get<int>("i");
         detectCharucoBoardWithoutCalibration(camid, measure, niteration, w, h, squaresize, symsize);
+        break;
+    case 3:
+	computeMeasure(measure);
         break;
     default:
         break;
