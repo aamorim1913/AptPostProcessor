@@ -35,8 +35,9 @@ void detectCharucoBoardWithoutCalibration(float measure);
 int computeMeasure(float measure){
 	FILE *fin;
 	float x,y,xm,ym,theta,d,dm;
-	float x0=-9999,y0,xm0,ym0,theta0;
-	int camera,camera0;
+	float x0,y0,xm0,ym0,theta0;
+	float m,mavg=0;
+	int n=0,camera,camera0;
 	char comment[256];
 
 	fin=fopen("data.txt","r");
@@ -45,8 +46,15 @@ int computeMeasure(float measure){
 	while(fscanf(fin,"%d,%f,%f,%f,%f,%f %[^\n]",&camera,&x,&y,&theta,&xm,&ym,comment) >= 6) {
 		d=sqrt((x-x0)*(x-x0)+(y-y0)*(y-y0));
 		dm=sqrt((xm-xm0)*(xm-xm0)+(ym-ym0)*(ym-ym0));
-		printf("x %f y %f xm %f ym %f d %f dm %f m %f \n",x,y,xm,ym,d,dm,dm/d*measure);
+		m=dm/d*measure;
+		printf("x %f y %f xm %f ym %f d %f dm %f m %f \n",x,y,xm,ym,d,dm,m);
+		++n;
+		mavg+=m;
 		camera0=camera; x0=x; y0=y; xm0=xm; ym0=ym; theta0=theta;
+	}
+	if (n>0) {
+		mavg=mavg/n;
+		printf("Average m: %f\n",mavg);
 	}
 	fclose(fin);
 	return 0;
@@ -210,6 +218,7 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
                         cout << "B1 " << B1 << " B2 " << B2 << endl;
                         if (dumpfile)
                         {
+			    char filename[256];
 			    string line,line2="";
 			    fin.open("properties.txt",ios::in);
 			    while(fin.good()){
@@ -218,6 +227,12 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
 			    }
 			    fin.close();
                             fout << camera << "," << B1 << "," << B2 << "," << (thetaU+thetaV)*180/AM_PI << "," << line << endl;
+			    replace( line.begin(), line.end(), ',', '_' );
+			    replace( line.begin(), line.end(), ' ', '_' );
+			    sprintf(filename,"images/%s.bmp",line.c_str());
+			    cv::imwrite(filename,image);
+			    sprintf(filename,"images/%s.jpg",line.c_str());
+			    cv::imwrite(filename,imageCopy);
                             dumpfile = false;
                         }
                         cout << "thetaV " << thetaV * 180 / AM_PI << " thetaU " << thetaU * 180 / AM_PI << endl;
@@ -322,7 +337,7 @@ int main(int argc, char *argv[])
     float symsize = parser.get<float>("y");
     float measure = parser.get<float>("m");
     int camid = parser.get<int>("u");
-    int niteration;
+    int niteration = parser.get<int>("i");
 
     switch (choose)
     {
@@ -331,7 +346,6 @@ int main(int argc, char *argv[])
         std::cout << "An image named BoardImg.bmp is generated in folder containing this file" << std::endl;
         break;
     case 2:
-        niteration = parser.get<int>("i");
         detectCharucoBoardWithoutCalibration(camid, measure, niteration, w, h, squaresize, symsize);
         break;
     case 3:
