@@ -12,11 +12,11 @@ subsystem:
 windows:
 	cd clsplit && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release .
 	cd clsplit && nmake
-	cd cirpivot && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release .
+	cd cirpivot && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
 	cd cirpivot && nmake
 	cd flip && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release .
 	cd flip && nmake
-	cd micromeasure && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release .
+	cd micromeasure && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
 	cd micromeasure && nmake
 
 clean:
