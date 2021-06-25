@@ -297,21 +297,29 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
         else if (key == 48 ) /* 0 */
         {
             inputVideo.open(camid);
+    	    inputVideo.set(cv::CAP_PROP_FRAME_WIDTH, (unsigned int)800);
+    	    inputVideo.set(cv::CAP_PROP_FRAME_HEIGHT, (unsigned int)600);
             camera = camid;
         } 
         else if (key == 49 ) /* 1 */
         {
             inputVideo.open(camid+1);
+    	    inputVideo.set(cv::CAP_PROP_FRAME_WIDTH, (unsigned int)800);
+    	    inputVideo.set(cv::CAP_PROP_FRAME_HEIGHT, (unsigned int)600);
             camera = camid + 1;
         } 
         else if (key == 50 ) /* 2 */
         {
             inputVideo.open(camid+2);
+    	    inputVideo.set(cv::CAP_PROP_FRAME_WIDTH, (unsigned int)800);
+    	    inputVideo.set(cv::CAP_PROP_FRAME_HEIGHT, (unsigned int)600);
             camera = camid+2;
         } 
         else if (key == 51 ) /* 3 */
         {
             inputVideo.open(camid+3);
+    	    inputVideo.set(cv::CAP_PROP_FRAME_WIDTH, (unsigned int)800);
+    	    inputVideo.set(cv::CAP_PROP_FRAME_HEIGHT, (unsigned int)600);
             camera = camid+3;
         }
 
