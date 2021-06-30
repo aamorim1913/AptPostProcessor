@@ -228,7 +228,7 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
 			    sprintf(filename,"images/%s-%d.txt",line.c_str(),camera);
 			    FILE *ftxt=fopen(filename,"w");
 			    for (int i=0; i<accuboard.size() ; i++) 
-				fprintf(ftxt,"%.0lf %.0lf %lf %lf\n",
+				fprintf(ftxt,"%.0lf,%.0lf,%lf,%lf\n",
 				accuboard[i].x/measure,accuboard[i].y/measure,accupix[i].x,accupix[i].y);
 			    fclose(ftxt);
                             dumpfile = false;
