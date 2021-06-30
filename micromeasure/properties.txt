@@ -1,2 +1,1 @@
-
-0,0,0.00,20 z,dial,tilt,press
+0,104,-0.04,140 z,dial,tilt,Load,AfterLoad200
