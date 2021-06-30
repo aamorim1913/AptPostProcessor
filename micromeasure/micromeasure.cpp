@@ -32,6 +32,42 @@ void createBoard();
 void detectCharucoBoardWithCalibrationPose();
 void detectCharucoBoardWithoutCalibration(float measure);
 
+int computeAffine(std::vector<cv::Point2f> &accuboard, std::vector<cv::Point2f> &accupix, double &B1, double &B2, double &W1, double &W2, double &thetaU, double &thetaV){
+	vector<uchar> inliers(accuboard.size(), 0);
+	cv::Mat A = cv::estimateAffine2D(accupix, accuboard, inliers);
+	B1 = A.at<double>(0, 2);
+	B2 = A.at<double>(1, 2);
+	cv::Mat AA, WW, UU, VV, SS;
+	SS.create(2, 2, CV_64F);
+	for (int i = 0; i < 2; i++)
+	   for (int j = 0; j < 2; j++) {
+		if (i != j) SS.at<double>(i, j) = 1.0;
+		else
+		SS.at<double>(i, j) = 0.0;
+	   }
+	AA.create(2, 2, CV_64F);
+	AA.at<double>(0, 0) = A.at<double>(0, 0);
+	AA.at<double>(1, 0) = A.at<double>(1, 0);
+	AA.at<double>(0, 1) = A.at<double>(0, 1);
+	AA.at<double>(1, 1) = A.at<double>(1, 1);
+	cv::SVD::compute(AA, WW, UU, VV, cv::SVD::FULL_UV);
+	if (cv::determinant(UU) < 0) {
+	   cout << " revert U,V" << endl;
+	   UU = UU * SS;
+	   if (cv::determinant(VV) > 0) cout << " the two rotations still involve one parity " << endl;
+	   VV = SS * VV;
+ 	   W1 = WW.at<double>(1);
+	   W2 = WW.at<double>(0);
+         } else {
+	   W1 = WW.at<double>(0);
+	   W2 = WW.at<double>(1);
+	 }
+	cout << "W " << W1 << "  " << W2 << endl;
+	thetaV = atan2(VV.at<double>(0, 1), VV.at<double>(0, 0));
+	thetaU = atan2(UU.at<double>(0, 1), UU.at<double>(0, 0));
+	return 0;
+}
+
 int computeMeasure(float measure){
 	FILE *fin;
 	float x,y,xm,ym,theta,d,dm;
@@ -64,8 +100,7 @@ int computeMeasure(float measure){
 static bool readCameraParameters(std::string filename, cv::Mat &camMatrix, cv::Mat &distCoeffs)
 {
     cv::FileStorage fs(filename, cv::FileStorage::READ);
-    if (!fs.isOpened())
-        return false;
+    if (!fs.isOpened()) return false;
     fs["camera_matrix"] >> camMatrix;
     fs["distortion_coefficients"] >> distCoeffs;
     return true;
@@ -74,12 +109,10 @@ static bool readCameraParameters(std::string filename, cv::Mat &camMatrix, cv::M
 void createBoard(int w, int h, float squaresize, float symsize)
 {
     cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
-    //! [createBoard]
     printf("sqsize %f symsize %f\n", squaresize, symsize);
     cv::Ptr<cv::aruco::CharucoBoard> board = cv::aruco::CharucoBoard::create(w, h, squaresize, symsize, dictionary);
     cv::Mat boardImage;
     board->draw(cv::Size(7680, 4320), boardImage, 10, 1);
-    //! [createBoard]
     cv::imwrite("BoardImage.bmp", boardImage);
 }
 
@@ -110,9 +143,8 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
     cout << " ESC(q) break, d dump (f to store in data.txt), c circle, r rectan+res, space to reset, 0,1,2,3 camera" << endl;
 
     int iteration = niteration;
-    std::vector<cv::Point2f> accuij;
-    std::vector<cv::Point2f> accucor;
-    std::vector<cv::Point2f> accures;
+    std::vector<cv::Point2f> accuboard;
+    std::vector<cv::Point2f> accupix;
 
     char text[256];
     text[0] = 0;
@@ -132,17 +164,14 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
         std::vector<int> markerIds;
         std::vector<std::vector<cv::Point2f>> markerCorners;
         cv::aruco::detectMarkers(image, board->dictionary, markerCorners, markerIds, params);
-        //or
-        //cv::aruco::detectMarkers(image, dictionary, markerCorners, markerIds, params);
-        // if at least one marker detected
+
         if (markerIds.size() > 0)
         {
             cv::aruco::drawDetectedMarkers(imageCopy, markerCorners, markerIds);
-            //! [charidcorwc]
             std::vector<cv::Point2f> charucoCorners;
             std::vector<int> charucoIds;
             cv::aruco::interpolateCornersCharuco(markerCorners, markerIds, image, board, charucoCorners, charucoIds);
-            //! [charidcorwc]
+
             // if at least one charuco corner detected
             if (charucoIds.size() > 0)
                 cv::aruco::drawDetectedCornersCharuco(imageCopy, charucoCorners, charucoIds, cv::Scalar(255, 0, 0));
@@ -154,9 +183,8 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
                     if (iteration > niteration)
                     {
                         iteration = 1;
-                        accuij.clear();
-                        accucor.clear();
-                        accures.clear();
+                        accuboard.clear();
+                        accupix.clear();
                         cout << "it ";
                     }
                     cout << iteration << " ";
@@ -166,70 +194,20 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
                         float y = sz.height - charucoCorners[k].y - 1;
                         int i = charucoIds[k] % (w-1) ;
                         int j = charucoIds[k] / (w-1) ;
-                        accuij.push_back(cv::Point2f(measure * i, measure * j));
-                        accucor.push_back(cv::Point2f(x, y));
-			accures.push_back(cv::Point2f(0,0));
+                        accuboard.push_back(cv::Point2f(measure * i, measure * j));
+                        accupix.push_back(cv::Point2f(x, y));
                     }
 		    rectangle(imageCopy, cv::Point(10, 30),  cv::Point(675, 14), cv::Scalar(0, 0, 0), cv::FILLED);
                     putText(imageCopy, text, cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 0.75, cv::Scalar(0 , 255, 255), 2);
                     if (iteration == niteration)
                     { /* compute matrix */
                         cout << endl;
-                        if (accuij.size() < 3 * niteration)
-                            continue;
-                        vector<uchar> inliers(accuij.size(), 0);
-                        cv::Mat A = cv::estimateAffine2D(accucor, accuij, inliers);
-                        B1 = A.at<double>(0, 2);
-                        B2 = A.at<double>(1, 2);
-			cv::Mat T;
-                        T.create(2, 2, CV_64F);
-                        T.at<double>(0, 0) = A.at<double>(0, 0);
-                        T.at<double>(1, 0) = A.at<double>(1, 0);
-                        T.at<double>(0, 1) = A.at<double>(0, 1);
-                        T.at<double>(1, 1) = A.at<double>(1, 1);
-			T.inv();
-			for (int i=0; i<accuij.size() ; i++){
-			    accures[i].x=T.at<double>(0, 0)*(accucor[i].x-B1)+T.at<double>(0, 1)*(accucor[i].y-B2);
-			    accures[i].y=T.at<double>(1, 0)*(accucor[i].x-B1)+T.at<double>(1, 1)*(accucor[i].y-B2);
-			}
-                        cv::Mat AA, WW, UU, VV, SS;
-                        SS.create(2, 2, CV_64F);
-                        for (int i = 0; i < 2; i++)
-                            for (int j = 0; j < 2; j++)
-                            {
-                                if (i != j)
-                                    SS.at<double>(i, j) = 1.0;
-                                else
-                                    SS.at<double>(i, j) = 0.0;
-                            }
-                        AA.create(2, 2, CV_64F);
-                        AA.at<double>(0, 0) = A.at<double>(0, 0);
-                        AA.at<double>(1, 0) = A.at<double>(1, 0);
-                        AA.at<double>(0, 1) = A.at<double>(0, 1);
-                        AA.at<double>(1, 1) = A.at<double>(1, 1);
-                        cv::SVD::compute(AA, WW, UU, VV, cv::SVD::FULL_UV);
-                        ;
-                        if (cv::determinant(UU) < 0)
-                        {
-                            cout << " revert U,V" << endl;
-                            UU = UU * SS;
-                            if (cv::determinant(VV) > 0)
-                                cout << " the two rotations still involve one parity " << endl;
-                            VV = SS * VV;
-                            W1 = WW.at<double>(1);
-                            W2 = WW.at<double>(0);
-                        }
-                        else
-                        {
-                            W1 = WW.at<double>(0);
-                            W2 = WW.at<double>(1);
-                        }
-                        cout << "W " << W1 << "  " << W2 << endl;
-                        thetaV = atan2(VV.at<double>(0, 1), VV.at<double>(0, 0));
-                        thetaU = atan2(UU.at<double>(0, 1), UU.at<double>(0, 0));
-                        sprintf(text, "cam %d x %.3lf, y %.3lf theta %.3lf tilt %.3lf", 
-				camera, B1, B2, (thetaU+thetaV)*180/AM_PI, 100.0*(W2-W1)/sqrt(W1*W1+W2*W2) );
-                        cout << "B1 " << B1 << " B2 " << B2 << endl;
+//AA
+			if (accuboard.size() < 3 * niteration) continue;
+			computeAffine(accuboard, accupix,B1,B2, W1, W2, thetaU, thetaV);
+			sprintf(text, "cam %d x %.3lf, y %.3lf theta %.3lf tilt %.3lf", 
+        			camera, B1, B2, (thetaU+thetaV)*180/AM_PI, 100.0*(W2-W1)/sqrt(W1*W1+W2*W2) );
+            		cout << "B1 " << B1 << " B2 " << B2 << endl;
                         if (dumpfile)
                         {
 			    char filename[256];
@@ -243,31 +221,19 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
                             fout << camera << "," << B1 << "," << B2 << "," << (thetaU+thetaV)*180/AM_PI << "," << line << endl;
 			    replace( line.begin(), line.end(), ',', '_' );
 			    replace( line.begin(), line.end(), ' ', '_' );
-			    sprintf(filename,"images/%s.bmp",line.c_str());
+			    sprintf(filename,"images/%s-b.png",line.c_str());
 			    cv::imwrite(filename,image);
-			    sprintf(filename,"images/%s.jpg",line.c_str());
+			    sprintf(filename,"images/%s.png",line.c_str());
 			    cv::imwrite(filename,imageCopy);
 			    sprintf(filename,"images/%s.txt",line.c_str());
 			    FILE *ftxt=fopen(filename,"w");
-			    for (int i=0; i<accuij.size() ; i++) {
-				fprintf(ftxt,"%lf %lf %lf %lf %lf %lf\n",
-				accuij[i].x/measure,accuij[i].y/measure,accucor[i].x,accucor[i].y,
-				accures[i].x/measure,accures[i].y/measure);
-			    }
+			    for (int i=0; i<accuboard.size() ; i++) 
+				fprintf(ftxt,"%.0lf %.0lf %lf %lf\n",
+				accuboard[i].x/measure,accuboard[i].y/measure,accupix[i].x,accupix[i].y);
 			    fclose(ftxt);
                             dumpfile = false;
                         }
                         cout << "thetaV " << thetaV * 180 / AM_PI << " thetaU " << thetaU * 180 / AM_PI << endl;
-                        //		   for (int i=0; i<2; i++) {
-                        //			for (int j=0; j<2; j++) cout << "V[" <<i << ","<< j <<"]=" << VV.at<double>(i,j) << " ";
-                        //			cout << endl;
-                        //		    }
-                        //		   cout << endl;
-                        //		   for (int i=0; i<2; i++) {
-                        //			for (int j=0; j<2; j++) cout << "U[" <<i << ","<< j <<"]=" << UU.at<double>(i,j) << " ";
-                        //		    	cout << endl;
-                        //		   }
-                        //		   cout << endl;
                     }
                 }
             }
@@ -288,11 +254,7 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
             cv::line(imageCopy, center + cirR, center + cirR + horiz, cv::Scalar(0, 255, 0), 2, 8);
             cv::line(imageCopy, center - cirR - horiz, center - cirR, cv::Scalar(0, 255, 0), 2, 8);
         }
-        if (rectangleon)
-            cv::rectangle(imageCopy, rect, cv::Scalar(0, 0, 255));
-	    for (int i=0 ; i< accuij.size(); i++) {
-		cv::arrowedLine(imageCopy,accuij[i]/measure,accures[i]/measure,cv::Scalar(0, 0, 255));
-	    }
+        if (rectangleon) cv::rectangle(imageCopy, rect, cv::Scalar(0, 0, 255));
 
         cv::imshow("out", imageCopy);
         char key = (char)cv::waitKey(wtime);
