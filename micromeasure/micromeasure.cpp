@@ -221,11 +221,11 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
                             fout << camera << "," << B1 << "," << B2 << "," << (thetaU+thetaV)*180/AM_PI << "," << line << endl;
 			    replace( line.begin(), line.end(), ',', '_' );
 			    replace( line.begin(), line.end(), ' ', '_' );
-			    sprintf(filename,"images/%s-b.png",line.c_str());
+			    sprintf(filename,"images/%s-b-%d.png",line.c_str(),camera);
 			    cv::imwrite(filename,image);
-			    sprintf(filename,"images/%s.png",line.c_str());
+			    sprintf(filename,"images/%s-%d.png",line.c_str(),camera);
 			    cv::imwrite(filename,imageCopy);
-			    sprintf(filename,"images/%s.txt",line.c_str());
+			    sprintf(filename,"images/%s-%d.txt",line.c_str(),camera);
 			    FILE *ftxt=fopen(filename,"w");
 			    for (int i=0; i<accuboard.size() ; i++) 
 				fprintf(ftxt,"%.0lf %.0lf %lf %lf\n",
