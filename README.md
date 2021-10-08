@@ -70,4 +70,4 @@ On windows to prepare for compilation download build tools:
 	https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019 
 	
 	CMake
-	https://cmake.org/download/
+	https://cmake.org/download/ (choose add to path in the installation procedure)
