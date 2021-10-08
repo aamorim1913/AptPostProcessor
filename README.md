@@ -66,4 +66,5 @@ To compile and install
 	
 On windows to prepare for compilation download build tools:
 	
-	Build tools from https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019 - After run the Visual studio installer and install the C++ development.
+	Build tools from https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019 
+	- After run the Visual studio installer and install the C++ development.
