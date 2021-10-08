@@ -67,7 +67,7 @@ To compile and install
 On windows to prepare for compilation download build tools:
 	
 	Build tools
-	https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019 
+	https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019 ( Run the VS Developer command prompt)
 	
 	CMake
 	https://cmake.org/download/ (choose add to path in the installation procedure)
