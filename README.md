@@ -65,4 +65,9 @@ To compile and install
 		set in environment  variable OPENCV_DIR=<opencv_install_dir> 
 	
 On windows to prepare for compilation download build tools:
+	
+	Build tools
 	https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019 
+	
+	CMake
+	https://cmake.org/download/
