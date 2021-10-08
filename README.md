@@ -56,3 +56,6 @@ To get the charuco go to github and clone also opencv_contrib:
 		nmake 
 		nmake install
 		set in environment  variable OPENCV_DIR=<opencv_install_dir> 
+	
+On windows to prepare for compilation download build tools:
+	https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2019 
