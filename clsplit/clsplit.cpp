@@ -278,6 +278,18 @@ int main(int argc, char **argv) {
 			else  tools.tl[toolcall].clockwise = 1;
 			updated |= NEW_SPINDLE;
 
+		/* CSI_SET_FLUTE_LENGTH */
+		} else if (strstr(lineapt, "CSI_SET_FLUTE_LENGTH/") != 0) { /* tool CSI_SET_FLUTE_LENGTH */
+			sscanf(lineapt+strlen("CSI_SET_FLUTE_LENGTH/"),"%lf",	&temp);
+			printf("Red CSI_SET_FLUTE_LENGTH %lf\n",temp);
+
+
+		/* CSI_SET_EXTENSION_LENGTH */
+		} else if (strstr(lineapt, "CSI_SET_EXTENSION_LENGTH/") != 0) { /* tool CSI_SET_EXTENSION_LENGTH */
+			sscanf(lineapt+strlen("CSI_SET_EXTENSION_LENGTH/"),"%lf",	&temp);
+			printf("Red CSI_SET_EXTENSION_LENGTH %lf\n",temp);
+
+
 		/* load the tool */
 		} else if (strstr(lineapt, "LOAD/TOOL,") != 0) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
 			if (toolcall != -1) {} /* close SCAD  for this tool */
