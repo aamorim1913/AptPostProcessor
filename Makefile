@@ -21,6 +21,10 @@ windows:
 
 clean:
 	$(MAKE) -C clsplit clean
+	rm -f clsplit/CMakeCache.txt
 	$(MAKE) -C cirpivot clean
+	rm -f cirpivot/CMakeCache.txt
 	$(MAKE) -C flip clean
+	rm -f flip/CMakeCache.txt
 	$(MAKE) -C micromeasure clean
+	rm -f micromeasure/CMakeCache.txt
