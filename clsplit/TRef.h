@@ -52,7 +52,8 @@ int AddTool(int tool,  struct TOOL *tl){
 	if ((strstr(tl[tool].name,"DRILL")!=0) || (strstr(tl[tool].name,"FACE")!=0)) {
 		toolrmeas[ntool]=0;
 	} else  {
-		toolrmeas[ntool]=1;
+		// after some debug toolrmeas[ntool]=1;
+		toolrmeas[ntool]=0;
 	}
 	++ntool;	
 
