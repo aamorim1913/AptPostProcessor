@@ -145,7 +145,7 @@ int main(int argc, char **argv) {
 	length=0.0;
 	toolcall = -1;
 
-	/* main loop on the apt file commands */
+	/* main loop on the apt file commands. Real output happens in first GOTO */
 	while (ReadLine(lineapt, APT)) {
 
 		/* begin of program */
@@ -263,8 +263,7 @@ int main(int argc, char **argv) {
 			scad.open(argv[1], nsetup, op, toolcall, Stock, tools.tl, Shift, Datum, thetab, thetac, thetatable);
 
 		/* comment copy  */
-		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is copyed to comment (maybe tool name)*/
-			fprintf(OUT, "%d ;%s\n", lnumber, lineapt+strlen("INSERT/")); ++lnumber;
+		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is copied to comment (maybe tool name)*/
 			strcpy(last_comment,lineapt+strlen("INSERT/"));
 
 		/* properties of the tool */
@@ -282,15 +281,15 @@ int main(int argc, char **argv) {
 
 		/* CSI_SET_FLUTE_LENGTH */
 		} else if (strstr(lineapt, "CSI_SET_FLUTE_LENGTH/") != 0) { /* tool CSI_SET_FLUTE_LENGTH */
-			sscanf(lineapt+strlen("CSI_SET_FLUTE_LENGTH/"),"%lf",	&temp);
-			printf("Red CSI_SET_FLUTE_LENGTH %lf\n",temp);
-
+			sscanf(lineapt+strlen("CSI_SET_FLUTE_LENGTH/"),"%lf", &temp);
+			sprintf(com, " FLUTE LEN %.1lf", temp); 
+			strcat(tools.tl[toolcall].name,com);
 
 		/* CSI_SET_EXTENSION_LENGTH */
 		} else if (strstr(lineapt, "CSI_SET_EXTENSION_LENGTH/") != 0) { /* tool CSI_SET_EXTENSION_LENGTH */
-			sscanf(lineapt+strlen("CSI_SET_EXTENSION_LENGTH/"),"%lf",	&temp);
-			printf("Red CSI_SET_EXTENSION_LENGTH %lf\n",temp);
-
+			sscanf(lineapt+strlen("CSI_SET_EXTENSION_LENGTH/"),"%lf", &temp);
+			sprintf(com, " FLUTE EXT %.1lf", temp); 
+			strcat(tools.tl[toolcall].name,com);
 
 		/* load the tool */
 		} else if (strstr(lineapt, "LOAD/TOOL,") != 0) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
@@ -431,6 +430,7 @@ int main(int argc, char **argv) {
 			if ((updated & NEW_SPINDLE) && (updated & NEW_TOOL)) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
+				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name); ++lnumber;
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, tools.tl[toolcall].speed); ++lnumber;
 				tref.AddTool(toolcall,tools.tl);
 				if (old_coord[2]!=invalid_coord) {
