@@ -15,12 +15,12 @@ To generate the STL export in options:
 The %FN15RUN.A file has syntax:
 
 datumx, datumy,datumz (in absolute machione coordinates)
-x_ref1 y_ref1 z_ref1
-x_ref2 y_ref2 z_ref2
+x_ref1 y_ref1 z_ref1  (relative to datum)
+x_ref2 y_ref2 z_ref2  (relative to datum) 
 ...
--9999 ym[ns]="sin(thetatable)"  zm[ns]="tool sensor pos"
-ntool1 DR1 DL1
-ntool2 DR1 DL2
+-9999 ym[ns]="sin(thetatable)"  zm[ns]="machine z for 3D sensor on top of tool measure"
+ntool1 DR1 DL1(relative to 3D sensor)
+ntool2 DR1 DL2(relative to 3D sensor)
 ...
 
 To use the micro...
