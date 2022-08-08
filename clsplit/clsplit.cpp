@@ -431,7 +431,10 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name); ++lnumber;
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, tools.tl[toolcall].speed); ++lnumber;
+				fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, toolcall, 
+					tools.tl[toolcall].l, tools.tl[toolcall].rcad); ++lnumber;
+				fprintf(OUT, "%d TOOL CALL %d Z S%d DL%+.3lf DR%+.3lf\n", lnumber, toolcall, 
+					tools.tl[toolcall].speed,tools.tl[toolcall].DL,0.0); ++lnumber;
 				tref.AddTool(toolcall,tools.tl);
 				if (old_coord[2]!=invalid_coord) {
 					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]);
