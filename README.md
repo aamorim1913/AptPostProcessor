@@ -26,6 +26,7 @@ ntool2 DR1 DL2
 To use the micro...
  - copy the opencv installation dir (after compilation)
 	- in an administrator promp execute: setx -m OPenCV_DIR <the instalation directory>
+
 Tool measurement from apt Ex:
 INSERT/8MM CRB 2FL 20 LOC
 CUTTER/8.,0,4.,0,0,0,40.
