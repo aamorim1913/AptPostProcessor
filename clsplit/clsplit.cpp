@@ -73,15 +73,15 @@ int main(int argc, char **argv) {
 	if (argc < 2) {
 		cout<< endl;
 		cout<<"Provide the APT (....apt) file name. A %FN15RUN.A file must be present."<< endl;
-		cout<<" The %FN15RUN.A file syntax:              DatumX DatumY DatumZ"<< endl;
+		cout<<" The %FN15RUN.A file syntax:              DatumX DatumY DatumZ (machine coord)"<< endl;
 		cout<<" reference sphere relative to Datum (for each setup): X   Y  Z"<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
-		cout<<"                                       :-9999 -9999 zd(ns)=tool"<< endl;
+		cout<<"                                       :-9999 sin(theta) of table rotation mach z0 of tool measure"<< endl;
 		cout<<"                                         :tooln DR DL"<< endl;
 		cout<<"                                         :... ... ..."<< endl;
 		cout<<"  clean - to remove all generated files "<< endl;
-		cout<<"  ... apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> "<< endl;
+		cout<<"  ... apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> <thetatable> "<< endl;
 		exit(1);
 	}
 
@@ -113,11 +113,13 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 
-	/* read all coordinates in the %FN15RUN.A file */
+	/* read all coordinates in the %FN15RUN.A file up to end or invalid_coord (if exists) */
 	ncoord=ReadCoord(xd,yd,zd,Datum);
-	/* yd[ncoord] cos(theta) of table rotation and zd[ncoord] is z0 of tool measure  */
+	/* yd[ncoord] is cos(theta) of table rotation and zd[ncoord] is z0 of tool measure  */
 	if ( xd[ncoord] != invalid_coord ) thetatable=0;
 	else thetatable=asin(yd[ncoord]) * 180.0 / AM_PI;
+
+	/* allow datum imput from command line */
 	if (argc>=5 ) {
 		Datum[0]=atof(argv[2]);
 		Datum[1]=atof(argv[3]);
@@ -198,7 +200,7 @@ int main(int argc, char **argv) {
 				A[4]=axis[1];
 				A[5]=axis[2];
 
-				/* first we compute the shift for the reference point  for setup
+				/* first we compute the shift for the reference point for setup
 				   The reference point coordinates relative to the pivot point */
 				A[0] = xd[nsetup]+Datum[0];
 				A[1] = yd[nsetup]+Datum[1];

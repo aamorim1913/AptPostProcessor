@@ -14,7 +14,7 @@ To generate the STL export in options:
 
 The %FN15RUN.A file has syntax:
 
-datumx, datumy,datumz (relative to the pivot)
+datumx, datumy,datumz (in absolute machione coordinates)
 x_ref1 y_ref1 z_ref1
 x_ref2 y_ref2 z_ref2
 ...
@@ -31,7 +31,8 @@ Tool measurement from apt Ex:
 INSERT/8MM CRB 2FL 20 LOC
 CUTTER/8.,0,4.,0,0,0,40.
 LOAD/TOOL,17
-CUTTER / d, r [, e, f, a, b, h]
+
+CUTTER / d, 0?, r [, e, f, a, b, h]
  where:  d = cutter diameter
          r = cutter radius
          e = radial corner offset

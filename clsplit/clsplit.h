@@ -115,6 +115,8 @@ int RotateArray(int n, double* A, double& thetab, double& thetac) {
 	return 0;
 }
 
+/* Read coodinates from coord file up to end or invalid_coord (if exists) */
+/* Datum has pivot point coordinates subtracted. In file is absolute machine coordinates */
 int ReadCoord(double* xd, double* yd, double* zd, double* Datum) {
 	int ns = 0;
 	FILE* SETCOOR;
@@ -124,16 +126,19 @@ int ReadCoord(double* xd, double* yd, double* zd, double* Datum) {
 		printf("cannot open SETCOOR file %s\n", SETCOORNAME);
 		return 1;
 	}
+
 	ReadLine(linecoor, SETCOOR);
 	for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
 	sscanf(linecoor, "%lf %lf %lf", Datum, Datum+1, Datum+2);
 	for( int i=0; i<3; i++) Datum[i]-=Pivot[i];
+
 	while (ReadLine(linecoor, SETCOOR)) {
 		for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
 		if ((sscanf(linecoor, "%lf %lf %lf", xd+ns, yd+ns, zd+ns) != 3) ||
 			(xd[ns]==invalid_coord)) break;
 		ns++;
 	}
+
 	fclose(SETCOOR);
 	return ns;
 }
