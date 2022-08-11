@@ -269,7 +269,8 @@ int main(int argc, char **argv) {
 		/* properties of the tool */
 		} else if (strstr(lineapt, "CUTTER/") != 0) {
 			sscanf(lineapt+strlen("CUTTER/"),"%lf,%lf,%lf,%lf,%lf,%lf,%lf",
-				&rtool,&temp,&temp,&temp,&temp,&temp,&ltool); rtool=rtool/2; ltool=ltool-deltatool;
+				&rtool,&temp,&temp,&temp,&temp,&temp,&ltool); rtool=rtool/2; 
+//ltool=ltool-deltatool;
 
 		/* spindle speed and spinsence */
 		} else if (strstr(lineapt, "SPINDL/") != 0) { /* SPINDLE prints the TOOL statment if tool number is defined */
