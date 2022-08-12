@@ -6,7 +6,6 @@ class CSCAD{
 
 private:
 double x1min, y1min, z1min;
-double x2min, y2min, z2min;
 FILE* SCAD;
 
 public:
@@ -31,9 +30,9 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 	if ((coord[0]+Datum[0]+Pivot[0] >= MachineLimits[1]) || (coord[0]+Datum[0]+Pivot[0] <= MachineLimits[0]) ||
 			 (coord[1]+Datum[1]+Pivot[1] >= MachineLimits[3]) || (coord[1]+Datum[1]+Pivot[1] <= MachineLimits[2])
 			|| (coord[2]+Datum[2]+Pivot[2] >=  MachineLimits[5]) || (coord[2]+Datum[2]+Pivot[2] <= MachineLimits[4])) {
-		fprintf(SCAD, "//x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
+		if (thetab <=90 )fprintf(SCAD, "//x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
 			coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2], lnumber);
-		printf("ERROR:out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
+		if (thetab <=90 )printf("ERROR:out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
 			coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2],
 			 lnumber, nsetup+11, op, toolcall);
 		*fpause = 1;
@@ -49,9 +48,6 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 	d1 = 50 - (coord[0]+Datum[0]+Pivot[0])*sin(thetab*AM_PI/180.) + 
 			(coord[2]+Datum[2]+Pivot[2])*cos(thetab*AM_PI/180.);
 	if (d1 <= d1min) { d1min = d1; x1min = coord[0]; y1min = coord[1]; z1min = coord[2]; }
-	d2 = 50 - (coord[0]+Datum[0]+Pivot[0])*sin(thetab*AM_PI/180.) + 
-			(coord[2]+Datum[2]+Pivot[2])*cos(thetab*AM_PI/180.);
-	if (d2 <= d2min) { d2min = d2; x2min = coord[0]; y2min = coord[1]; z2min = coord[2]; }
 
 	for (int i=0; i<3 ; i++) old_coord[i]=coord[i];
 	return 0;
@@ -102,12 +98,6 @@ int open(char* name, int nsetup, int op, int tool, double * Stock, struct TOOL *
 	/* table */
 	fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) color(\"grey\") difference(){\ntranslate([0,0,-75]) cylinder(50,350,350,center = true);\ntranslate([0,-500,-125]) linear_extrude(100) square(500,center=true);\ntranslate([0,500,-125]) linear_extrude(100) square(500,center=true);}\n", 
 		-thetab, -thetac-thetatable);
-	/* vice1 */
-	fprintf(SCAD, "rotate([0,%f,0])rotate([0,0,%f])color(\"black\")translate([%f,%f,-12.5])cube([160,20,75],center=true);\n",
-		-thetab, -thetac, Datum[0], Datum[1]+ 10 + Stock[1]);
-	/* vice2 */
-	fprintf(SCAD, "rotate([0,%f,0])rotate([0,0,%f])color(\"black\")translate([%f,%f,-12.5])cube([160,20,75],center=true);\n",
-		-thetab, -thetac, Datum[0], Datum[1] - 10);
 
 	/* STL of the part */
 #if defined(_WIN64)
