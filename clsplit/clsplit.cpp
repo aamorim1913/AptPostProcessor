@@ -73,15 +73,15 @@ int main(int argc, char **argv) {
 	if (argc < 2) {
 		cout<< endl;
 		cout<<"Provide the APT (....apt) file name. A %FN15RUN.A file must be present."<< endl;
-		cout<<" The %FN15RUN.A file syntax:              DatumX DatumY DatumZ"<< endl;
+		cout<<" The %FN15RUN.A file syntax:              DatumX DatumY DatumZ (machine coord)"<< endl;
 		cout<<" reference sphere relative to Datum (for each setup): X   Y  Z"<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
-		cout<<"                                       :-9999 -9999 zd(ns)=tool"<< endl;
+		cout<<"                                       :-9999 sin(theta) of table rotation mach z0 of tool measure"<< endl;
 		cout<<"                                         :tooln DR DL"<< endl;
 		cout<<"                                         :... ... ..."<< endl;
 		cout<<"  clean - to remove all generated files "<< endl;
-		cout<<"  ... apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> "<< endl;
+		cout<<"  ... apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> <thetatable> "<< endl;
 		exit(1);
 	}
 
@@ -113,11 +113,13 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 
-	/* read all coordinates in the %FN15RUN.A file */
+	/* read all coordinates in the %FN15RUN.A file up to end or invalid_coord (if exists) */
 	ncoord=ReadCoord(xd,yd,zd,Datum);
-	/* yd[ncoord] cos(theta) of table rotation and zd[ncoord] is z0 of tool measure  */
+	/* yd[ncoord] is cos(theta) of table rotation and zd[ncoord] is z0 of tool measure  */
 	if ( xd[ncoord] != invalid_coord ) thetatable=0;
 	else thetatable=asin(yd[ncoord]) * 180.0 / AM_PI;
+
+	/* allow datum imput from command line */
 	if (argc>=5 ) {
 		Datum[0]=atof(argv[2]);
 		Datum[1]=atof(argv[3]);
@@ -143,7 +145,7 @@ int main(int argc, char **argv) {
 	length=0.0;
 	toolcall = -1;
 
-	/* main loop on the apt file commands */
+	/* main loop on the apt file commands. Real output happens in first GOTO */
 	while (ReadLine(lineapt, APT)) {
 
 		/* begin of program */
@@ -198,7 +200,7 @@ int main(int argc, char **argv) {
 				A[4]=axis[1];
 				A[5]=axis[2];
 
-				/* first we compute the shift for the reference point  for setup
+				/* first we compute the shift for the reference point for setup
 				   The reference point coordinates relative to the pivot point */
 				A[0] = xd[nsetup]+Datum[0];
 				A[1] = yd[nsetup]+Datum[1];
@@ -261,14 +263,14 @@ int main(int argc, char **argv) {
 			scad.open(argv[1], nsetup, op, toolcall, Stock, tools.tl, Shift, Datum, thetab, thetac, thetatable);
 
 		/* comment copy  */
-		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is copyed to comment (maybe tool name)*/
-			fprintf(OUT, "%d ;%s\n", lnumber, lineapt+strlen("INSERT/")); ++lnumber;
+		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is copied to comment (maybe tool name)*/
 			strcpy(last_comment,lineapt+strlen("INSERT/"));
 
 		/* properties of the tool */
 		} else if (strstr(lineapt, "CUTTER/") != 0) {
 			sscanf(lineapt+strlen("CUTTER/"),"%lf,%lf,%lf,%lf,%lf,%lf,%lf",
-				&rtool,&temp,&temp,&temp,&temp,&temp,&ltool); rtool=rtool/2; ltool=ltool-deltatool;
+				&rtool,&temp,&temp,&temp,&temp,&temp,&ltool); rtool=rtool/2; 
+//ltool=ltool-deltatool;
 
 		/* spindle speed and spinsence */
 		} else if (strstr(lineapt, "SPINDL/") != 0) { /* SPINDLE prints the TOOL statment if tool number is defined */
@@ -280,15 +282,15 @@ int main(int argc, char **argv) {
 
 		/* CSI_SET_FLUTE_LENGTH */
 		} else if (strstr(lineapt, "CSI_SET_FLUTE_LENGTH/") != 0) { /* tool CSI_SET_FLUTE_LENGTH */
-			sscanf(lineapt+strlen("CSI_SET_FLUTE_LENGTH/"),"%lf",	&temp);
-			printf("Red CSI_SET_FLUTE_LENGTH %lf\n",temp);
-
+			sscanf(lineapt+strlen("CSI_SET_FLUTE_LENGTH/"),"%lf", &temp);
+			sprintf(com, " FLUTE LEN %.1lf", temp); 
+			strcat(tools.tl[toolcall].name,com);
 
 		/* CSI_SET_EXTENSION_LENGTH */
 		} else if (strstr(lineapt, "CSI_SET_EXTENSION_LENGTH/") != 0) { /* tool CSI_SET_EXTENSION_LENGTH */
-			sscanf(lineapt+strlen("CSI_SET_EXTENSION_LENGTH/"),"%lf",	&temp);
-			printf("Red CSI_SET_EXTENSION_LENGTH %lf\n",temp);
-
+			sscanf(lineapt+strlen("CSI_SET_EXTENSION_LENGTH/"),"%lf", &temp);
+			sprintf(com, " FLUTE EXT %.1lf", temp); 
+			strcat(tools.tl[toolcall].name,com);
 
 		/* load the tool */
 		} else if (strstr(lineapt, "LOAD/TOOL,") != 0) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
@@ -429,7 +431,11 @@ int main(int argc, char **argv) {
 			if ((updated & NEW_SPINDLE) && (updated & NEW_TOOL)) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall, tools.tl[toolcall].speed); ++lnumber;
+				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name); ++lnumber;
+				fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, toolcall, 
+					tools.tl[toolcall].l, tools.tl[toolcall].rcad); ++lnumber;
+				fprintf(OUT, "%d TOOL CALL %d Z S%d DL%+.3lf DR%+.3lf\n", lnumber, toolcall, 
+					tools.tl[toolcall].speed,tools.tl[toolcall].DL,0.0); ++lnumber;
 				tref.AddTool(toolcall,tools.tl);
 				if (old_coord[2]!=invalid_coord) {
 					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]);

@@ -94,9 +94,11 @@ int WriteTool(int &fpause) {
 	fprintf(FTOOL,"T    NAME             L          R          DL      DR      TL RT  TIME1 TIME2 CUR.TIME DOC\n");
 	for (int i = 0; i < 100; i++) {
 		if (strncmp(tl[i].name,"                ",16)!=0) 
-			for (int j = 0; j < 16; j++)  if (tl[i].name[j] == ' ') tl[i].name[j]='_';
-		sprintf(sbuff, "%-4d %.16s %-+10.3lf +0,000     %-+7.3lf %-+7.3lf        %d     %d     %d",
-			i,tl[i].name,tl[i].l,tl[i].DL,tl[i].DR,tl[i].T1,tl[i].T2,tl[i].T3);
+			for (int j = 0; j < strlen(tl[i].name) ; j++)  if (tl[i].name[j] == ' ') tl[i].name[j]='_';
+		int namestart=0;
+		for (int j = 0; j < strlen(tl[i].name); j++)  if (tl[i].name[j] == ']') namestart=j+2;
+		sprintf(sbuff, "%-4d %.16s %-+10.3lf %-+10.3lf %-+7.3lf %-+7.3lf        %d     %d     %d",
+			i,tl[i].name+namestart,tl[i].l,tl[i].rcad,tl[i].DL,tl[i].DR,tl[i].T1,tl[i].T2,tl[i].T3);
 		for (int j = 0; j < 1024; j++) {
 			if (sbuff[j] == '\0') break;
 			if (sbuff[j] == '.') sbuff[j] = ',';

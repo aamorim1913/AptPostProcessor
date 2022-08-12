@@ -14,23 +14,25 @@ To generate the STL export in options:
 
 The %FN15RUN.A file has syntax:
 
-datumx, datumy,datumz (relative to the pivot)
-x_ref1 y_ref1 z_ref1
-x_ref2 y_ref2 z_ref2
+datumx, datumy,datumz (in absolute machione coordinates)
+x_ref1 y_ref1 z_ref1  (relative to datum)
+x_ref2 y_ref2 z_ref2  (relative to datum) 
 ...
--9999 ym[ns]="sin(thetatable)"  zm[ns]="tool sensor pos"
-ntool1 DR1 DL1
-ntool2 DR1 DL2
+-9999 ym[ns]="sin(thetatable)"  zm[ns]="machine z for 3D sensor on top of tool measure"
+ntool1 DR1 DL1(relative to 3D sensor)
+ntool2 DR1 DL2(relative to 3D sensor)
 ...
 
 To use the micro...
  - copy the opencv installation dir (after compilation)
 	- in an administrator promp execute: setx -m OPenCV_DIR <the instalation directory>
+
 Tool measurement from apt Ex:
 INSERT/8MM CRB 2FL 20 LOC
 CUTTER/8.,0,4.,0,0,0,40.
 LOAD/TOOL,17
-CUTTER / d, r [, e, f, a, b, h]
+
+CUTTER / d, 0?, r [, e, f, a, b, h]
  where:  d = cutter diameter
          r = cutter radius
          e = radial corner offset
