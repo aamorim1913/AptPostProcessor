@@ -5,7 +5,7 @@
 class CSCAD{
 
 private:
-double x1min, y1min, z1min;
+double x1ini, y1ini, z1ini;
 FILE* SCAD;
 
 public:
@@ -15,15 +15,13 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 	static double old_coord[3];
 	static int old_nsetup = -1;
 	static int old_op = -1;
-	static double d1min=9999, d2min=9999;
 	double d1,d2;
 
 	if ((nsetup != old_nsetup) || (op != old_op)) {
 		old_nsetup = nsetup  ;
 		old_op = op ;
 		for (int i=0; i<3; i++) old_coord[i]=coord[i];
-		d1min=9999;
-		d2min=9999;
+		x1ini = coord[0]; y1ini = coord[1]; z1ini = coord[2];
 		return 0;
 	}
 
@@ -45,10 +43,6 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 	fprintf(SCAD, "translate([xd,yd,zd]) hull(){translate([%.2f,%.2f,%.2f]) cylinder(1,rtool); translate([%.2f,%.2f,%.2f]) cylinder(1,rtool);}\n",
 	old_coord[0], old_coord[1], old_coord[2], coord[0], coord[1], coord[2]);
 
-	d1 = 50 - (coord[0]+Datum[0]+Pivot[0])*sin(thetab*AM_PI/180.) + 
-			(coord[2]+Datum[2]+Pivot[2])*cos(thetab*AM_PI/180.);
-	if (d1 <= d1min) { d1min = d1; x1min = coord[0]; y1min = coord[1]; z1min = coord[2]; }
-
 	for (int i=0; i<3 ; i++) old_coord[i]=coord[i];
 	return 0;
 }
@@ -57,28 +51,38 @@ int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, 
 	double coord[3];
 
 	if (Sense == '-') {
-		if (theta2 >= theta1) theta2 -= 2 * AM_PI;
-		if (theta2 >= theta1) theta2 -= 2 * AM_PI;
+		if (theta2 >= theta1) theta2 -= 360;
+		if (theta2 >= theta1) theta2 -= 360;
 	}
 	else { /* + */
-		if (theta2 <= theta1) theta2 += 2 * AM_PI;
-		if (theta2 <= theta1) theta2 += 2 * AM_PI;
+		if (theta2 <= theta1) theta2 += 360;
+		if (theta2 <= theta1) theta2 += 360;
 	}
 	int n = 5 + (int)CCR / 10;
 
 	for (int i = 1; i <= n; ++i) {
 		double theta = theta1 + i * (theta2 - theta1) / n;
-		coord[0]=CC[0]+CCR*cos(theta);
-		coord[1]=CC[1]+CCR*sin(theta);
-                coord[2]=old_z+(theta-theta1)/(theta2-theta1)*(z-old_z),
-		AddLine( coord, lnumber, toolcall, nsetup, op, feed, fpause, Datum, thetab);
+		coord[0]=CC[0]+CCR*cos(theta*AM_PI/180);
+		coord[1]=CC[1]+CCR*sin(theta*AM_PI/180);
+                coord[2]=old_z+(theta-theta1)/(theta2-theta1)*(z-old_z);
+//		AddLine( coord, lnumber, toolcall, nsetup, op, feed, fpause, Datum, thetab);
 	}
+
+        /* print tool paths */
+        fprintf(SCAD, "/* line -> %d */\n",  lnumber);
+	if (z==old_z){
+		fprintf(SCAD,"color(\"yellow\",0.3) translate([xd,yd,zd]) translate([%.2f, %.2f, %.2f]) rotate([0,0,%.2f]) rotate_extrude(angle=%.2f, convexity = 10, $fn=50) translate([%.2f, 0, 0]) square([2*rtool, 1],center = true);\n",
+		CC[0],CC[1],old_z,theta1,theta2-theta1,CCR);
+	} else { 
+		fprintf(SCAD,"color(\"yellow\",0.3) translate([xd,yd,zd]) translate([%.2f, %.2f, %.2f]) rotate([0,0,%.2f]) linear_extrude(height = %.2f, center = false, convexity = 10, twist = %.2f, $fn = 50) translate([%.2f, 0, 0]) square([2*rtool, 1],center = true);\n",
+		CC[0],CC[1],old_z,z-old_z,theta1,theta2-theta1,CCR);
+	}
+
 	return 0;
 }
 
 int open(char* name, int nsetup, int op, int tool, double * Stock, struct TOOL *tl, double *Shift, double *Datum, double thetab, double thetac, double thetatable) {
 
-	//double d1, d2, d1min = 1000., d2min = 1000.;
 	size_t st;
 	static int prev_ns;
 
@@ -125,7 +129,7 @@ int close(int tool, double *Stock, struct TOOL *tl, double *Datum, double thetab
 	if (SCAD == NULL) return -1;
 
 	fprintf(SCAD,"x=%.3lf;y=%.3lf;z=%.3lf; /* Near the table */\n", 
-			x1min+Datum[0]+Shift[0], y1min+Datum[1]+Shift[1], z1min+Datum[2]+Shift[2]);
+			x1ini+Datum[0]+Shift[0], y1ini+Datum[1]+Shift[1], z1ini+Datum[2]+Shift[2]);
 
 	/* machine head xd to be replaced by x */
 	fprintf(SCAD, "color(\"white\") translate([x,y,z]) union(){\ntranslate([7.5,0,280-l]) linear_extrude(500) square(295,center=true);\ntranslate([0,0,230-l]) cylinder(100,75,75,center=true);\ntranslate([0,0,90+ltool/2]) cylinder(180-ltool,35,35,center=true);\ntranslate([0,0,ltool/2]) cylinder(ltool,rtool,rtool,center=true);}\n");
