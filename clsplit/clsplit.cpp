@@ -300,7 +300,7 @@ int main(int argc, char **argv) {
 			updated |= NEW_TOOL;
 			tools.tl[toolcall].rcad = rtool; 
 			if ((tools.tl[toolcall].rtable != 0) && (tools.tl[toolcall].rtable != tools.tl[toolcall].rcad)) {
-				printf("Error: Tool %d - radius %f not 0 and not matching tool table %f\n",
+				printf("Error: Tool %d is set to radius %f in matching tool table %f\n",
 						toolcall, tools.tl[toolcall].rcad,tools.tl[toolcall].rtable);
 				fpause=1;
 			}
@@ -490,7 +490,10 @@ int main(int argc, char **argv) {
 					if (feed == -1) fprintf(OUT," M9");
 					else fprintf(OUT," M08");
 				}
-				if (updated & CYCLE_ON) fprintf(OUT," M99");
+				if (updated & CYCLE_ON) {
+					fprintf(OUT," M99");
+					scad.AddDepth(coord,dist,length);
+				}
 				fprintf(OUT, "\n"); ++lnumber;
 
 				scad.AddLine(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab);

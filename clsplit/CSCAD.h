@@ -6,13 +6,14 @@ class CSCAD{
 
 private:
 double x1ini, y1ini, z1ini;
+double old_coord[3];
+
 FILE* SCAD;
 
 public:
 int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op, 
 			double feed, int *fpause, double *Datum, double thetab) {
 
-	static double old_coord[3];
 	static int old_nsetup = -1;
 	static int old_op = -1;
 	double d1,d2;
@@ -40,12 +41,23 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 	fprintf(SCAD, "/* line -> %d */\n",  lnumber);
 	if (feed <= 0) fprintf(SCAD, "color(\"blue\",0.3) ");
 	else fprintf(SCAD, "color(\"yellow\",0.3) ");
-	fprintf(SCAD, "translate([xd,yd,zd]) hull(){translate([%.2f,%.2f,%.2f]) cylinder(1,rtool); translate([%.2f,%.2f,%.2f]) cylinder(1,rtool);}\n",
+	fprintf(SCAD, "translate([xd,yd,zd]) hull(){translate([%.2f,%.2f,%.2f]) cylinder(1,rtool,rtool); translate([%.2f,%.2f,%.2f]) cylinder(1,rtool,rtool);}\n",
 	old_coord[0], old_coord[1], old_coord[2], coord[0], coord[1], coord[2]);
 
 	for (int i=0; i<3 ; i++) old_coord[i]=coord[i];
+
 	return 0;
 }
+
+int AddDepth(double *coord, double dist, double length) {
+
+	if (length <0) length = - length;
+	fprintf(SCAD,"color(\"green\",0.3) translate([xd,yd,zd]) translate([%.2f,%.2f,%.2f]) cylinder(%.2f,rtool,rtool);\n",
+		coord[0],coord[1], coord[2]-dist-length, dist+length);
+
+	return 0;
+}
+
 
 int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum, double thetab) {
 	double coord[3];
@@ -77,6 +89,9 @@ int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, 
 		fprintf(SCAD,"color(\"yellow\",0.3) translate([xd,yd,zd]) translate([%.2f, %.2f, %.2f]) rotate([0,0,%.2f]) linear_extrude(height = %.2f, center = false, convexity = 10, twist = %.2f, $fn = 50) translate([%.2f, 0, 0]) square([2*rtool, 1],center = true);\n",
 		CC[0],CC[1],old_z,z-old_z,theta1,theta2-theta1,CCR);
 	}
+	old_coord[0]=CC[0]+CCR*cos(theta2*AM_PI/180);
+	old_coord[1]=CC[1]+CCR*sin(theta2*AM_PI/180);
+	old_coord[2]=z;
 
 	return 0;
 }

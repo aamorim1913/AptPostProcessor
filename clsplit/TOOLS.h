@@ -73,10 +73,10 @@ int ReadTool(int &fpause) {
 		tl[i].name[16]='\0';
 		sscanf(sbuff+21, "%lf %lf %lf %lf %d %d %d", &(tl[i].l), &(tl[i].rtable), 
 			&(tl[i].DL), &(tl[i].DR), &(tl[i].T1), &(tl[i].T2), &(tl[i].T3));
-		if (tl[i].rtable != 0) {
-			printf("Tool %d in TOOL.T will be set with r=0\n",i);
-			fpause=1;
-		}
+//		if (tl[i].rtable != 0) {
+//			printf("Tool %d in TOOL.T will be set with r=0\n",i);
+//			fpause=1;
+//		}
 	}
 	fclose(FTOOL);
 	return 0;
