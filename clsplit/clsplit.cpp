@@ -492,7 +492,7 @@ int main(int argc, char **argv) {
 				}
 				if (updated & CYCLE_ON) {
 					fprintf(OUT," M99");
-					scad.AddDepth(coord,dist,length);
+					scad.AddDepth(coord, lnumber, toolcall, dist, length, nsetup, op, &fpause, Datum, thetab);
 				}
 				fprintf(OUT, "\n"); ++lnumber;
 

@@ -16,7 +16,6 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 
 	static int old_nsetup = -1;
 	static int old_op = -1;
-	double d1,d2;
 
 	if ((nsetup != old_nsetup) || (op != old_op)) {
 		old_nsetup = nsetup  ;
@@ -29,11 +28,12 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 	if ((coord[0]+Datum[0]+Pivot[0] >= MachineLimits[1]) || (coord[0]+Datum[0]+Pivot[0] <= MachineLimits[0]) ||
 			 (coord[1]+Datum[1]+Pivot[1] >= MachineLimits[3]) || (coord[1]+Datum[1]+Pivot[1] <= MachineLimits[2])
 			|| (coord[2]+Datum[2]+Pivot[2] >=  MachineLimits[5]) || (coord[2]+Datum[2]+Pivot[2] <= MachineLimits[4])) {
-		if (thetab <=90 )fprintf(SCAD, "//x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
-			coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2], lnumber);
-		if (thetab <=90 )printf("ERROR:out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
-			coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2],
-			 lnumber, nsetup+11, op, toolcall);
+		if (thetab <=90 ){
+			fprintf(SCAD, "//x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
+				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2], lnumber);
+			printf("ERROR:out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
+				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2],lnumber, nsetup+11, op, toolcall);
+		}
 		*fpause = 1;
 	}
 
@@ -49,9 +49,18 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 	return 0;
 }
 
-int AddDepth(double *coord, double dist, double length) {
+int AddDepth(double *coord, int lnumber, int toolcall, double dist, double length, int nsetup, int op, int *fpause, double *Datum, double thetab) {
 
 	if (length <0) length = - length;
+	if  (coord[2]+Datum[2]+Pivot[2] <= MachineLimits[4]) {
+		if (thetab <=90 ){
+			fprintf(SCAD, "//Depph x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
+				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2], lnumber);
+			printf("ERROR:Depth out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
+				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2],lnumber, nsetup+11, op, toolcall);
+		}
+		*fpause = 1;
+	}
 	fprintf(SCAD,"color(\"green\",0.3) translate([xd,yd,zd]) translate([%.2f,%.2f,%.2f]) cylinder(%.2f,rtool,rtool);\n",
 		coord[0],coord[1], coord[2]-dist-length, dist+length);
 
@@ -84,10 +93,10 @@ int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, 
         fprintf(SCAD, "/* line -> %d */\n",  lnumber);
 	if (z==old_z){
 		fprintf(SCAD,"color(\"yellow\",0.3) translate([xd,yd,zd]) translate([%.2f, %.2f, %.2f]) rotate([0,0,%.2f]) rotate_extrude(angle=%.2f, convexity = 10, $fn=50) translate([%.2f, 0, 0]) square([2*rtool, 1],center = true);\n",
-		CC[0],CC[1],old_z,theta1,theta2-theta1,CCR);
+		CC[0],CC[1],old_z+0.5,theta1,theta2-theta1,CCR);
 	} else { 
 		fprintf(SCAD,"color(\"yellow\",0.3) translate([xd,yd,zd]) translate([%.2f, %.2f, %.2f]) rotate([0,0,%.2f]) linear_extrude(height = %.2f, center = false, convexity = 10, twist = %.2f, $fn = 50) translate([%.2f, 0, 0]) square([2*rtool, 1],center = true);\n",
-		CC[0],CC[1],old_z,z-old_z,theta1,theta2-theta1,CCR);
+		CC[0],CC[1],old_z+0.5,z-old_z,theta1,theta2-theta1,CCR);
 	}
 	old_coord[0]=CC[0]+CCR*cos(theta2*AM_PI/180);
 	old_coord[1]=CC[1]+CCR*sin(theta2*AM_PI/180);
