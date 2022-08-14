@@ -490,23 +490,13 @@ int main(int argc, char **argv) {
 					if (feed == -1) fprintf(OUT," M9");
 					else fprintf(OUT," M08");
 				}
+				scad.AddLine(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab);
 				if (updated & CYCLE_ON) {
 					fprintf(OUT," M99");
 					scad.AddDepth(coord, lnumber, toolcall, dist, length, nsetup, op, &fpause, Datum, thetab);
 				}
 				fprintf(OUT, "\n"); ++lnumber;
 
-				scad.AddLine(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab);
-				/* if there is a drill cycle */
-				if (dist != 0 ){
-					double ShiftCoord[3];
-					ShiftCoord[0]=coord[0];
-					ShiftCoord[1]=coord[1];
-					ShiftCoord[2]=coord[2]-dist-length;
-					scad.AddLine(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum, thetab);
-					ShiftCoord[2]=coord[2];
-					scad.AddLine(coord,lnumber,toolcall,nsetup,op,feed,&fpause, Datum, thetab);
-				}
 			 /* draw circle or spiral */
 			} else {
 				//VERY CONFUSING ON THE APT FILE DO NOT USE! if (used_RL != RL ) fprintf(OUT, " R%c",RL);
