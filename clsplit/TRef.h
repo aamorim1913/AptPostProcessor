@@ -52,7 +52,8 @@ int AddTool(int tool,  struct TOOL *tl){
 	if ((strstr(tl[tool].name,"DRILL")!=0) || (strstr(tl[tool].name,"FACE")!=0)) {
 		toolrmeas[ntool]=0;
 	} else  {
-		toolrmeas[ntool]=1;
+		// after some debug toolrmeas[ntool]=1;
+		toolrmeas[ntool]=0;
 	}
 	++ntool;	
 
@@ -67,6 +68,7 @@ int Close(struct TOOL *tl) {
 	for (int i=0 ; i<ntool; i++) {
 		fprintf(TREF,"FN0: Q%d7 = %d\n",i+1,tnum[i]);
 		fprintf(TREF,"L Z-10 FMAX M91\n;%s\n",tl[tnum[i]].name);
+		fprintf(TREF,"TOOL DEF %d L%+.3lf R%+.3lf\n", tnum[i], tl[tnum[i]].lcad, tl[tnum[i]].rcad);
 		fprintf(TREF,"TOOL CALL %d Z S%d\n",tnum[i],tl[tnum[i]].speed);
 		fprintf(TREF,"STOP\n;tool on zero of sensor\n");
 		fprintf(TREF,"FN18: SYSREAD Q%d8 = ID240 NR1 IDX3\n",i+1);

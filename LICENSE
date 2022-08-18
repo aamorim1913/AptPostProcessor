@@ -1,4 +1,9 @@
- The code here presented provides a possible skeleton of software to drive heavy machinery.
+The document AZpost_Users_Guide_VMC5X.pdf is picked as reference since it disapeard from the Web. 
+Its authors are from  www.ncdataservices.com.
+
+All other files are: 
+
+The code here presented provides a possible skeleton of software to drive heavy machinery.
  The authors are by no means responsible for any damage to machinery or people resulting 
  from this code or possible changes to it.
  Please use it wisely and always test the milling paths in the machine by defining a datum 

@@ -6,7 +6,7 @@
 #define MAXTOOL 256
 struct TOOL{
     char name[100];
-    double l,rtable,rcad,DL,DR;
+    double lcad,rtable,rcad,DL,DR;
     int T1,T2,T3;
     int speed,clockwise;
 };
@@ -40,7 +40,7 @@ int ReadToolCoord(int &fpause) {
 		} else {
 			tl[tool].DR=DR;
 			tl[tool].rtable=0;
-			tl[tool].DL=L-tl[tool].l;
+			tl[tool].DL=L-tl[tool].lcad;
 		}
 	}
 	fclose(SETCOOR);
@@ -71,12 +71,12 @@ int ReadTool(int &fpause) {
 		}
 		strncpy(tl[i].name,sbuff+5,16); 
 		tl[i].name[16]='\0';
-		sscanf(sbuff+21, "%lf %lf %lf %lf %d %d %d", &(tl[i].l), &(tl[i].rtable), 
+		sscanf(sbuff+21, "%lf %lf %lf %lf %d %d %d", &(tl[i].lcad), &(tl[i].rtable), 
 			&(tl[i].DL), &(tl[i].DR), &(tl[i].T1), &(tl[i].T2), &(tl[i].T3));
-		if (tl[i].rtable != 0) {
-			printf("Tool %d in TOOL.T will be set with r=0\n",i);
-			fpause=1;
-		}
+//		if (tl[i].rtable != 0) {
+//			printf("Tool %d in TOOL.T will be set with r=0\n",i);
+//			fpause=1;
+//		}
 	}
 	fclose(FTOOL);
 	return 0;
@@ -94,9 +94,11 @@ int WriteTool(int &fpause) {
 	fprintf(FTOOL,"T    NAME             L          R          DL      DR      TL RT  TIME1 TIME2 CUR.TIME DOC\n");
 	for (int i = 0; i < 100; i++) {
 		if (strncmp(tl[i].name,"                ",16)!=0) 
-			for (int j = 0; j < 16; j++)  if (tl[i].name[j] == ' ') tl[i].name[j]='_';
-		sprintf(sbuff, "%-4d %.16s %-+10.3lf +0,000     %-+7.3lf %-+7.3lf        %d     %d     %d",
-			i,tl[i].name,tl[i].l,tl[i].DL,tl[i].DR,tl[i].T1,tl[i].T2,tl[i].T3);
+			for (int j = 0; j < strlen(tl[i].name) ; j++)  if (tl[i].name[j] == ' ') tl[i].name[j]='_';
+		int namestart=0;
+		for (int j = 0; j < strlen(tl[i].name); j++)  if (tl[i].name[j] == ']') namestart=j+2;
+		sprintf(sbuff, "%-4d %.16s %-+10.3lf %-+10.3lf %-+7.3lf %-+7.3lf        %d     %d     %d",
+			i,tl[i].name+namestart,tl[i].lcad,tl[i].rcad,tl[i].DL,tl[i].DR,tl[i].T1,tl[i].T2,tl[i].T3);
 		for (int j = 0; j < 1024; j++) {
 			if (sbuff[j] == '\0') break;
 			if (sbuff[j] == '.') sbuff[j] = ',';
