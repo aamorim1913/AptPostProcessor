@@ -270,7 +270,6 @@ int main(int argc, char **argv) {
 		} else if (strstr(lineapt, "CUTTER/") != 0) {
 			sscanf(lineapt+strlen("CUTTER/"),"%lf,%lf,%lf,%lf,%lf,%lf,%lf",
 				&rtool,&temp,&temp,&temp,&temp,&temp,&ltool); rtool=rtool/2; 
-//ltool=ltool-deltatool;
 
 		/* spindle speed and spinsence */
 		} else if (strstr(lineapt, "SPINDL/") != 0) { /* SPINDLE prints the TOOL statment if tool number is defined */
@@ -304,19 +303,12 @@ int main(int argc, char **argv) {
 						toolcall, tools.tl[toolcall].rcad,tools.tl[toolcall].rtable);
 				fpause=1;
 			}
-			temp =  tools.tl[toolcall].l + tools.tl[toolcall].DL;
-			if ( temp == 0) {
-				printf("Need to measure lenght of Tool %d\n", toolcall);
-				fpause=1;
-			}
-			tools.tl[toolcall].l = ltool ;
-			tools.tl[toolcall].DL = temp - ltool ;
-			if (abs(tools.tl[toolcall].DL)>99.0) {
-				printf("Tool %d DL(%.3lf) > 99 set to 0\n", toolcall,tools.tl[toolcall].DL);
+			if (tools.tl[toolcall].lcad != ltool-sensorlenght) {
+				printf("Error: CAD tool %d lenght (-sensorlengh) is different from TOOL.h \n",toolcall);
+				tools.tl[toolcall].lcad = ltool-sensorlenght;
 				tools.tl[toolcall].DL=0;
 				fpause=1;
 			}
-
 
 		/* used for authomatic feeder */
 		} else if (strstr(lineapt, "SELECT/TOOL,") != 0) { /* SELECT/TOOL defines the next tool to be used - carrousel */
@@ -433,7 +425,7 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name); ++lnumber;
 				fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, toolcall, 
-					tools.tl[toolcall].l, tools.tl[toolcall].rcad); ++lnumber;
+					tools.tl[toolcall].lcad, tools.tl[toolcall].rcad); ++lnumber;
 				fprintf(OUT, "%d TOOL CALL %d Z S%d DL%+.3lf DR%+.3lf\n", lnumber, toolcall, 
 					tools.tl[toolcall].speed,tools.tl[toolcall].DL,0.0); ++lnumber;
 				tref.AddTool(toolcall,tools.tl);
