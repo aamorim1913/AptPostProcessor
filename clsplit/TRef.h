@@ -68,8 +68,8 @@ int Close(struct TOOL *tl) {
 	for (int i=0 ; i<ntool; i++) {
 		fprintf(TREF,"FN0: Q%d7 = %d\n",i+1,tnum[i]);
 		fprintf(TREF,"L Z-10 FMAX M91\n;%s\n",tl[tnum[i]].name);
-		fprintf(TREF,"TOOL DEF %d L%+.3lf R%+.3lf\n", tnum[i], tl[tnum[i]].lcad, tl[tnum[i]].rcad);
-		fprintf(TREF,"TOOL CALL %d Z S%d\n",tnum[i],tl[tnum[i]].speed);
+		fprintf(TREF,"TOOL DEF %d L%+.3lf R%+.3lf\n", tnum[i]+100, tl[tnum[i]].lcad, tl[tnum[i]].rcad);
+		fprintf(TREF,"TOOL CALL %d Z S%d\n",tnum[i]+100,tl[tnum[i]].speed);
 		fprintf(TREF,"STOP\n;tool on zero of sensor\n");
 		fprintf(TREF,"FN18: SYSREAD Q%d8 = ID240 NR1 IDX3\n",i+1);
 		if (toolrmeas[i]==0) fprintf(TREF,"FN0: Q%d6 = 0\n",i+1);
