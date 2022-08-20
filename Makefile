@@ -19,6 +19,13 @@ windows:
 	cd micromeasure && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
 	cd micromeasure && nmake
 
+create2: 
+	cp -f machine.h machine2.h
+	rsync -av --exclude=CMakeFiles --exclude=CMakeCache.txt clsplit/ clsplit2/
+	sed "s/machine.h/machine2.h/g" clsplit/clsplit.cpp > clsplit2/clsplit.cpp
+	cd clsplit2 && cmake .
+	$(MAKE) -C clsplit2
+
 clean:
 	$(MAKE) -C clsplit clean
 	rm -f clsplit/CMakeCache.txt

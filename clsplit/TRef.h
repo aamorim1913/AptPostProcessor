@@ -116,9 +116,9 @@ int Close(struct TOOL *tl) {
 		fprintf(fls[j],"Q7 = Q13 - Q10\n"); 
 		fprintf(fls[j],"Q8 = Q14 - Q11\n"); 
 		fprintf(fls[j],"Q9 = Q15 - Q12\n"); 
-		fprintf(fls[j],"Q4 = (Q13 - %+.3lf) * (Q13 - %+.3lf) + (Q14 - %+.3lf) * (Q14 - %+.3lf)\n",
-				Pivot[0],Pivot[0],Pivot[1],Pivot[1]); 
-		fprintf(fls[j],"Q2 = (Q14 - %+.3lf) /  SQRT(Q4)\n",Pivot[1]);
+		fprintf(fls[j],"Q4 = (Q13  %+.3lf) * (Q13  %+.3lf) + (Q14  %+.3lf) * (Q14  %+.3lf)\n",
+				-Pivot[0],-Pivot[0],-Pivot[1],-Pivot[1]); 
+		fprintf(fls[j],"Q2 = (Q14  %+.3lf) /  SQRT(Q4)\n",-Pivot[1]);
 	}
 	/* measure tool sensor here */
 	fprintf(TREF,"STOP\n;Heimer on top tool sensor\n"); 
