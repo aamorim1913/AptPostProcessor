@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
 	int nsetup,ncoord,ntools,lnumber;
 	char RL='0', used_RL='0',Sense='+';
 	int toolcall; 
-	double feed = -1, rtool,ltool,temp;
+	double feed = -1, feedscale=1.0,  rtool,ltool,temp;
 
 	TRef tref;
 	CSCAD scad;
@@ -275,6 +275,10 @@ int main(int argc, char **argv) {
 		} else if (strstr(lineapt, "SPINDL/") != 0) { /* SPINDLE prints the TOOL statment if tool number is defined */
 			nA=ReadArrayCom(com, lineapt + strlen("SPINDL/"), ',');
 			tools.tl[toolcall].speed = atoi(com);
+			if ( tools.tl[toolcall].speed > MachineMaxSpindle){
+				feedscale = MachineMaxSpindle/tools.tl[toolcall].speed;
+				tools.tl[toolcall].speed = MachineMaxSpindle;
+			} feedscale = 1.0;
 			if (strstr(com+2*COMSIZE, "CCLW")) tools.tl[toolcall].clockwise = -1; 
 			else  tools.tl[toolcall].clockwise = 1;
 			updated |= NEW_SPINDLE;
@@ -423,7 +427,10 @@ int main(int argc, char **argv) {
 			if ((updated & NEW_SPINDLE) && (updated & NEW_TOOL)) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name); ++lnumber;
+                		int namestart=0;
+                		for (int j = 0; j < strlen(tools.tl[toolcall].name); j++)  
+					if (tools.tl[toolcall].name[j] == '=') namestart=j+1;
+				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name+namestart); ++lnumber;
 				fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, toolcall+100, 
 					tools.tl[toolcall].lcad, tools.tl[toolcall].rcad); ++lnumber;
 				fprintf(OUT, "%d TOOL CALL %d Z S%d DL%+.3lf DR%+.3lf\n", lnumber, toolcall+100, 
@@ -519,7 +526,7 @@ int main(int argc, char **argv) {
 				fprintf(OUT, " DR%c",Sense);
 				if (feed == -1) fprintf(OUT, " FMAX");
 				else if ( updated & NEW_FEED ){
-					 fprintf(OUT, " F%.0f", feed);
+					 fprintf(OUT, " F%.0f", feed * feedscale);
 					 updated &= ~NEW_FEED;
 				} 
 				if (updated & NEW_FLOOD){
