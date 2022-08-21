@@ -309,12 +309,11 @@ int main(int argc, char **argv) {
 						toolcall, tools.tl[toolcall].rcad,tools.tl[toolcall].rtable);
 				fpause=1;
 			}
-			if (tools.tl[toolcall].lcad != ltool-sensorlenght) {
-				printf("Error: CAD tool %d lenght (-sensorlengh) is different from TOOL.h \n",toolcall);
-				tools.tl[toolcall].lcad = ltool-sensorlenght;
+			tools.tl[toolcall].lcad = ltool;
+			if (tools.tl[toolcall].DL == 0.0) {
+				printf("Error:  tool %d lenght is 0 in TOOL.h. Measure! \n",toolcall);
 				fpause=1;
 			}
-			if (tools.tl[toolcall].DL==0) tools.tl[toolcall].DL=tools.tl[toolcall].lcad;
 
 		/* used for authomatic feeder */
 		} else if (strstr(lineapt, "SELECT/TOOL,") != 0) { /* SELECT/TOOL defines the next tool to be used - carrousel */

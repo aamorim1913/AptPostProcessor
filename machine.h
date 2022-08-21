@@ -14,7 +14,4 @@ const double machine_table[3]={-200.66,-193.72,-388.18};
 const double machine_table_size[3]={500,350,50};
 const int machine_table_round=1;
 
-/* sensor data includes 20 mm to hold inside the cone  */
-const double sensorlenght=95;
-
 const double invalid_coord=-9999.0;
