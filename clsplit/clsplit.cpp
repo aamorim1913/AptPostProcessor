@@ -321,11 +321,13 @@ int main(int argc, char **argv) {
 
 		/* used only if delta r is not it CAM */
 		} else if (strstr(lineapt, "CUTCOM/LEFT") != 0) { /* Define for RR R0 */
-			RL = 'L';
+		//	RL = 'L';
+			RL = '0';
 
 		/* used only if delta r is not it CAM */
 		} else if (strstr(lineapt, "CUTCOM/RIGHT") != 0) { /* Define for RR R0 */
-			RL = 'R';
+		//	RL = 'R';
+			RL = '0';
 
 		/* used only if delta r is not it CAM */
 		} else if (strstr(lineapt, "CUTCOM/OFF") != 0) { /* cancel */
@@ -438,8 +440,8 @@ int main(int argc, char **argv) {
 					tools.tl[toolcall].DL, 0.0); ++lnumber;
 				}
 				tools.tl[toolcall].defined=1;
-				fprintf(OUT, "%d TOOL CALL %d Z S%d DR%+.3lf\n", lnumber, toolcall+100, 
-					tools.tl[toolcall].speed,tools.tl[toolcall].DR); ++lnumber;
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, 
+					tools.tl[toolcall].speed); ++lnumber;
 				tref.AddTool(toolcall,tools.tl);
 				if (old_coord[2]!=invalid_coord) {
 					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]);
