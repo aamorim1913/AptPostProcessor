@@ -8,7 +8,7 @@ struct TOOL{
     char name[100];
     double lcad,rtable,rcad,DL,DR;
     int T1,T2,T3;
-    int speed,clockwise;
+    int speed,clockwise,defined;
 };
 
 class TOOLS{
@@ -16,9 +16,22 @@ class TOOLS{
 public:
 struct TOOL tl[MAXTOOL];
 
+TOOLS(){
+	for (int i=0; i<MAXTOOL; i++) {
+		tl[i].defined=0;
+		tl[i].DL=0;
+		tl[i].DR=0;
+	}
+}
+
+int Undefine(){
+	for (int i=0; i<MAXTOOL; i++) tl[i].defined=0;
+	return 0;
+}
+
 int ReadToolCoord(int &fpause) {
 	int tool;
-	double x, y, z, L, DR;
+	double x, y, z, DL, DR;
 	FILE* SETCOOR;
 	char line[MAXLINE];
 
@@ -33,14 +46,14 @@ int ReadToolCoord(int &fpause) {
 	}
 	while (ReadLine(line, SETCOOR)) {
 		for (int i = 0; i < strlen(line); i++) if (line[i] == ',') line[i] = '.';
-		if (sscanf(line, "%d %lf %lf", &tool, &DR, &L) != 3) break;
+		if (sscanf(line, "%d %lf %lf", &tool, &DR, &DL) != 3) break;
 		if (tool>99) {
 			printf("Invalid tool number %d in tref file\n",tool);
 			fpause=1;
 		} else {
 			tl[tool].DR=DR;
+			tl[tool].DL=DL;
 			tl[tool].rtable=0;
-			tl[tool].DL=L-tl[tool].lcad;
 		}
 	}
 	fclose(SETCOOR);

@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
 	int nA;
 	size_t counter;
 	int nsetup,ncoord,ntools,lnumber;
-	char RL='0', used_RL='0',Sense='+';
+	char RL='0', used_RL='0', Sense='+';
 	int toolcall; 
 	double feed = -1, feedscale=1.0,  rtool,ltool,temp;
 
@@ -115,6 +115,9 @@ int main(int argc, char **argv) {
 
 	/* read all coordinates in the %FN15RUN.A file up to end or invalid_coord (if exists) */
 	ncoord=ReadCoord(xd,yd,zd,Datum);
+	/* read all tool measurements from the %FN15RUN.A file */
+	ntools=tools.ReadToolCoord(fpause);
+
 	/* yd[ncoord] is cos(theta) of table rotation and zd[ncoord] is z0 of tool measure  */
 	if ( xd[ncoord] != invalid_coord ) thetatable=0;
 	else thetatable=asin(yd[ncoord]) * 180.0 / AM_PI;
@@ -131,8 +134,6 @@ int main(int argc, char **argv) {
 		fpause=1;
 	}
 
-	/* read all tool measurements from the %FN15RUN.A file */
-	ntools=tools.ReadToolCoord(fpause);
 
 	/* initialize MAIN LOOP OVER LINES of the .apt file */
 	nsetup = -1;
@@ -244,6 +245,7 @@ int main(int argc, char **argv) {
 					fclose(OUT);
 
 					/* open file for new setup */
+					tools.Undefine();
 					/* if milling from bellow generate file with number 900+ */
 					if ( thetab > 90 ) sprintf(filename, DMUDIR, nsetup+900+11);
 					else {
@@ -310,9 +312,9 @@ int main(int argc, char **argv) {
 			if (tools.tl[toolcall].lcad != ltool-sensorlenght) {
 				printf("Error: CAD tool %d lenght (-sensorlengh) is different from TOOL.h \n",toolcall);
 				tools.tl[toolcall].lcad = ltool-sensorlenght;
-				tools.tl[toolcall].DL=0;
 				fpause=1;
 			}
+			if (tools.tl[toolcall].DL==0) tools.tl[toolcall].DL=tools.tl[toolcall].lcad;
 
 		/* used for authomatic feeder */
 		} else if (strstr(lineapt, "SELECT/TOOL,") != 0) { /* SELECT/TOOL defines the next tool to be used - carrousel */
@@ -431,10 +433,13 @@ int main(int argc, char **argv) {
                 		for (int j = 0; j < strlen(tools.tl[toolcall].name); j++)  
 					if (tools.tl[toolcall].name[j] == '=') namestart=j+1;
 				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name+namestart); ++lnumber;
-				fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, toolcall+100, 
-					tools.tl[toolcall].lcad, tools.tl[toolcall].rcad); ++lnumber;
-				fprintf(OUT, "%d TOOL CALL %d Z S%d DL%+.3lf DR%+.3lf\n", lnumber, toolcall+100, 
-					tools.tl[toolcall].speed,tools.tl[toolcall].DL,0.0); ++lnumber;
+				if (tools.tl[toolcall].defined==0) {
+					fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, toolcall+100, 
+					tools.tl[toolcall].DL, 0.0); ++lnumber;
+				}
+				tools.tl[toolcall].defined=1;
+				fprintf(OUT, "%d TOOL CALL %d Z S%d DR%+.3lf\n", lnumber, toolcall+100, 
+					tools.tl[toolcall].speed,tools.tl[toolcall].DR); ++lnumber;
 				tref.AddTool(toolcall,tools.tl);
 				if (old_coord[2]!=invalid_coord) {
 					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]);
