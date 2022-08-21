@@ -108,7 +108,7 @@ int Close(struct TOOL *tl) {
 	for (int j=0; j<2 ; j++) {
 		fprintf(fls[j],"L Z-10 FMAX M91\n");
 		fprintf(fls[j],"TOOL CALL 0 Z S5\n"); 
-		fprintf(fls[j],"STOP\n;Set Datum in machine\n;Point to middle of Pivot T slot\n");
+		fprintf(fls[j],"STOP\n;Datum & Point to Pivot T slot\n");
 		fprintf(fls[j],"FN18: SYSREAD Q10 = ID270 NR1 IDX1\n"); 
         	fprintf(fls[j],"FN18: SYSREAD Q13 = ID240 NR1 IDX1\n");
         	fprintf(fls[j],"FN18: SYSREAD Q11 = ID270 NR1 IDX2\n"); 
