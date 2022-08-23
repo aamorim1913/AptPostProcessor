@@ -3,7 +3,7 @@
 #pragma once
 
 /* The model frame is the Pivot point */
-/* The coord are relative to the datum. */
+/* The coord are relative to the datum. Datum has pivot subtracted in ReadCoord in clsplit */
 /* [xd0,yd0,zd0] = Datum relative to pivot unrotated */
 /* [xd,yd,zd] = Datum + Shift is datum relative to pivot rotated */
 /* Pivot is pivot relative to Machine coordinates */
@@ -20,7 +20,7 @@ FILE* SCAD;
 public:
 
 int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op, 
-			double feed, int *fpause, double *Datum, double thetab) {
+			double feed, int *fpause, double *Datum, double thetab, struct TOOL *tl) {
 
 	static int old_nsetup = -1;
 	static int old_op = -1;
@@ -33,9 +33,12 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 		return 0;
 	}
 
-	if ((coord[0]+Datum[0]+Pivot[0] >= MachineLimits[1]) || (coord[0]+Datum[0]+Pivot[0] <= MachineLimits[0]) ||
-			 (coord[1]+Datum[1]+Pivot[1] >= MachineLimits[3]) || (coord[1]+Datum[1]+Pivot[1] <= MachineLimits[2])
-			|| (coord[2]+Datum[2]+Pivot[2] >=  MachineLimits[5]) || (coord[2]+Datum[2]+Pivot[2] <= MachineLimits[4])) {
+	if ((coord[0]+Datum[0]+Pivot[0] >= MachineLimits[1]) ||
+		       	(coord[0]+Datum[0]+Pivot[0] <= MachineLimits[0]) ||
+			(coord[1]+Datum[1]+Pivot[1] >= MachineLimits[3]) ||
+		       	(coord[1]+Datum[1]+Pivot[1] <= MachineLimits[2]) ||
+			(coord[2]+Datum[2]+Pivot[2]-tl[toolcall].DL >=  MachineLimits[5]) ||
+			(coord[2]+Datum[2]+Pivot[2]-tl[toolcall].DL <= MachineLimits[4])) {
 		if (thetab <=90 ){
 			fprintf(SCAD, "//x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
 				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2], lnumber);
@@ -58,7 +61,7 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 	return 0;
 }
 
-int AddDepth(double *coord, int lnumber, int toolcall, double dist, double length, int nsetup, int op, int *fpause, double *Datum, double thetab) {
+int AddDepth(double *coord, int lnumber, int toolcall, double dist, double length, int nsetup, int op, int *fpause, double *Datum, double thetab, struct TOOL *tl) {
 
 	if (length <0) length = - length;
 	if  (coord[2]+Datum[2]+Pivot[2] <= MachineLimits[4]) {
@@ -66,7 +69,7 @@ int AddDepth(double *coord, int lnumber, int toolcall, double dist, double lengt
 			fprintf(SCAD, "//Depph x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
 				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2], lnumber);
 			printf("ERROR:Depth out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
-				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2],lnumber, nsetup+11, op, toolcall);
+				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2]-tl[toolcall].DL,lnumber, nsetup+11, op, toolcall);
 		}
 		*fpause = 1;
 	}
@@ -77,7 +80,7 @@ int AddDepth(double *coord, int lnumber, int toolcall, double dist, double lengt
 }
 
 
-int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum, double thetab) {
+int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum, double thetab, struct TOOL *tl) {
 	double coord[3];
 
 	if (Sense == '-') {
@@ -177,7 +180,7 @@ int close(int tool, double *Stock, struct TOOL *tl, double *Datum, double thetab
 	fprintf(SCAD, "color(\"brown\",0.25) translate([%f,%f,%f]) cube([%lf,%lf,%lf],center=true);\n",
 		-(Pivot[0]+(MachineLimits[1]-MachineLimits[0])/2), 
 		-(Pivot[1]+(MachineLimits[3]-MachineLimits[2])/2),
-		-(Pivot[2]+(MachineLimits[5]-MachineLimits[4])/2 + tl[tool].lcad+tl[tool].DL), 
+		-(Pivot[2]+(MachineLimits[5]-MachineLimits[4])/2 - tl[tool].DL), 
 		MachineLimits[1]-MachineLimits[0],MachineLimits[3]-MachineLimits[2],MachineLimits[5]-MachineLimits[4]);
 
 	fclose(SCAD);

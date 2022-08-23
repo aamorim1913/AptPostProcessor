@@ -436,7 +436,7 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name+namestart); ++lnumber;
 				if (tools.tl[toolcall].defined==0) {
 					fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, toolcall+100, 
-					tools.tl[toolcall].DL, 0.0); ++lnumber;
+					tools.tl[toolcall].DL, tools.tl[toolcall].rcad); ++lnumber;
 				}
 				tools.tl[toolcall].defined=1;
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, 
@@ -495,10 +495,10 @@ int main(int argc, char **argv) {
 					if (feed == -1) fprintf(OUT," M9");
 					else fprintf(OUT," M08");
 				}
-				scad.AddLine(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab);
+				scad.AddLine(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab, tools.tl);
 				if (updated & CYCLE_ON) {
 					fprintf(OUT," M99");
-					scad.AddDepth(coord, lnumber, toolcall, dist, length, nsetup, op, &fpause, Datum, thetab);
+					scad.AddDepth(coord, lnumber, toolcall, dist, length, nsetup, op, &fpause, Datum, thetab,tools.tl);
 				}
 				fprintf(OUT, "\n"); ++lnumber;
 
@@ -543,7 +543,7 @@ int main(int argc, char **argv) {
 				++lnumber;
 
 				 scad.AddCircle(CC,CCR,theta1,theta2,old_coord[2], coord[2],Sense,
-					  lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab);
+					  lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab,tools.tl);
 			}
 
 			for (int i=0; i<3; i++) old_coord[i] = coord[i];
