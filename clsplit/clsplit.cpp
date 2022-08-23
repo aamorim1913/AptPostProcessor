@@ -63,6 +63,7 @@ int main(int argc, char **argv) {
 	char RL='0', used_RL='0', Sense='+';
 	int toolcall; 
 	double feed = -1, feedscale=1.0,  rtool,ltool,temp;
+	int dry=0;
 
 	TRef tref;
 	CSCAD scad;
@@ -82,6 +83,7 @@ int main(int argc, char **argv) {
 		cout<<"                                         :... ... ..."<< endl;
 		cout<<"  clean - to remove all generated files "<< endl;
 		cout<<"  ... apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> <thetatable> "<< endl;
+		cout<<"  ... apt dry"<< endl;
 		exit(1);
 	}
 
@@ -93,6 +95,10 @@ int main(int argc, char **argv) {
 		printf(" argument must be an .apt file\n");
 		return -1;
 	}
+	if ((argc>=3)&&(strstr(argv[2],"dry")!=0)) {
+                printf(" running dry\n");
+		dry=1;
+        }
 	if ( (APT=fopen(argv[1], "r")) == NULL) {
 		printf("cannot open apt file %s\n", argv[1]);
 		return -1;
@@ -387,7 +393,8 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d CYCL DEF 1.5 F%.0f\n", lnumber,atof(com+7*COMSIZE)); ++lnumber;
 				dist=atof(com+11*COMSIZE);
 				length=atof(com+COMSIZE);
-				fprintf(OUT, "%d M8\n",lnumber); ++ lnumber;
+				if (dry!=1) { fprintf(OUT, "%d M08\n",lnumber); ++ lnumber; }
+				else { fprintf(OUT, "%d M09\n",lnumber); ++ lnumber; }
 				updated &= ~NEW_FLOOD;
 
 		/* CYCLE drill */
@@ -401,7 +408,8 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d CYCL DEF 1.5 F%.0f\n", lnumber,atof(com+3*COMSIZE)); ++lnumber;
 				dist=atof(com+7*COMSIZE);
 				length=atof(com+COMSIZE);
-				fprintf(OUT, "%d M8\n",lnumber); ++ lnumber;
+				if (dry!=1) { fprintf(OUT, "%d M08\n",lnumber); ++ lnumber; }
+				else { fprintf(OUT, "%d M09\n",lnumber); ++ lnumber; }
 				updated &= ~NEW_FLOOD;
 
 		/* CYVLE OFF */
@@ -492,7 +500,7 @@ int main(int argc, char **argv) {
 				if (feed == -1) fprintf(OUT, " FMAX");
 				else if ( updated & NEW_FEED ) fprintf(OUT, " F%.0f", feed);
 				if (updated & NEW_FLOOD) {
-					if (feed == -1) fprintf(OUT," M9");
+					if ((dry==1)||(feed == -1)) fprintf(OUT," M09");
 					else fprintf(OUT," M08");
 				}
 				scad.AddLine(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab, tools.tl);
@@ -536,7 +544,7 @@ int main(int argc, char **argv) {
 					 updated &= ~NEW_FEED;
 				} 
 				if (updated & NEW_FLOOD){
-					if (feed == -1) fprintf(OUT," M9");
+					if ((dry == 1)||(feed == -1)) fprintf(OUT," M09");
 					else fprintf(OUT," M08");
 				}
 				fprintf(OUT,"\n");
