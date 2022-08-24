@@ -16,11 +16,15 @@ private:
 double x1ini, y1ini, z1ini;
 double old_coord[3];
 FILE* SCAD;
+struct TOOL *tl=0;
+int tool=0;
+int nsetup=0;
+int op=0;
+double *Datum;
 
 public:
 
-int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op, 
-			double feed, int *fpause, double *Datum, double thetab, struct TOOL *tl) {
+int  AddLine(double *coord, int lnumber, double feed, int *fpause, double thetab) {
 
 	static int old_nsetup = -1;
 	static int old_op = -1;
@@ -37,14 +41,14 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 		       	(coord[0]+Datum[0]+Pivot[0] <= MachineLimits[0]) ||
 			(coord[1]+Datum[1]+Pivot[1] >= MachineLimits[3]) ||
 		       	(coord[1]+Datum[1]+Pivot[1] <= MachineLimits[2]) ||
-			(coord[2]+Datum[2]+Pivot[2]-tl[toolcall].DL >=  MachineLimits[5]) ||
-			(coord[2]+Datum[2]+Pivot[2]-tl[toolcall].DL <= MachineLimits[4])) {
+			(coord[2]+Datum[2]+Pivot[2]-tl[tool].DL >=  MachineLimits[5]) ||
+			(coord[2]+Datum[2]+Pivot[2]-tl[tool].DL <= MachineLimits[4])) {
 		if (thetab <=90 ){
 			fprintf(SCAD, "//x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
 				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2], lnumber);
 			printf("ERROR:out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
 				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2],
-				lnumber, nsetup+11, op, toolcall);
+				lnumber, nsetup+11, op, tool);
 		}
 		*fpause = 1;
 	}
@@ -61,15 +65,20 @@ int  AddLine(double *coord, int lnumber, int toolcall, int nsetup, int op,
 	return 0;
 }
 
-int AddDepth(double *coord, int lnumber, int toolcall, double dist, double length, int nsetup, int op, int *fpause, double *Datum, double thetab, struct TOOL *tl) {
+int AddDepth(double *coord, int lnumber, double dist, double length, int *fpause, double thetab) {
 
 	if (length <0) length = - length;
-	if  (coord[2]+Datum[2]+Pivot[2] <= MachineLimits[4]) {
+	if  (coord[2]+Datum[2]+Pivot[2]-tl[tool].DL <= MachineLimits[4]) {
 		if (thetab <=90 ){
-			fprintf(SCAD, "//Depph x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
-				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2], lnumber);
-			printf("ERROR:Depth out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
-				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2]-tl[toolcall].DL,lnumber, nsetup+11, op, toolcall);
+			fprintf(SCAD, "//Depth x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
+				coord[0]+Datum[0]+Pivot[0], 
+				coord[1]+Datum[1]+Pivot[1], 
+				coord[2]+Datum[2]+Pivot[2], lnumber);
+			printf("ERROR:Depth out of range xm=%.0f;ym=%.0f;zm=%.0f line %d, setup %d, op %d, tool %d\n",
+				coord[0]+Datum[0]+Pivot[0], 
+				coord[1]+Datum[1]+Pivot[1], 
+				coord[2]+Datum[2]+Pivot[2]-tl[tool].DL,
+				lnumber, nsetup+11, op, tool);
 		}
 		*fpause = 1;
 	}
@@ -80,7 +89,7 @@ int AddDepth(double *coord, int lnumber, int toolcall, double dist, double lengt
 }
 
 
-int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, int toolcall, int nsetup, int op, double feed, int *fpause, double *Datum, double thetab, struct TOOL *tl) {
+int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, double feed, int *fpause, double thetab) {
 	double coord[3];
 
 	if (Sense == '-') {
@@ -98,7 +107,7 @@ int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, 
 		coord[0]=CC[0]+CCR*cos(theta*AM_PI/180);
 		coord[1]=CC[1]+CCR*sin(theta*AM_PI/180);
                 coord[2]=old_z+(theta-theta1)/(theta2-theta1)*(z-old_z);
-//		AddLine( coord, lnumber, toolcall, nsetup, op, feed, fpause, Datum, thetab);
+//		AddLine( coord, lnumber, tool, feed, fpause, thetab);
 	}
 
         /* print tool paths */
@@ -119,12 +128,18 @@ int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, 
 
 /* includes drawing the working table of the machine and the part stl file*/
 
-int open(char* name, int nsetup, int op, int tool, double * Stock, struct TOOL *tl, double *Shift, double *Datum, double thetab, double thetac, double thetatable) {
+int open(char* name, int setnsetup, int setop, int settool, double *Stock, struct TOOL *settl, double *Shift, double *setDatum, double thetab, double thetac, double thetatable) {
 
 	size_t st;
 	static int prev_ns;
 
 	char filename[MAXLINE];
+
+	tl=settl;
+	tool=settool;
+	nsetup=setnsetup;
+	op=setop;
+	Datum=setDatum;
 
 	if (thetab >90 )  sprintf(filename, DMUDIRSCAD, 900 + nsetup + 11, op);
 	else sprintf(filename, DMUDIRSCAD, nsetup + 11, op);
@@ -162,7 +177,7 @@ int open(char* name, int nsetup, int op, int tool, double * Stock, struct TOOL *
 	return 0;
 }
 
-int close(int tool, double *Stock, struct TOOL *tl, double *Datum, double thetab, double thetac, double *Shift) {
+int close(double *Stock, double thetab, double thetac, double *Shift) {
 
 	if (SCAD == NULL) return -1;
 
@@ -180,7 +195,7 @@ int close(int tool, double *Stock, struct TOOL *tl, double *Datum, double thetab
 	fprintf(SCAD, "color(\"brown\",0.25) translate([%f,%f,%f]) cube([%lf,%lf,%lf],center=true);\n",
 		-(Pivot[0]+(MachineLimits[1]-MachineLimits[0])/2), 
 		-(Pivot[1]+(MachineLimits[3]-MachineLimits[2])/2),
-		-(Pivot[2]+(MachineLimits[5]-MachineLimits[4])/2 - tl[tool].DL), 
+		-(Pivot[2]+(MachineLimits[5]-MachineLimits[4])/2 + tl[tool].DL), 
 		MachineLimits[1]-MachineLimits[0],MachineLimits[3]-MachineLimits[2],MachineLimits[5]-MachineLimits[4]);
 
 	fclose(SCAD);

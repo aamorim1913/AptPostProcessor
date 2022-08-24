@@ -181,7 +181,7 @@ int main(int argc, char **argv) {
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
 		} else if (strstr(lineapt, "CSYS/") != 0) { 
 
-			if ( op > 0) scad.close(toolcall, Stock, tools.tl, Datum, thetab, thetac, Shift);
+			if ( op > 0) scad.close(Stock, thetab, thetac, Shift);
 
 			++op;
 			nA = ReadArray(A, lineapt + strlen("CSYS/"), ',');
@@ -495,10 +495,10 @@ int main(int argc, char **argv) {
 					if (feed == -1) fprintf(OUT," M9");
 					else fprintf(OUT," M08");
 				}
-				scad.AddLine(coord, lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab, tools.tl);
+				scad.AddLine(coord, lnumber, feed, &fpause, thetab);
 				if (updated & CYCLE_ON) {
 					fprintf(OUT," M99");
-					scad.AddDepth(coord, lnumber, toolcall, dist, length, nsetup, op, &fpause, Datum, thetab,tools.tl);
+					scad.AddDepth(coord, lnumber, dist, length, &fpause, thetab);
 				}
 				fprintf(OUT, "\n"); ++lnumber;
 
@@ -543,7 +543,7 @@ int main(int argc, char **argv) {
 				++lnumber;
 
 				 scad.AddCircle(CC,CCR,theta1,theta2,old_coord[2], coord[2],Sense,
-					  lnumber, toolcall, nsetup, op, feed, &fpause, Datum, thetab,tools.tl);
+					  lnumber, feed, &fpause, thetab);
 			}
 
 			for (int i=0; i<3; i++) old_coord[i] = coord[i];
@@ -558,7 +558,7 @@ int main(int argc, char **argv) {
 			fprintf(OUT, "%d L Z-10 R0 FMAX M91 M9\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d M30\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d END PGM %d MM\n", lnumber, nsetup + 11); ++lnumber;
-			scad.close(toolcall, Stock, tools.tl, Datum, thetab, thetac,Shift);
+			scad.close(Stock, thetab, thetac,Shift);
 
 		/* do nothing for part number */
 		} else if (strstr(lineapt, "PARTNO/") != 0) {

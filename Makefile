@@ -22,7 +22,7 @@ windows:
 create2: 
 	cp -f machine.h machine2.h
 	rsync -av --exclude=CMakeFiles --exclude=CMakeCache.txt clsplit/ clsplit2/
-	sed "s/machine.h/machine2.h/g" clsplit/clsplit.cpp > clsplit2/clsplit.cpp
+	sed "s/machine.h/machine2.h/g;s/machine-code/machine2-code/g" clsplit/clsplit.cpp > clsplit2/clsplit.cpp
 	cd clsplit2 && cmake .
 	$(MAKE) -C clsplit2
 
@@ -35,3 +35,10 @@ clean:
 	rm -f flip/CMakeCache.txt
 	$(MAKE) -C micromeasure clean
 	rm -f micromeasure/CMakeCache.txt
+
+cleanwindows:
+	erase /S CMakeCache.txt
+	cd clsplit && $(MAKE) clean
+	cd cirpivot && $(MAKE) clean
+	cd flip && $(MAKE) clean
+	cd micromeasure && $(MAKE) clean
