@@ -16,10 +16,10 @@ private:
 double x1ini, y1ini, z1ini;
 double old_coord[3];
 FILE* SCAD;
-struct TOOL *tl=0;
-int tool=0;
-int nsetup=0;
-int op=0;
+struct TOOL *tl;
+int tool;
+int nsetup;
+int op;
 double *Datum;
 
 public:
