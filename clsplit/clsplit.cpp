@@ -201,6 +201,14 @@ int main(int argc, char **argv) {
 
 				/* this is the end of the previous setup */
 				++nsetup;
+				/* if nstup exceeds ncoord stop with error */
+				if (nsetup >= ncoord) {
+					cout<<"Number of setups larger than the number of references. Exiting."<<endl;
+					cout<<"If you want to use the same references:"<<endl;
+					cout<< "Copy Ref line FN15RUN15.A if using the same references."<<endl;
+					fpause=1;
+					exit(2);
+				}
 				
 				/* set axis for RotateArray */
 				A[3]=axis[0];
@@ -284,7 +292,7 @@ int main(int argc, char **argv) {
 			nA=ReadArrayCom(com, lineapt + strlen("SPINDL/"), ',');
 			tools.tl[toolcall].speed = atoi(com);
 			if ( tools.tl[toolcall].speed > MachineMaxSpindle){
-				feedscale = MachineMaxSpindle/tools.tl[toolcall].speed;
+				feedscale = MachineMaxSpindle/(1.0*tools.tl[toolcall].speed);
 				tools.tl[toolcall].speed = MachineMaxSpindle;
 			} feedscale = 1.0;
 			if (strstr(com+2*COMSIZE, "CCLW")) tools.tl[toolcall].clockwise = -1; 

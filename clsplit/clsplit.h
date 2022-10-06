@@ -84,23 +84,26 @@ int CleanFiles(char* filename) {
 }
 
 int RotateArray(int n, double* A, double& thetab, double& thetac) {
-	/* rotate A[0] A[1] A[3] with the machine rotation that puts A[4] A[5] A[6] as (0,0,1) normal out */
+	/* rotate A[0] A[1] A[2] with the machine rotation that puts A[3] A[4] A[5] as (0,0,1) normal out */
 	double x, y, z;
 	double Cb, Sb, Cc, Sc;
 
 	if (n < 6) return -1;
-	Cb = A[5];
-	Sb = sqrt(1 - Cb * Cb);
-	if (Sb == 0) {
-		Cc = 1.0;
-		Sc = 0.0;
-	}
-	else {
+	if (A[5] == 1) {
+		Cb = 1;
+		Sb = 0;
+		Cc = 1;
+		Sc = 0;
+		thetab = 0;
+		thetac = 0;
+	} else {
+		Cb = A[5];
+		Sb = sqrt(A[3]*A[3]+A[4]*A[4]+A[5]*A[5] - Cb * Cb);
 		Cc = A[3] / Sb;
 		Sc = A[4] / Sb;
+		thetab = atan2(Sb, Cb) * 180.0 / AM_PI;
+		thetac = atan2(Sc, Cc) * 180.0 / AM_PI;
 	}
-	thetab = atan2(Sb, Cb) * 180.0 / AM_PI;
-	thetac = atan2(Sc, Cc) * 180.0 / AM_PI;
 
 	x = A[0]; y = A[1]; z = A[2];
 	/* directa */
