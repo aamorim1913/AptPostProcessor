@@ -24,25 +24,10 @@ double *Datum;
 
 public:
 
-int  AddLine(double *coord, int lnumber, double feed, int *fpause, double thetab) {
-
-	static int old_nsetup = -1;
-	static int old_op = -1;
-
-	if ((nsetup != old_nsetup) || (op != old_op)) {
-		old_nsetup = nsetup  ;
-		old_op = op ;
-		for (int i=0; i<3; i++) old_coord[i]=coord[i];
-		x1ini = coord[0]; y1ini = coord[1]; z1ini = coord[2];
-		return 0;
-	}
-
-	if ((coord[0]+Datum[0]+Pivot[0] >= MachineLimits[1]) ||
-		       	(coord[0]+Datum[0]+Pivot[0] <= MachineLimits[0]) ||
-			(coord[1]+Datum[1]+Pivot[1] >= MachineLimits[3]) ||
-		       	(coord[1]+Datum[1]+Pivot[1] <= MachineLimits[2]) ||
-			(coord[2]+Datum[2]+Pivot[2]-tl[tool].DL >=  MachineLimits[5]) ||
-			(coord[2]+Datum[2]+Pivot[2]-tl[tool].DL <= MachineLimits[4])) {
+int TestLimits(double *coord, int lnumber, int *fpause, double thetab){
+	if ((coord[0]+Datum[0]+Pivot[0] >= MachineLimits[1]) || (coord[0]+Datum[0]+Pivot[0] <= MachineLimits[0]) ||
+		(coord[1]+Datum[1]+Pivot[1] >= MachineLimits[3]) || (coord[1]+Datum[1]+Pivot[1] <= MachineLimits[2]) ||
+		(coord[2]+Datum[2]+Pivot[2]+tl[tool].DL >=  MachineLimits[5]) || (coord[2]+Datum[2]+Pivot[2]+tl[tool].DL <= MachineLimits[4])) {
 		if (thetab <=90 ){
 			fprintf(SCAD, "//x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
 				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2], lnumber);
@@ -51,6 +36,25 @@ int  AddLine(double *coord, int lnumber, double feed, int *fpause, double thetab
 				lnumber, nsetup+11, op, tool);
 		}
 		*fpause = 1;
+	}
+
+	return 0;
+}
+
+
+int  AddLine(double *coord, int lnumber, double feed, int *fpause, double thetab) {
+
+	static int old_nsetup = -1;
+	static int old_op = -1;
+
+	TestLimits(coord, lnumber, fpause, thetab);
+
+	if ((nsetup != old_nsetup) || (op != old_op)) {
+		old_nsetup = nsetup  ;
+		old_op = op ;
+		for (int i=0; i<3; i++) old_coord[i]=coord[i];
+		x1ini = coord[0]; y1ini = coord[1]; z1ini = coord[2];
+		return 0;
 	}
 
 	/* print tool paths */
@@ -68,16 +72,16 @@ int  AddLine(double *coord, int lnumber, double feed, int *fpause, double thetab
 int AddDepth(double *coord, int lnumber, double dist, double length, int *fpause, double thetab) {
 
 	if (length <0) length = - length;
-	if  (coord[2]+Datum[2]+Pivot[2]-tl[tool].DL <= MachineLimits[4]) {
+	if  (coord[2]+Datum[2]+Pivot[2]+tl[tool].DL-length <= MachineLimits[4]) {
 		if (thetab <=90 ){
 			fprintf(SCAD, "//Depth x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
 				coord[0]+Datum[0]+Pivot[0], 
 				coord[1]+Datum[1]+Pivot[1], 
 				coord[2]+Datum[2]+Pivot[2], lnumber);
-			printf("ERROR:Depth out of range xm=%.0f;ym=%.0f;zm=%.0f line %d, setup %d, op %d, tool %d\n",
+			printf("ERROR:Addlenght depth out of range xm=%.0f;ym=%.0f;zm=%.0f line %d, setup %d, op %d, tool %d\n",
 				coord[0]+Datum[0]+Pivot[0], 
 				coord[1]+Datum[1]+Pivot[1], 
-				coord[2]+Datum[2]+Pivot[2]-tl[tool].DL,
+				coord[2]+Datum[2]+Pivot[2]+tl[tool].DL-length,
 				lnumber, nsetup+11, op, tool);
 		}
 		*fpause = 1;
@@ -100,14 +104,14 @@ int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, 
 		if (theta2 <= theta1) theta2 += 360;
 		if (theta2 <= theta1) theta2 += 360;
 	}
-	int n = 5 + (int)CCR / 10;
 
+	int n = 20 + (int)CCR;
 	for (int i = 1; i <= n; ++i) {
 		double theta = theta1 + i * (theta2 - theta1) / n;
 		coord[0]=CC[0]+CCR*cos(theta*AM_PI/180);
 		coord[1]=CC[1]+CCR*sin(theta*AM_PI/180);
                 coord[2]=old_z+(theta-theta1)/(theta2-theta1)*(z-old_z);
-//		AddLine( coord, lnumber, tool, feed, fpause, thetab);
+		TestLimits(coord, lnumber, fpause, thetab);
 	}
 
         /* print tool paths */
