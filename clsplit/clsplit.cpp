@@ -202,7 +202,7 @@ int main(int argc, char **argv) {
 				/* this is the end of the previous setup */
 				++nsetup;
 				/* if nstup exceeds ncoord stop with error */
-				if (nsetup >= ncoord) {
+				if ((nsetup >= ncoord)&&(nsetup>1)) {
 					cout<<"Number of setups larger than the number of references. Exiting."<<endl;
 					cout<<"If you want to use the same references:"<<endl;
 					cout<< "Copy Ref line FN15RUN15.A if using the same references."<<endl;
