@@ -264,6 +264,8 @@ int main(int argc, char **argv) {
 					if ( thetab > 90 ) sprintf(filename, DMUDIR, nsetup+900+11);
 					else {
 						sprintf(filename, DMUDIR, nsetup+11);
+						/* if first add previous */
+						if ( nsetup==1) tref.AddRef(nsetup-1);
 						tref.AddRef(nsetup);
 					}
 					OUT=fopen(filename, "w");

@@ -153,6 +153,7 @@ int Close(struct TOOL *tl) {
 		fprintf(fls[j],"STOP\n;Heimer Y to the ball for setup %d\n",setups[i]+1);
 		fprintf(fls[j],"FN18: SYSREAD Q%d1 = ID270 NR1 IDX2\nFN18: SYSREAD Q%d4 = ID240 NR1 IDX2\n",i+1,i+1);
 		fprintf(fls[j],"Q4 = Q%d1 - Q3\nQ%d1 = Q4\nQ4 = Q%d4 - Q3\nQ%d4 = Q4\n",i+1,i+1,i+1,i+1);
+		fprintf(fls[j],"L IY+2 R0 F200\nL IZ+2 R0 F200\nL IZ+Q3 R0 F200\nL IY-2 R0 F200\nL IZ-2 R0 F25\n");
 		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
 	   }
 	}
