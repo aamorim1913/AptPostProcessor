@@ -2,11 +2,11 @@
 //
 #pragma once
 
-/* The model frame is the Pivot point */
+/* The model frame is the Mac2Pivot point */
 /* The coord are relative to the datum. Datum has pivot subtracted in ReadCoord in clsplit */
 /* [xd0,yd0,zd0] = Datum relative to pivot unrotated */
 /* [xd,yd,zd] = Datum + Shift is datum relative to pivot rotated */
-/* Pivot is pivot relative to Machine coordinates */
+/* Mac2Pivot is pivot relative to Machine coordinates */
 /* Machine Limits are relative to the Machine coordinates */
 
 class CSCAD{
@@ -25,14 +25,14 @@ double *Datum;
 public:
 
 int TestLimits(double *coord, int lnumber, int *fpause, double thetab){
-	if ((coord[0]+Datum[0]+Pivot[0] >= MachineLimits[1]) || (coord[0]+Datum[0]+Pivot[0] <= MachineLimits[0]) ||
-		(coord[1]+Datum[1]+Pivot[1] >= MachineLimits[3]) || (coord[1]+Datum[1]+Pivot[1] <= MachineLimits[2]) ||
-		(coord[2]+Datum[2]+Pivot[2]+tl[tool].DL >=  MachineLimits[5]) || (coord[2]+Datum[2]+Pivot[2]+tl[tool].DL <= MachineLimits[4])) {
+	if ((coord[0]+Datum[0]+Mac2Pivot[0] >= MachineLimits[1]) || (coord[0]+Datum[0]+Mac2Pivot[0] <= MachineLimits[0]) ||
+		(coord[1]+Datum[1]+Mac2Pivot[1] >= MachineLimits[3]) || (coord[1]+Datum[1]+Mac2Pivot[1] <= MachineLimits[2]) ||
+		(coord[2]+Datum[2]+Mac2Pivot[2]+tl[tool].DL >=  MachineLimits[5]) || (coord[2]+Datum[2]+Mac2Pivot[2]+tl[tool].DL <= MachineLimits[4])) {
 		if (thetab <=90 ){
 			fprintf(SCAD, "//x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
-				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2], lnumber);
+				coord[0]+Datum[0]+Mac2Pivot[0], coord[1]+Datum[1]+Mac2Pivot[1], coord[2]+Datum[2]+Mac2Pivot[2], lnumber);
 			printf("ERROR:out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
-				coord[0]+Datum[0]+Pivot[0], coord[1]+Datum[1]+Pivot[1], coord[2]+Datum[2]+Pivot[2],
+				coord[0]+Datum[0]+Mac2Pivot[0], coord[1]+Datum[1]+Mac2Pivot[1], coord[2]+Datum[2]+Mac2Pivot[2],
 				lnumber, nsetup+11, op, tool);
 		}
 		*fpause = 1;
@@ -72,16 +72,16 @@ int  AddLine(double *coord, int lnumber, double feed, int *fpause, double thetab
 int AddDepth(double *coord, int lnumber, double dist, double length, int *fpause, double thetab) {
 
 	if (length <0) length = - length;
-	if  (coord[2]+Datum[2]+Pivot[2]+tl[tool].DL-length <= MachineLimits[4]) {
+	if  (coord[2]+Datum[2]+Mac2Pivot[2]+tl[tool].DL-length <= MachineLimits[4]) {
 		if (thetab <=90 ){
 			fprintf(SCAD, "//Depth x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
-				coord[0]+Datum[0]+Pivot[0], 
-				coord[1]+Datum[1]+Pivot[1], 
-				coord[2]+Datum[2]+Pivot[2], lnumber);
+				coord[0]+Datum[0]+Mac2Pivot[0], 
+				coord[1]+Datum[1]+Mac2Pivot[1], 
+				coord[2]+Datum[2]+Mac2Pivot[2], lnumber);
 			printf("ERROR:Addlenght depth out of range xm=%.0f;ym=%.0f;zm=%.0f line %d, setup %d, op %d, tool %d\n",
-				coord[0]+Datum[0]+Pivot[0], 
-				coord[1]+Datum[1]+Pivot[1], 
-				coord[2]+Datum[2]+Pivot[2]+tl[tool].DL-length,
+				coord[0]+Datum[0]+Mac2Pivot[0], 
+				coord[1]+Datum[1]+Mac2Pivot[1], 
+				coord[2]+Datum[2]+Mac2Pivot[2]+tl[tool].DL-length,
 				lnumber, nsetup+11, op, tool);
 		}
 		*fpause = 1;
@@ -158,7 +158,7 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 	fprintf(SCAD, "l=%f; ltool=%f; rtool=%f;\n", tl[tool].DL, tl[tool].lcad, tl[tool].rcad);
 	/* table */
 	fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) color(\"grey\") difference(){\ntranslate([0,0,-25]) cylinder(50,350,350,center = true);\ntranslate([0,-500,-75]) linear_extrude(100) square(500,center=true);\ntranslate([0,500,-75]) linear_extrude(100) square(500,center=true);}\n", 
-		-thetab, -thetac-thetatable,machine_table[0]-Pivot[0],machine_table[1]-Pivot[1],machine_table[2]-Pivot[2]);
+		-thetab, -thetac-thetatable,machine_table[0]-Mac2Pivot[0],machine_table[1]-Mac2Pivot[1],machine_table[2]-Mac2Pivot[2]);
 
 	/* STL of the part */
 #if defined(_WIN64)
@@ -195,11 +195,11 @@ int close(double *Stock, double thetab, double thetac, double *Shift) {
 	fprintf(SCAD, "color(\"blue\",0.6) rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) cube([%f,%f,%f],center=true);\n",
 		-thetab, -thetac, Datum[0]+Stock[0]/2, Datum[1]+Stock[1]/2, Datum[2]-Stock[2]/2, Stock[0], Stock[1], Stock[2]);
 
-	/* machine range volume transparent. -Pivot to corner at (0,0,0) in machine coordinates */
+	/* machine range volume transparent. -Mac2Pivot to corner at (0,0,0) in machine coordinates */
 	fprintf(SCAD, "color(\"brown\",0.25) translate([%f,%f,%f]) cube([%lf,%lf,%lf],center=true);\n",
-		-(Pivot[0]+(MachineLimits[1]-MachineLimits[0])/2), 
-		-(Pivot[1]+(MachineLimits[3]-MachineLimits[2])/2),
-		-(Pivot[2]+(MachineLimits[5]-MachineLimits[4])/2 + tl[tool].DL), 
+		-(Mac2Pivot[0]+(MachineLimits[1]-MachineLimits[0])/2), 
+		-(Mac2Pivot[1]+(MachineLimits[3]-MachineLimits[2])/2),
+		-(Mac2Pivot[2]+(MachineLimits[5]-MachineLimits[4])/2 + tl[tool].DL), 
 		MachineLimits[1]-MachineLimits[0],MachineLimits[3]-MachineLimits[2],MachineLimits[5]-MachineLimits[4]);
 
 	fclose(SCAD);

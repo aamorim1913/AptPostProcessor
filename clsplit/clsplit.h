@@ -6,9 +6,6 @@
 #include <iostream>
 #include "readtools.h"
 
-// TODO: Reference additional headers your program requires here.
-
-
 int printVAR(FILE* OUT, const char* VAR, double x) {
 	fprintf(OUT, " %s", VAR);
 	if (round(x * 100) != x * 100) fprintf(OUT, "%+.3lf", x);
@@ -83,13 +80,12 @@ int CleanFiles(char* filename) {
 	return 0;
 }
 
-int RotateArray(int n, double* A, double& thetab, double& thetac) {
-	/* rotate A[0] A[1] A[2] with the machine rotation that puts A[3] A[4] A[5] as (0,0,1) normal out */
+int RotateArray(double* vec, double* axis, double& thetab, double& thetac) {
+	/* rotate vec with the machine rotation that puts axis as (0,0,1) normal out */
 	double x, y, z;
 	double Cb, Sb, Cc, Sc;
 
-	if (n < 6) return -1;
-	if (A[5] == 1) {
+	if (axis[2] == 1) {
 		Cb = 1;
 		Sb = 0;
 		Cc = 1;
@@ -97,30 +93,26 @@ int RotateArray(int n, double* A, double& thetab, double& thetac) {
 		thetab = 0;
 		thetac = 0;
 	} else {
-		Cb = A[5];
-		Sb = sqrt(A[3]*A[3]+A[4]*A[4]+A[5]*A[5] - Cb * Cb);
-		Cc = A[3] / Sb;
-		Sc = A[4] / Sb;
+		Cb = axis[2];
+		Sb = sqrt(axis[0]*axis[0]+axis[1]*axis[1]+axis[2]*axis[2] - Cb * Cb);
+		Cc = axis[0] / Sb;
+		Sc = axis[1] / Sb;
 		thetab = atan2(Sb, Cb) * 180.0 / AM_PI;
 		thetac = atan2(Sc, Cc) * 180.0 / AM_PI;
 	}
 
-	x = A[0]; y = A[1]; z = A[2];
+	x = vec[0]; y = vec[1]; z = vec[2];
 	/* directa */
-	A[0] = Cb * Cc * x + Cb * Sc * y - Sb * z;
-	A[1] = -Sc * x + Cc * y;
-	A[2] = Sb * Cc * x + Sb * Sc * y + Cb * z;
-	/* applying the same rotation to the original vector goves (0,0,1) */
-	A[3] = 0;
-	A[4] = 0;
-	A[5] = 1;
+	vec[0] = Cb * Cc * x + Cb * Sc * y - Sb * z;
+	vec[1] = -Sc * x + Cc * y;
+	vec[2] = Sb * Cc * x + Sb * Sc * y + Cb * z;
 
 	return 0;
 }
 
 /* Read coodinates from coord file up to end or invalid_coord (if exists) */
 /* Datum has pivot point coordinates subtracted. In file is absolute machine coordinates */
-int ReadCoord(double* xd, double* yd, double* zd, double* Datum) {
+int ReadCoord(double* xDat2Ref, double* yDat2Ref, double* zDat2Ref, double* Piv2Datum) {
 	int ns = 0;
 	FILE* SETCOOR;
 	char linecoor[MAXLINE];
@@ -132,13 +124,13 @@ int ReadCoord(double* xd, double* yd, double* zd, double* Datum) {
 
 	ReadLine(linecoor, SETCOOR);
 	for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
-	sscanf(linecoor, "%lf %lf %lf", Datum, Datum+1, Datum+2);
-	for( int i=0; i<3; i++) Datum[i]-=Pivot[i];
+	sscanf(linecoor, "%lf %lf %lf", Piv2Datum, Piv2Datum+1, Piv2Datum+2);
+	for( int i=0; i<3; i++) Piv2Datum[i]-=Mac2Pivot[i];
 
 	while (ReadLine(linecoor, SETCOOR)) {
 		for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
-		if ((sscanf(linecoor, "%lf %lf %lf", xd+ns, yd+ns, zd+ns) != 3) ||
-			(xd[ns]==invalid_coord)) break;
+		if ((sscanf(linecoor, "%lf %lf %lf", xDat2Ref+ns, yDat2Ref+ns, zDat2Ref+ns) != 3) ||
+			(xDat2Ref[ns]==invalid_coord)) break;
 		ns++;
 	}
 
@@ -146,7 +138,7 @@ int ReadCoord(double* xd, double* yd, double* zd, double* Datum) {
 	return ns;
 }
 
-int WriteSetup(int ns, double axis[3], double S[3]) {
+int WriteSetup(int ns, double axis[3], double Shift[3]) {
 	char filename[MAXLINE];
 	FILE* SETUP;
 
@@ -159,7 +151,7 @@ int WriteSetup(int ns, double axis[3], double S[3]) {
 	fprintf(SETUP, "1 BEGIN PGM %dsetup MM\n", ns);
 	fprintf(SETUP, "2 ;axis %lg %lg %lg\n", axis[0], axis[1], axis[2]);
 	fprintf(SETUP, "4 CYCL DEF 7.0 DATUM SHIFT\n5 CYCL DEF 7.1  X%+.3lf\n6 CYCL DEF 7.2  Y%+.3lf\n7 CYCL DEF 7.3  Z%+.3lf\n"
-		, S[0], S[1], S[2]);
+		, Shift[0], Shift[1], Shift[2]);
 	fprintf(SETUP, "8 END PGM %dsetup MM\n", ns);
 	fclose(SETUP);
 	return 0;

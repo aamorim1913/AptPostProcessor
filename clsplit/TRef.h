@@ -15,7 +15,7 @@ FILE *TREF;
 
 public:
 
-int Open(double *Datum) {
+int Open(double *Piv2Datum) {
 
         if ((TREF = fopen(FILETREF, "w")) == NULL) {
                 printf("cannot write FILETREF file %s\n", FILETREF);
@@ -26,8 +26,10 @@ int Open(double *Datum) {
                 return 1;
         }
 
-	fprintf(TREF,";Set Datum- X%+.3lf Y%+.3lf Z%+.3lf\n",Datum[0]+Pivot[0],Datum[1]+Pivot[1],Datum[2]+Pivot[2]);
-	fprintf(REF,";Set Datum- X%+.3lf Y%+.3lf Z%+.3lf\n",Datum[0]+Pivot[0],Datum[1]+Pivot[1],Datum[2]+Pivot[2]);
+	fprintf(TREF,";Set Datum- X%+.3lf Y%+.3lf Z%+.3lf\n",
+			Piv2Datum[0]+Mac2Pivot[0],Piv2Datum[1]+Mac2Pivot[1],Piv2Datum[2]+Mac2Pivot[2]);
+	fprintf(REF,";Set Datum- X%+.3lf Y%+.3lf Z%+.3lf\n",
+			Piv2Datum[0]+Mac2Pivot[0],Piv2Datum[1]+Mac2Pivot[1],Piv2Datum[2]+Mac2Pivot[2]);
         fprintf(TREF,"BEGIN PGM 0TREF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
         fprintf(REF,"BEGIN PGM 0REF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
 	nref=0;
@@ -108,7 +110,7 @@ int Close(struct TOOL *tl) {
 	for (int j=0; j<2 ; j++) {
 		fprintf(fls[j],"L Z-10 FMAX M91\n");
 		fprintf(fls[j],"TOOL CALL 0 Z S5\n"); 
-		fprintf(fls[j],"STOP\n;Datum & Point to Pivot T slot\n");
+		fprintf(fls[j],"STOP\n;Datum & Point to Mac2Pivot T slot\n");
 		fprintf(fls[j],"FN18: SYSREAD Q10 = ID270 NR1 IDX1\n"); 
         	fprintf(fls[j],"FN18: SYSREAD Q13 = ID240 NR1 IDX1\n");
         	fprintf(fls[j],"FN18: SYSREAD Q11 = ID270 NR1 IDX2\n"); 
@@ -119,8 +121,8 @@ int Close(struct TOOL *tl) {
 		fprintf(fls[j],"Q8 = Q14 - Q11\n"); 
 		fprintf(fls[j],"Q9 = Q15 - Q12\n"); 
 		fprintf(fls[j],"Q4 = (Q13  %+.3lf) * (Q13  %+.3lf) + (Q14  %+.3lf) * (Q14  %+.3lf)\n",
-				-Pivot[0],-Pivot[0],-Pivot[1],-Pivot[1]); 
-		fprintf(fls[j],"Q2 = (Q14  %+.3lf) /  SQRT(Q4)\n",-Pivot[1]);
+				-Mac2Pivot[0],-Mac2Pivot[0],-Mac2Pivot[1],-Mac2Pivot[1]); 
+		fprintf(fls[j],"Q2 = (Q14  %+.3lf) /  SQRT(Q4)\n",-Mac2Pivot[1]);
 	}
 	/* measure tool sensor here */
 	fprintf(TREF,"STOP\n;Heimer on top tool sensor\n"); 

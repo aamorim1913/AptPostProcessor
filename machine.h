@@ -3,8 +3,8 @@
 // max spindle speed the speed is reduced and the feeds are reduced accordingly.
 const int MachineMaxSpindle = 3500;
 
-// Pivot coordinates only for the machine limits used in CSCAD.h and ref file CreateTRef.h  */
-const double Pivot[3]={-200.66, -193.7836, -338.3841};
+// Machine Pivot coordinates only for the machine limits used in CSCAD.h and ref file CreateTRef.h  */
+const double Mac2Pivot[3]={-200.66, -193.7836, -338.3841};
 
 /* machine limits in machine coordinates xmin, xmax, ymin, ymax, zmin, zmax */
 const double MachineLimits[6]={-500,0,-400,0,-400,0};

@@ -47,10 +47,12 @@ int main(int argc, char **argv) {
 	FILE *APT, *OUT;
 	double Stock[3];
 	int fpause;
-	double Datum[3], xd[32], yd[32], zd[32]; /* Datum has the Pivot coordinates subtrated in ReadCoord() */
+	/* Datum has the Pivot coordinates subtrated in ReadCoord() */
+	double Piv2Datum[3], xDatum2Ref[32], yDatum2Ref[32], zDatum2Ref[32]; 
+	double Mac2Datum[3], Piv2RRef[3], Piv2RDatum[3];
 	double Shift[3];
 	double CC[2], old_CC[2], coord[6], old_coord[3];
-	double axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
+	double axis[3]={0,0,0}, circ_axis[3]={0,0,0}, goto_axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
 	double prev_axis[3] = {0,0,0}, dist=0, length=0;
 	char last_comment[100];
 
@@ -78,7 +80,7 @@ int main(int argc, char **argv) {
 		cout<<" reference sphere relative to Datum (for each setup): X   Y  Z"<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
 		cout<<"                                    (another setup):... ... ..."<< endl;
-		cout<<"                                       :-9999 sin(theta) of table rotation mach z0 of tool measure"<< endl;
+		cout<<"                                    :-9999 sin(theta) of table rotation z0 of tool meas."<< endl;
 		cout<<"                                         :tooln DR DL"<< endl;
 		cout<<"                                         :... ... ..."<< endl;
 		cout<<"  clean - to remove all generated files "<< endl;
@@ -120,23 +122,24 @@ int main(int argc, char **argv) {
 	}
 
 	/* read all coordinates in the %FN15RUN.A file up to end or invalid_coord (if exists) */
-	ncoord=ReadCoord(xd,yd,zd,Datum);
+	ncoord=ReadCoord(xDatum2Ref,yDatum2Ref,zDatum2Ref,Piv2Datum);
 	/* read all tool measurements from the %FN15RUN.A file */
 	ntools=tools.ReadToolCoord(fpause);
 
-	/* yd[ncoord] is cos(theta) of table rotation and zd[ncoord] is z0 of tool measure  */
-	if ( xd[ncoord] != invalid_coord ) thetatable=0;
-	else thetatable=asin(yd[ncoord]) * 180.0 / AM_PI;
+	/* yDatum2Ref[ncoord] is cos(theta) of table rotation and zDatum2Ref[ncoord] is z0 of tool measure  */
+	if ( xDatum2Ref[ncoord] != invalid_coord ) thetatable=0;
+	else thetatable=asin(yDatum2Ref[ncoord]) * 180.0 / AM_PI;
 
 	/* allow datum imput from command line */
 	if (argc>=5 ) {
-		Datum[0]=atof(argv[2]);
-		Datum[1]=atof(argv[3]);
-		Datum[2]=atof(argv[4]);
+		Mac2Datum[0]=atof(argv[2]);
+		Mac2Datum[1]=atof(argv[3]);
+		Mac2Datum[2]=atof(argv[4]);
+		for (int i=0; i<3 ; i++) Piv2Datum[i]=Mac2Datum[i]-Mac2Pivot[i];
 		if (argc >=6) thetatable=atof(argv[5]);
 	} else if (argc>=4) {
-		if ( xd[ncoord] != invalid_coord ) printf("Invalid sensor position in FN15RUN.A \n"); 
-		printf("Set tool lenght to %.3f\n",zd[ncoord]-atof(argv[2])); 
+		if ( xDatum2Ref[ncoord] != invalid_coord ) printf("Invalid sensor position in FN15RUN.A \n"); 
+		printf("Set tool lenght to %.3f\n",zDatum2Ref[ncoord]-atof(argv[2])); 
 		fpause=1;
 	}
 
@@ -159,13 +162,14 @@ int main(int argc, char **argv) {
 		if (strstr(lineapt, "UNIT/MM") != 0) {  /* begining of program */
 			fprintf(OUT, "%d BEGIN PGM 11 MM\n",lnumber);++lnumber;
 			fprintf(OUT, "%d ;First setup of file %s\n", lnumber, argv[1]);++lnumber;
-			tref.Open(Datum);
+			tref.Open(Piv2Datum);
 
 		/* Stock Size comment converted to BLK */
 		} else if (strstr(lineapt,"INSERT/Stock Size") != 0) { 
 			counter = strlen("INSERT/Stock Size");
 			while (lineapt[counter] != '\0') {
-				if ((lineapt[counter]=='X')||(lineapt[counter]=='Y')||(lineapt[counter]=='Z')) lineapt[counter]=' ';
+				if ((lineapt[counter]=='X')||
+						(lineapt[counter]=='Y')||(lineapt[counter]=='Z')) lineapt[counter]=' ';
 				counter++;
 			}
 			sscanf(lineapt+strlen("INSERT/Stock Size"),"%lf %lf %lf",Stock,Stock+1,Stock+2);
@@ -210,21 +214,17 @@ int main(int argc, char **argv) {
 					exit(2);
 				}
 				
-				/* set axis for RotateArray */
-				A[3]=axis[0];
-				A[4]=axis[1];
-				A[5]=axis[2];
-
 				/* first we compute the shift for the reference point for setup
 				   The reference point coordinates relative to the pivot point */
-				A[0] = xd[nsetup]+Datum[0];
-				A[1] = yd[nsetup]+Datum[1];
-				A[2] = zd[nsetup]+Datum[2];
+				Piv2RRef[0] = xDatum2Ref[nsetup]+Piv2Datum[0];
+				Piv2RRef[1] = yDatum2Ref[nsetup]+Piv2Datum[1];
+				Piv2RRef[2] = zDatum2Ref[nsetup]+Piv2Datum[2];
 
-				RotateArray(6,A,thetab,thetac);
+				RotateArray(Piv2RRef,axis,thetab,thetac);
 
-				/* the reference point coordinates relative to the unrotated datum are R(r) - r + xd */	
-				for (int i = 0; i < 3; i++) Shift[i] = A[i] - Datum[i];
+				/* the reference point coordinates relative to the unrotated datum are */
+				/* R(r) - r + xDatum2Ref */	
+				for (int i = 0; i < 3; i++) Shift[i] = Piv2RRef[i] - Piv2Datum[i];
 
 
 				/* write the setup */
@@ -232,17 +232,13 @@ int main(int argc, char **argv) {
 
 				/* then we compute the shift for the Datum */
 				/* The datum coordinates from the pivot point */
-				for (int i = 0; i < 3; i++) A[i] = Datum[i];
+				for (int i = 0; i < 3; i++) Piv2RDatum[i] = Piv2Datum[i];
 
-				A[3]=axis[0];
-				A[4]=axis[1];
-				A[5]=axis[2];
-
-				RotateArray(6,A,thetab,thetac);
+				RotateArray(Piv2RDatum,axis,thetab,thetac);
 
 				/* the new machine coordinates of the Datum */
 				/* Shift = R(r) - r becomes the the shift to be applied to the Datum point */
-				for (int i = 0; i < 3; i++) Shift[i] = A[i] - Datum[i];
+				for (int i = 0; i < 3; i++) Shift[i] = Piv2RDatum[i] - Piv2Datum[i];
 
 				updated |= NEW_CSYS;
 				updated |= NEW_TOOL;
@@ -278,7 +274,7 @@ int main(int argc, char **argv) {
 			} else {
 				fprintf(OUT, "%d ;NewFeature\n", lnumber); ++lnumber;
 			}
-			scad.open(argv[1], nsetup, op, toolcall, Stock, tools.tl, Shift, Datum, thetab, thetac, thetatable);
+			scad.open(argv[1], nsetup, op, toolcall, Stock, tools.tl, Shift, Piv2Datum, thetab, thetac, thetatable);
 
 		/* comment copy  */
 		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is copied to comment (maybe tool name)*/
@@ -375,15 +371,21 @@ int main(int argc, char **argv) {
 		/* store definitions for circle */
 		} else if (strstr(lineapt, "CIRCLE/") != 0) { /* define the circle center and set circle on */
 			nA=ReadArray(coord, lineapt + strlen("CIRCLE/"), ',');
-			Sense='+';  /* math angle growing */
-			/* if dot product with axis  < 0 */
-			if ( sin(thetab)*cos(thetac)*coord[3]+ sin(thetab)*sin(thetac)*coord[4]+cos(thetab)*coord[5]< 0) {
-				coord[3]=-coord[3];
-				coord[4]=-coord[4];
-				coord[5]=-coord[5];
-				Sense='-'; 
+			if (nA<3) {
+				printf("Erro na leitura de CIRCLE/\n");
+				fpause=1;
 			}
-			RotateArray(nA,coord,thetabtemp,thetactemp);
+			Sense='+';  /* math angle growing */
+			if (nA==6){
+				for (int i=0; i<3; i++) circ_axis[i]=coord[i+3];
+				/* if dot product with axis  < 0 */
+				if (sin(thetab)*cos(thetac)*coord[3]+
+						sin(thetab)*sin(thetac)*coord[4]+cos(thetab)*coord[5]<0){
+					for (int i=0; i<3; i++) circ_axis[i]=-coord[i+3];
+					Sense='-'; 
+				}
+				RotateArray(coord,circ_axis,thetabtemp,thetactemp);
+			}
 			CC[0]=coord[0];
 			CC[1]=coord[1];
 			updated |= CIRCLE_ON;
@@ -480,7 +482,15 @@ int main(int argc, char **argv) {
 			}
 
 			nA=ReadArray(coord, lineapt + strlen("GOTO/"), ',');
-			RotateArray(nA,coord,thetabtemp,thetactemp);
+			if (nA < 3){
+				printf("Error reading GOTO/\n");
+				fpause=1;
+			}
+			/* if only 3 coord no rotation is needed */
+			if (nA == 6){
+				for (int i=0; i<3; i++) goto_axis[i]=coord[i+3];
+				RotateArray(coord,goto_axis,thetabtemp,thetactemp);
+			}
 			/* to deal with the cycle clearence */
 			coord[2]+=dist;
 			if ( coord[0] != old_coord[0])  updated |= NEW_X;
@@ -489,12 +499,15 @@ int main(int argc, char **argv) {
 
 			/* test if enter circle has same radius as out of circle */
 			if (updated & CIRCLE_ON) {
-				if ( sqrt((old_coord[0] -CC[0])*(old_coord[0] -CC[0])+(old_coord[1]-CC[1])*(old_coord[1] -CC[1]))-
-				     sqrt((coord[0]-CC[0])*(coord[0]-CC[0])+(coord[1]-CC[1])*(coord[1]-CC[1])) > 0.0001 ){
-					printf("ERROR: circle not matching radious (%.7f,%.7f) on line %d of setup %d.\n",
+				if ( sqrt((old_coord[0]-CC[0])*(old_coord[0]-CC[0])+
+							(old_coord[1]-CC[1])*(old_coord[1] -CC[1]))-
+				     			sqrt((coord[0]-CC[0])*(coord[0]-CC[0])+
+					     		(coord[1]-CC[1])*(coord[1]-CC[1])) > 0.0001 ){
+					printf("ERROR: circle not matching radious (%.7f,%.7f) line %d setup %d.\n",
 						sqrt((old_coord[0]-CC[0])*(old_coord[0]-CC[0]) +
 						 (old_coord[1]-CC[1])*(old_coord[1]-CC[1])),
-						sqrt((coord[0]-CC[0])*(coord[0]-CC[0])+(coord[1]-CC[1])*(coord[1]-CC[1])),
+						sqrt((coord[0]-CC[0])*(coord[0]-CC[0])
+						+(coord[1]-CC[1])*(coord[1]-CC[1])),
 						lnumber,nsetup+11);
 					fpause=1;
 				}
