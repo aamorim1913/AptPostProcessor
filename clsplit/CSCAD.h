@@ -25,17 +25,22 @@ double *Piv2Datum;
 public:
 
 int TestLimits(double *Datum2Tool, int lnumber, int *fpause, double thetab){
-	if ((Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0] >= MachineLimits[1]) || (Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0] <= MachineLimits[0]) ||
-		(Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1] >= MachineLimits[3]) || (Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1] <= MachineLimits[2]) ||
-		(Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2]+tl[tool].DL >=  MachineLimits[5]) || (Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2]+tl[tool].DL <= MachineLimits[4])) {
+        /* add Mac2Pivot[2]+tl[tool].DL */
+	if ((Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0] >= MachineLimits[1]) || 
+		(Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0] <= MachineLimits[0]) ||
+		(Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1] >= MachineLimits[3]) || 
+		(Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1] <= MachineLimits[2]) ||
+		(Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2]+tl[tool].DL >= MachineLimits[5]) || 
+		(Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2]+tl[tool].DL <= MachineLimits[4])) {
 		if (thetab <=90 ){
 			fprintf(SCAD, "//x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
-				Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0], Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1], Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2], lnumber);
+				Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0], Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1], 
+				Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2], lnumber);
 			printf("ERROR:out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
-				Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0], Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1], Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2],
-				lnumber, nsetup+11, op, tool);
+				Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0], Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1],
+				 Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2], lnumber, nsetup+11, op, tool);
+			*fpause = 1;
 		}
-		*fpause = 1;
 	}
 
 	return 0;
