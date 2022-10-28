@@ -51,13 +51,13 @@ int main(int argc, char **argv) {
 	double Piv2Datum[3], xDatum2Ref[32], yDatum2Ref[32], zDatum2Ref[32]; 
 	double Mac2Datum[3], Piv2RRef[3], Piv2RDatum[3];
 	double Shift[3];
-	double CC[2], old_CC[2], Datum2Tool[6], old_Datum2Tool[3];
+	double CircleCenter[2], old_CircleCenter[2], Datum2Tool[6], old_Datum2Tool[3];
 	double axis[3]={0,0,0}, circ_axis[3]={0,0,0}, goto_axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
 	double prev_axis[3] = {0,0,0}, dist=0, length=0;
 	char last_comment[100];
 
 	double thetabtemp,thetactemp, thetab, thetac, thetatable;
-	double theta1, theta2, CCR;
+	double theta1, theta2, CircleR;
 	char com[12*COMSIZE];
 	int nA;
 	size_t counter;
@@ -149,7 +149,7 @@ int main(int argc, char **argv) {
 	updated=0;
 	lnumber=0;
 	for (int i=0; i<3; i++) old_Datum2Tool[i]=invalid_coord;
-	for (int i=0; i<2; i++) old_CC[i] = invalid_coord;
+	for (int i=0; i<2; i++) old_CircleCenter[i] = invalid_coord;
 	RL = '0';
 	dist=0.0;
 	length=0.0;
@@ -293,7 +293,7 @@ int main(int argc, char **argv) {
 				feedscale = MachineMaxSpindle/(1.0*tools.tl[toolcall].speed);
 				tools.tl[toolcall].speed = MachineMaxSpindle;
 			} feedscale = 1.0;
-			if (strstr(com+2*COMSIZE, "CCLW")) tools.tl[toolcall].clockwise = -1; 
+			if (strstr(com+2*COMSIZE, "CircleCenterLW")) tools.tl[toolcall].clockwise = -1; 
 			else  tools.tl[toolcall].clockwise = 1;
 			updated |= NEW_SPINDLE;
 
@@ -386,8 +386,8 @@ int main(int argc, char **argv) {
 				}
 				RotateArray(Datum2Tool,circ_axis,thetabtemp,thetactemp);
 			}
-			CC[0]=Datum2Tool[0];
-			CC[1]=Datum2Tool[1];
+			CircleCenter[0]=Datum2Tool[0];
+			CircleCenter[1]=Datum2Tool[1];
 			updated |= CIRCLE_ON;
 
 		/* CYCLE init */
@@ -472,12 +472,12 @@ int main(int argc, char **argv) {
 				updated &= ~NEW_TOOL;
 			}
 			if (updated & CIRCLE_ON) {
-				if (( CC[0] != old_CC[0]) || ( CC[1] != old_CC[1])) {
-					fprintf(OUT, "%d CC",lnumber); 
-					printVAR(OUT,"X",CC[0]); 
-					printVAR(OUT,"Y", CC[1]); 
+				if (( CircleCenter[0] != old_CircleCenter[0]) || ( CircleCenter[1] != old_CircleCenter[1])) {
+					fprintf(OUT, "%d CircleCenter",lnumber); 
+					printVAR(OUT,"X",CircleCenter[0]); 
+					printVAR(OUT,"Y", CircleCenter[1]); 
 					fprintf(OUT,"\n"); ++lnumber;
-					old_CC[0] =CC[0]; old_CC[1]=CC[1];
+					old_CircleCenter[0] =CircleCenter[0]; old_CircleCenter[1]=CircleCenter[1];
 				}
 			}
 
@@ -492,11 +492,13 @@ int main(int argc, char **argv) {
 			}
 			/* if only 3 coord no rotation is needed */
 			if (nA == 6){
+				CircleR = sqrt((Datum2Tool[0]-CircleCenter[0])*(Datum2Tool[0]-CircleCenter[0])
+					+(Datum2Tool[1]-CircleCenter[1])*(Datum2Tool[1]-CircleCenter[1]));
+				double sinn=sqrt(1-goto_axis[2]*goto_axis[2]);
 				for (int i=0; i<3; i++) goto_axis[i]=Datum2Tool[i+3];
 				if ((Datum2Tool[2]+Mac2Datum[2]-tools.tl[toolcall].rcad*sqrt(1-goto_axis[2]*goto_axis[2]) 
-						<= machine_table[2]) || ((updated & CIRCLE_ON) && Datum2Tool[2]+Mac2Datum[2]
-	-(sqrt((CC[0]-Datum2Tool[0])*(CC[0]-Datum2Tool[0])+(CC[1]-Datum2Tool[1])*(CC[1]-Datum2Tool[1]))+tools.tl[toolcall].rcad)
-					*sqrt(1-goto_axis[2]*goto_axis[2]) <=machine_table[2])) {
+						<= machine_table[2]) || ((updated & CIRCLE_ON) && 
+					Datum2Tool[2]+Mac2Datum[2] -(CircleR+tools.tl[toolcall].rcad)*sinn <=machine_table[2])) {
 					printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, toolcall);
 					fpause=1;
 				}
@@ -510,15 +512,15 @@ int main(int argc, char **argv) {
 
 			/* test if enter circle has same radius as out of circle */
 			if (updated & CIRCLE_ON) {
-				if ( sqrt((old_Datum2Tool[0]-CC[0])*(old_Datum2Tool[0]-CC[0])+
-							(old_Datum2Tool[1]-CC[1])*(old_Datum2Tool[1] -CC[1]))-
-				     			sqrt((Datum2Tool[0]-CC[0])*(Datum2Tool[0]-CC[0])+
-					     		(Datum2Tool[1]-CC[1])*(Datum2Tool[1]-CC[1])) > 0.0001 ){
+				if ( sqrt((old_Datum2Tool[0]-CircleCenter[0])*(old_Datum2Tool[0]-CircleCenter[0])+
+							(old_Datum2Tool[1]-CircleCenter[1])*(old_Datum2Tool[1] -CircleCenter[1]))-
+				     			sqrt((Datum2Tool[0]-CircleCenter[0])*(Datum2Tool[0]-CircleCenter[0])+
+					     		(Datum2Tool[1]-CircleCenter[1])*(Datum2Tool[1]-CircleCenter[1])) > 0.0001 ){
 					printf("ERROR: circle not matching radious (%.7f,%.7f) line %d setup %d.\n",
-						sqrt((old_Datum2Tool[0]-CC[0])*(old_Datum2Tool[0]-CC[0]) +
-						 (old_Datum2Tool[1]-CC[1])*(old_Datum2Tool[1]-CC[1])),
-						sqrt((Datum2Tool[0]-CC[0])*(Datum2Tool[0]-CC[0])
-						+(Datum2Tool[1]-CC[1])*(Datum2Tool[1]-CC[1])),
+						sqrt((old_Datum2Tool[0]-CircleCenter[0])*(old_Datum2Tool[0]-CircleCenter[0]) +
+						 (old_Datum2Tool[1]-CircleCenter[1])*(old_Datum2Tool[1]-CircleCenter[1])),
+						sqrt((Datum2Tool[0]-CircleCenter[0])*(Datum2Tool[0]-CircleCenter[0])
+						+(Datum2Tool[1]-CircleCenter[1])*(Datum2Tool[1]-CircleCenter[1])),
 						lnumber,nsetup+11);
 					fpause=1;
 				}
@@ -547,8 +549,8 @@ int main(int argc, char **argv) {
 			 /* draw circle or spiral */
 			} else {
 				//VERY CONFUSING ON THE APT FILE DO NOT USE! if (used_RL != RL ) fprintf(OUT, " R%c",RL);
-				theta1 = 180. / AM_PI * atan2(old_Datum2Tool[1] - CC[1], old_Datum2Tool[0] - CC[0]);
-				theta2 = 180. / AM_PI * atan2(Datum2Tool[1] - CC[1], Datum2Tool[0] - CC[0]);
+				theta1 = 180. / AM_PI * atan2(old_Datum2Tool[1] - CircleCenter[1], old_Datum2Tool[0] - CircleCenter[0]);
+				theta2 = 180. / AM_PI * atan2(Datum2Tool[1] - CircleCenter[1], Datum2Tool[0] - CircleCenter[0]);
 				if (Sense == '-') {
 					if (theta2 >= theta1) theta2 -= 360.;
 					if (theta2 >= theta1) theta2 -= 360.;
@@ -558,7 +560,8 @@ int main(int argc, char **argv) {
 					if (theta2 <= theta1) theta2 += 360.;
 				}
 				if (theta2 == theta1) theta2 += 360;
-				CCR = sqrt((Datum2Tool[0]-CC[0])*(Datum2Tool[0]-CC[0])+(Datum2Tool[1]-CC[1])*(Datum2Tool[1]-CC[1]));
+				CircleR = sqrt((Datum2Tool[0]-CircleCenter[0])*(Datum2Tool[0]-CircleCenter[0])
+					+(Datum2Tool[1]-CircleCenter[1])*(Datum2Tool[1]-CircleCenter[1]));
 
 				if (Datum2Tool[2]==old_Datum2Tool[2]){
 					/* circle */
@@ -584,7 +587,7 @@ int main(int argc, char **argv) {
 				fprintf(OUT,"\n");
 				++lnumber;
 
-				 scad.AddCircle(CC,CCR,theta1,theta2,old_Datum2Tool[2], Datum2Tool[2],Sense,
+				 scad.AddCircle(CircleCenter,CircleR,theta1,theta2,old_Datum2Tool[2], Datum2Tool[2],Sense,
 					  lnumber, feed, &fpause, thetab);
 			}
 
