@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 	double Piv2Datum[3], xDatum2Ref[32], yDatum2Ref[32], zDatum2Ref[32]; 
 	double Mac2Datum[3], Piv2RRef[3], Piv2RDatum[3];
 	double Shift[3];
-	double CC[2], old_CC[2], coord[6], old_coord[3];
+	double CC[2], old_CC[2], Datum2Tool[6], old_Datum2Tool[3];
 	double axis[3]={0,0,0}, circ_axis[3]={0,0,0}, goto_axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
 	double prev_axis[3] = {0,0,0}, dist=0, length=0;
 	char last_comment[100];
@@ -148,7 +148,7 @@ int main(int argc, char **argv) {
 	nsetup = -1;
 	updated=0;
 	lnumber=0;
-	for (int i=0; i<3; i++) old_coord[i]=invalid_coord;
+	for (int i=0; i<3; i++) old_Datum2Tool[i]=invalid_coord;
 	for (int i=0; i<2; i++) old_CC[i] = invalid_coord;
 	RL = '0';
 	dist=0.0;
@@ -185,7 +185,7 @@ int main(int argc, char **argv) {
 			if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d M03\n",lnumber); 
 			else fprintf(OUT, "%d M04\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L ",lnumber); 
-			printVAR(OUT,"Z", old_coord[2]);
+			printVAR(OUT,"Z", old_Datum2Tool[2]);
 			fprintf(OUT," FMAX\n"); ++lnumber;
 
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
@@ -370,24 +370,24 @@ int main(int argc, char **argv) {
 
 		/* store definitions for circle */
 		} else if (strstr(lineapt, "CIRCLE/") != 0) { /* define the circle center and set circle on */
-			nA=ReadArray(coord, lineapt + strlen("CIRCLE/"), ',');
+			nA=ReadArray(Datum2Tool, lineapt + strlen("CIRCLE/"), ',');
 			if (nA<3) {
 				printf("Erro na leitura de CIRCLE/\n");
 				fpause=1;
 			}
 			Sense='+';  /* math angle growing */
 			if (nA==6){
-				for (int i=0; i<3; i++) circ_axis[i]=coord[i+3];
+				for (int i=0; i<3; i++) circ_axis[i]=Datum2Tool[i+3];
 				/* if dot product with axis  < 0 */
-				if (sin(thetab)*cos(thetac)*coord[3]+
-						sin(thetab)*sin(thetac)*coord[4]+cos(thetab)*coord[5]<0){
-					for (int i=0; i<3; i++) circ_axis[i]=-coord[i+3];
+				if (sin(thetab)*cos(thetac)*Datum2Tool[3]+
+						sin(thetab)*sin(thetac)*Datum2Tool[4]+cos(thetab)*Datum2Tool[5]<0){
+					for (int i=0; i<3; i++) circ_axis[i]=-Datum2Tool[i+3];
 					Sense='-'; 
 				}
-				RotateArray(coord,circ_axis,thetabtemp,thetactemp);
+				RotateArray(Datum2Tool,circ_axis,thetabtemp,thetactemp);
 			}
-			CC[0]=coord[0];
-			CC[1]=coord[1];
+			CC[0]=Datum2Tool[0];
+			CC[1]=Datum2Tool[1];
 			updated |= CIRCLE_ON;
 
 		/* CYCLE init */
@@ -462,8 +462,8 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, 
 					tools.tl[toolcall].speed); ++lnumber;
 				tref.AddTool(toolcall,tools.tl);
-				if (old_coord[2]!=invalid_coord) {
-					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_coord[2]);
+				if (old_Datum2Tool[2]!=invalid_coord) {
+					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_Datum2Tool[2]);
 					++lnumber; 
 				}
 				updated |= NEW_FLOOD;
@@ -481,33 +481,44 @@ int main(int argc, char **argv) {
 				}
 			}
 
-			nA=ReadArray(coord, lineapt + strlen("GOTO/"), ',');
+			nA=ReadArray(Datum2Tool, lineapt + strlen("GOTO/"), ',');
 			if (nA < 3){
 				printf("Error reading GOTO/\n");
 				fpause=1;
 			}
+			if (Datum2Tool[2]+Mac2Datum[2] <= machine_table[2] ) {
+				printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, toolcall);
+				fpause=1;
+			}
 			/* if only 3 coord no rotation is needed */
 			if (nA == 6){
-				for (int i=0; i<3; i++) goto_axis[i]=coord[i+3];
-				RotateArray(coord,goto_axis,thetabtemp,thetactemp);
+				for (int i=0; i<3; i++) goto_axis[i]=Datum2Tool[i+3];
+				if ((Datum2Tool[2]+Mac2Datum[2]-tools.tl[toolcall].rcad*sqrt(1-goto_axis[2]*goto_axis[2]) 
+						<= machine_table[2]) || ((updated & CIRCLE_ON) && Datum2Tool[2]+Mac2Datum[2]
+	-(sqrt((CC[0]-Datum2Tool[0])*(CC[0]-Datum2Tool[0])+(CC[1]-Datum2Tool[1])*(CC[1]-Datum2Tool[1]))+tools.tl[toolcall].rcad)
+					*sqrt(1-goto_axis[2]*goto_axis[2]) <=machine_table[2])) {
+					printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, toolcall);
+					fpause=1;
+				}
+				RotateArray(Datum2Tool,goto_axis,thetabtemp,thetactemp);
 			}
 			/* to deal with the cycle clearence */
-			coord[2]+=dist;
-			if ( coord[0] != old_coord[0])  updated |= NEW_X;
-			if ( coord[1] != old_coord[1])  updated |= NEW_Y;
-			if ( coord[2] != old_coord[2])  updated |= NEW_Z;
+			Datum2Tool[2]+=dist;
+			if ( Datum2Tool[0] != old_Datum2Tool[0])  updated |= NEW_X;
+			if ( Datum2Tool[1] != old_Datum2Tool[1])  updated |= NEW_Y;
+			if ( Datum2Tool[2] != old_Datum2Tool[2])  updated |= NEW_Z;
 
 			/* test if enter circle has same radius as out of circle */
 			if (updated & CIRCLE_ON) {
-				if ( sqrt((old_coord[0]-CC[0])*(old_coord[0]-CC[0])+
-							(old_coord[1]-CC[1])*(old_coord[1] -CC[1]))-
-				     			sqrt((coord[0]-CC[0])*(coord[0]-CC[0])+
-					     		(coord[1]-CC[1])*(coord[1]-CC[1])) > 0.0001 ){
+				if ( sqrt((old_Datum2Tool[0]-CC[0])*(old_Datum2Tool[0]-CC[0])+
+							(old_Datum2Tool[1]-CC[1])*(old_Datum2Tool[1] -CC[1]))-
+				     			sqrt((Datum2Tool[0]-CC[0])*(Datum2Tool[0]-CC[0])+
+					     		(Datum2Tool[1]-CC[1])*(Datum2Tool[1]-CC[1])) > 0.0001 ){
 					printf("ERROR: circle not matching radious (%.7f,%.7f) line %d setup %d.\n",
-						sqrt((old_coord[0]-CC[0])*(old_coord[0]-CC[0]) +
-						 (old_coord[1]-CC[1])*(old_coord[1]-CC[1])),
-						sqrt((coord[0]-CC[0])*(coord[0]-CC[0])
-						+(coord[1]-CC[1])*(coord[1]-CC[1])),
+						sqrt((old_Datum2Tool[0]-CC[0])*(old_Datum2Tool[0]-CC[0]) +
+						 (old_Datum2Tool[1]-CC[1])*(old_Datum2Tool[1]-CC[1])),
+						sqrt((Datum2Tool[0]-CC[0])*(Datum2Tool[0]-CC[0])
+						+(Datum2Tool[1]-CC[1])*(Datum2Tool[1]-CC[1])),
 						lnumber,nsetup+11);
 					fpause=1;
 				}
@@ -515,9 +526,9 @@ int main(int argc, char **argv) {
 
 			if ( !(updated & CIRCLE_ON) ) { /* draw line */
 				fprintf(OUT, "%d L",lnumber);
-				if (updated & NEW_X) printVAR(OUT,"X",coord[0]); 
-				if (updated & NEW_Y) printVAR(OUT,"Y",coord[1]);
-				if (updated & NEW_Z) printVAR(OUT,"Z",coord[2]);
+				if (updated & NEW_X) printVAR(OUT,"X",Datum2Tool[0]); 
+				if (updated & NEW_Y) printVAR(OUT,"Y",Datum2Tool[1]);
+				if (updated & NEW_Z) printVAR(OUT,"Z",Datum2Tool[2]);
 				/* use only with tool R=0 to correct DR */
 				if (used_RL != RL ) fprintf(OUT, " R%c",RL);
 				if (feed == -1) fprintf(OUT, " FMAX");
@@ -526,18 +537,18 @@ int main(int argc, char **argv) {
 					if ((dry==1)||(feed == -1)) fprintf(OUT," M09");
 					else fprintf(OUT," M08");
 				}
-				scad.AddLine(coord, lnumber, feed, &fpause, thetab);
+				scad.AddLine(Datum2Tool, lnumber, feed, &fpause, thetab);
 				if (updated & CYCLE_ON) {
 					fprintf(OUT," M99");
-					scad.AddDepth(coord, lnumber, dist, length, &fpause, thetab);
+					scad.AddDepth(Datum2Tool, lnumber, dist, length, &fpause, thetab);
 				}
 				fprintf(OUT, "\n"); ++lnumber;
 
 			 /* draw circle or spiral */
 			} else {
 				//VERY CONFUSING ON THE APT FILE DO NOT USE! if (used_RL != RL ) fprintf(OUT, " R%c",RL);
-				theta1 = 180. / AM_PI * atan2(old_coord[1] - CC[1], old_coord[0] - CC[0]);
-				theta2 = 180. / AM_PI * atan2(coord[1] - CC[1], coord[0] - CC[0]);
+				theta1 = 180. / AM_PI * atan2(old_Datum2Tool[1] - CC[1], old_Datum2Tool[0] - CC[0]);
+				theta2 = 180. / AM_PI * atan2(Datum2Tool[1] - CC[1], Datum2Tool[0] - CC[0]);
 				if (Sense == '-') {
 					if (theta2 >= theta1) theta2 -= 360.;
 					if (theta2 >= theta1) theta2 -= 360.;
@@ -547,18 +558,18 @@ int main(int argc, char **argv) {
 					if (theta2 <= theta1) theta2 += 360.;
 				}
 				if (theta2 == theta1) theta2 += 360;
-				CCR = sqrt((coord[0] - CC[0]) * (coord[0] - CC[0]) + (coord[1] - CC[1]) * (coord[1] - CC[1]));
+				CCR = sqrt((Datum2Tool[0]-CC[0])*(Datum2Tool[0]-CC[0])+(Datum2Tool[1]-CC[1])*(Datum2Tool[1]-CC[1]));
 
-				if (coord[2]==old_coord[2]){
+				if (Datum2Tool[2]==old_Datum2Tool[2]){
 					/* circle */
 					fprintf(OUT, "%d C",lnumber);
-					if (updated & NEW_X) printVAR(OUT,"X",coord[0]);
-					if (updated & NEW_Y) printVAR(OUT,"Y",coord[1]);
+					if (updated & NEW_X) printVAR(OUT,"X",Datum2Tool[0]);
+					if (updated & NEW_Y) printVAR(OUT,"Y",Datum2Tool[1]);
 				} else {
 					/* spiral */
 					fprintf(OUT, "%d CP",lnumber);
 					printVAR(OUT,"IPA",theta2-theta1);
-					printVAR(OUT, "Z", coord[2]);
+					printVAR(OUT, "Z", Datum2Tool[2]);
 				}
 				fprintf(OUT, " DR%c",Sense);
 				if (feed == -1) fprintf(OUT, " FMAX");
@@ -573,11 +584,11 @@ int main(int argc, char **argv) {
 				fprintf(OUT,"\n");
 				++lnumber;
 
-				 scad.AddCircle(CC,CCR,theta1,theta2,old_coord[2], coord[2],Sense,
+				 scad.AddCircle(CC,CCR,theta1,theta2,old_Datum2Tool[2], Datum2Tool[2],Sense,
 					  lnumber, feed, &fpause, thetab);
 			}
 
-			for (int i=0; i<3; i++) old_coord[i] = coord[i];
+			for (int i=0; i<3; i++) old_Datum2Tool[i] = Datum2Tool[i];
 
 			/* reset all update flags except CYCLE_ON */
 			updated = 0;
