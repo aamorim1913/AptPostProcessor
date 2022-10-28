@@ -14,25 +14,25 @@ class CSCAD{
 private:
 
 double x1ini, y1ini, z1ini;
-double old_coord[3];
+double old_Datum2Tool[3];
 FILE* SCAD;
 struct TOOL *tl;
 int tool;
 int nsetup;
 int op;
-double *Datum;
+double *Piv2Datum;
 
 public:
 
-int TestLimits(double *coord, int lnumber, int *fpause, double thetab){
-	if ((coord[0]+Datum[0]+Mac2Pivot[0] >= MachineLimits[1]) || (coord[0]+Datum[0]+Mac2Pivot[0] <= MachineLimits[0]) ||
-		(coord[1]+Datum[1]+Mac2Pivot[1] >= MachineLimits[3]) || (coord[1]+Datum[1]+Mac2Pivot[1] <= MachineLimits[2]) ||
-		(coord[2]+Datum[2]+Mac2Pivot[2]+tl[tool].DL >=  MachineLimits[5]) || (coord[2]+Datum[2]+Mac2Pivot[2]+tl[tool].DL <= MachineLimits[4])) {
+int TestLimits(double *Datum2Tool, int lnumber, int *fpause, double thetab){
+	if ((Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0] >= MachineLimits[1]) || (Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0] <= MachineLimits[0]) ||
+		(Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1] >= MachineLimits[3]) || (Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1] <= MachineLimits[2]) ||
+		(Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2]+tl[tool].DL >=  MachineLimits[5]) || (Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2]+tl[tool].DL <= MachineLimits[4])) {
 		if (thetab <=90 ){
 			fprintf(SCAD, "//x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
-				coord[0]+Datum[0]+Mac2Pivot[0], coord[1]+Datum[1]+Mac2Pivot[1], coord[2]+Datum[2]+Mac2Pivot[2], lnumber);
+				Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0], Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1], Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2], lnumber);
 			printf("ERROR:out of machine range xm=%.0f;ym=%.0f;zm=%.0f of line %d, setup %d, op %d, tool %d\n",
-				coord[0]+Datum[0]+Mac2Pivot[0], coord[1]+Datum[1]+Mac2Pivot[1], coord[2]+Datum[2]+Mac2Pivot[2],
+				Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0], Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1], Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2],
 				lnumber, nsetup+11, op, tool);
 		}
 		*fpause = 1;
@@ -42,18 +42,18 @@ int TestLimits(double *coord, int lnumber, int *fpause, double thetab){
 }
 
 
-int  AddLine(double *coord, int lnumber, double feed, int *fpause, double thetab) {
+int  AddLine(double *Datum2Tool, int lnumber, double feed, int *fpause, double thetab) {
 
 	static int old_nsetup = -1;
 	static int old_op = -1;
 
-	TestLimits(coord, lnumber, fpause, thetab);
+	TestLimits(Datum2Tool, lnumber, fpause, thetab);
 
 	if ((nsetup != old_nsetup) || (op != old_op)) {
 		old_nsetup = nsetup  ;
 		old_op = op ;
-		for (int i=0; i<3; i++) old_coord[i]=coord[i];
-		x1ini = coord[0]; y1ini = coord[1]; z1ini = coord[2];
+		for (int i=0; i<3; i++) old_Datum2Tool[i]=Datum2Tool[i];
+		x1ini = Datum2Tool[0]; y1ini = Datum2Tool[1]; z1ini = Datum2Tool[2];
 		return 0;
 	}
 
@@ -62,39 +62,39 @@ int  AddLine(double *coord, int lnumber, double feed, int *fpause, double thetab
 	if (feed <= 0) fprintf(SCAD, "color(\"blue\",0.3) ");
 	else fprintf(SCAD, "color(\"yellow\",0.3) ");
 	fprintf(SCAD, "translate([xd,yd,zd]) hull(){translate([%.2f,%.2f,%.2f]) cylinder(1,rtool,rtool); translate([%.2f,%.2f,%.2f]) cylinder(1,rtool,rtool);}\n",
-	old_coord[0], old_coord[1], old_coord[2], coord[0], coord[1], coord[2]);
+	old_Datum2Tool[0], old_Datum2Tool[1], old_Datum2Tool[2], Datum2Tool[0], Datum2Tool[1], Datum2Tool[2]);
 
-	for (int i=0; i<3 ; i++) old_coord[i]=coord[i];
+	for (int i=0; i<3 ; i++) old_Datum2Tool[i]=Datum2Tool[i];
 
 	return 0;
 }
 
-int AddDepth(double *coord, int lnumber, double dist, double length, int *fpause, double thetab) {
+int AddDepth(double *Datum2Tool, int lnumber, double dist, double length, int *fpause, double thetab) {
 
 	if (length <0) length = - length;
-	if  (coord[2]+Datum[2]+Mac2Pivot[2]+tl[tool].DL-length <= MachineLimits[4]) {
+	if  (Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2]+tl[tool].DL-length <= MachineLimits[4]) {
 		if (thetab <=90 ){
 			fprintf(SCAD, "//Depth x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
-				coord[0]+Datum[0]+Mac2Pivot[0], 
-				coord[1]+Datum[1]+Mac2Pivot[1], 
-				coord[2]+Datum[2]+Mac2Pivot[2], lnumber);
+				Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0], 
+				Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1], 
+				Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2], lnumber);
 			printf("ERROR:Addlenght depth out of range xm=%.0f;ym=%.0f;zm=%.0f line %d, setup %d, op %d, tool %d\n",
-				coord[0]+Datum[0]+Mac2Pivot[0], 
-				coord[1]+Datum[1]+Mac2Pivot[1], 
-				coord[2]+Datum[2]+Mac2Pivot[2]+tl[tool].DL-length,
+				Datum2Tool[0]+Piv2Datum[0]+Mac2Pivot[0], 
+				Datum2Tool[1]+Piv2Datum[1]+Mac2Pivot[1], 
+				Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2]+tl[tool].DL-length,
 				lnumber, nsetup+11, op, tool);
 		}
 		*fpause = 1;
 	}
 	fprintf(SCAD,"color(\"green\",0.3) translate([xd,yd,zd]) translate([%.2f,%.2f,%.2f]) cylinder(%.2f,rtool,rtool);\n",
-		coord[0],coord[1], coord[2]-dist-length, dist+length);
+		Datum2Tool[0],Datum2Tool[1], Datum2Tool[2]-dist-length, dist+length);
 
 	return 0;
 }
 
 
-int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, double feed, int *fpause, double thetab) {
-	double coord[3];
+int AddCircle( double* CircleCenter,double CircleR,double theta1,double theta2, double old_z, double z, int Sense,  int lnumber, double feed, int *fpause, double thetab) {
+	double Datum2Tool[3];
 
 	if (Sense == '-') {
 		if (theta2 >= theta1) theta2 -= 360;
@@ -105,34 +105,34 @@ int AddCircle( double* CC,double CCR,double theta1,double theta2, double old_z, 
 		if (theta2 <= theta1) theta2 += 360;
 	}
 
-	int n = 20 + (int)CCR;
+	int n = 20 + (int)CircleR;
 	for (int i = 1; i <= n; ++i) {
 		double theta = theta1 + i * (theta2 - theta1) / n;
-		coord[0]=CC[0]+CCR*cos(theta*AM_PI/180);
-		coord[1]=CC[1]+CCR*sin(theta*AM_PI/180);
-                coord[2]=old_z+(theta-theta1)/(theta2-theta1)*(z-old_z);
-		TestLimits(coord, lnumber, fpause, thetab);
+		Datum2Tool[0]=CircleCenter[0]+CircleR*cos(theta*AM_PI/180);
+		Datum2Tool[1]=CircleCenter[1]+CircleR*sin(theta*AM_PI/180);
+                Datum2Tool[2]=old_z+(theta-theta1)/(theta2-theta1)*(z-old_z);
+		TestLimits(Datum2Tool, lnumber, fpause, thetab);
 	}
 
         /* print tool paths */
         fprintf(SCAD, "/* line -> %d */\n",  lnumber);
 	if (z==old_z){
 		fprintf(SCAD,"color(\"yellow\",0.3) translate([xd,yd,zd]) translate([%.2f, %.2f, %.2f]) rotate([0,0,%.2f]) rotate_extrude(angle=%.2f, convexity = 10, $fn=50) translate([%.2f, 0, 0]) square([2*rtool, 1],center = true);\n",
-		CC[0],CC[1],old_z+0.5,theta1,theta2-theta1,CCR);
+		CircleCenter[0],CircleCenter[1],old_z+0.5,theta1,theta2-theta1,CircleR);
 	} else { 
 		fprintf(SCAD,"color(\"yellow\",0.3) translate([xd,yd,zd]) translate([%.2f, %.2f, %.2f]) rotate([0,0,%.2f]) linear_extrude(height = %.2f, center = false, convexity = 10, twist = %.2f, $fn = 50) translate([%.2f, 0, 0]) square([2*rtool, 1],center = true);\n",
-		CC[0],CC[1],old_z+0.5,z-old_z,theta1,theta2-theta1,CCR);
+		CircleCenter[0],CircleCenter[1],old_z+0.5,z-old_z,theta1,theta2-theta1,CircleR);
 	}
-	old_coord[0]=CC[0]+CCR*cos(theta2*AM_PI/180);
-	old_coord[1]=CC[1]+CCR*sin(theta2*AM_PI/180);
-	old_coord[2]=z;
+	old_Datum2Tool[0]=CircleCenter[0]+CircleR*cos(theta2*AM_PI/180);
+	old_Datum2Tool[1]=CircleCenter[1]+CircleR*sin(theta2*AM_PI/180);
+	old_Datum2Tool[2]=z;
 
 	return 0;
 }
 
 /* includes drawing the working table of the machine and the part stl file*/
 
-int open(char* name, int setnsetup, int setop, int settool, double *Stock, struct TOOL *settl, double *Shift, double *setDatum, double thetab, double thetac, double thetatable) {
+int open(char* name, int setnsetup, int setop, int settool, double *Stock, struct TOOL *settl, double *Shift, double *Datum, double thetab, double thetac, double thetatable) {
 
 	size_t st;
 	static int prev_ns;
@@ -143,7 +143,7 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 	tool=settool;
 	nsetup=setnsetup;
 	op=setop;
-	Datum=setDatum;
+	for (int i=0; i<3; i++) Piv2Datum[i]=Datum[i];
 
 	if (thetab >90 )  sprintf(filename, DMUDIRSCAD, 900 + nsetup + 11, op);
 	else sprintf(filename, DMUDIRSCAD, nsetup + 11, op);
@@ -153,8 +153,8 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 	}
 
 	fprintf(SCAD, "xd=%f; yd=%f; zd=%f; /* Datum shifted (Rotated) relative to pivot  */\n", 
-		Datum[0] + Shift[0], Datum[1] + Shift[1], Datum[2] + Shift[2]);
-	fprintf(SCAD, "xd0=%f; yd0=%f; zd0=%f; /* Datum relative to pivot unrotated */\n", Datum[0], Datum[1], Datum[2]);
+		Piv2Datum[0] + Shift[0], Piv2Datum[1] + Shift[1], Piv2Datum[2] + Shift[2]);
+	fprintf(SCAD, "xd0=%f; yd0=%f; zd0=%f; /* Datum relative to pivot unrotated */\n", Piv2Datum[0], Piv2Datum[1], Piv2Datum[2]);
 	fprintf(SCAD, "l=%f; ltool=%f; rtool=%f;\n", tl[tool].DL, tl[tool].lcad, tl[tool].rcad);
 	/* table */
 	fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) color(\"grey\") difference(){\ntranslate([0,0,-25]) cylinder(50,350,350,center = true);\ntranslate([0,-500,-75]) linear_extrude(100) square(500,center=true);\ntranslate([0,500,-75]) linear_extrude(100) square(500,center=true);}\n", 
@@ -186,14 +186,14 @@ int close(double *Stock, double thetab, double thetac, double *Shift) {
 	if (SCAD == NULL) return -1;
 
 	fprintf(SCAD,"x=%.3lf;y=%.3lf;z=%.3lf; /* Near the table */\n", 
-			x1ini+Datum[0]+Shift[0], y1ini+Datum[1]+Shift[1], z1ini+Datum[2]+Shift[2]);
+			x1ini+Piv2Datum[0]+Shift[0], y1ini+Piv2Datum[1]+Shift[1], z1ini+Piv2Datum[2]+Shift[2]);
 
 	/* machine head xd to be replaced by x */
 	fprintf(SCAD, "color(\"white\") translate([x,y,z]) union(){\ntranslate([7.5,0,280-l]) linear_extrude(500) square(295,center=true);\ntranslate([0,0,230-l]) cylinder(100,75,75,center=true);\ntranslate([0,0,90+ltool/2]) cylinder(180-ltool,35,35,center=true);\ntranslate([0,0,ltool/2]) cylinder(ltool,rtool,rtool,center=true);}\n");
 
 	/* stock transparent */
 	fprintf(SCAD, "color(\"blue\",0.6) rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) cube([%f,%f,%f],center=true);\n",
-		-thetab, -thetac, Datum[0]+Stock[0]/2, Datum[1]+Stock[1]/2, Datum[2]-Stock[2]/2, Stock[0], Stock[1], Stock[2]);
+		-thetab, -thetac, Piv2Datum[0]+Stock[0]/2, Piv2Datum[1]+Stock[1]/2, Piv2Datum[2]-Stock[2]/2, Stock[0], Stock[1], Stock[2]);
 
 	/* machine range volume transparent. -Mac2Pivot to corner at (0,0,0) in machine coordinates */
 	fprintf(SCAD, "color(\"brown\",0.25) translate([%f,%f,%f]) cube([%lf,%lf,%lf],center=true);\n",
