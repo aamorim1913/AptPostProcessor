@@ -13,14 +13,14 @@ class CSCAD{
 
 private:
 
-double x1ini, y1ini, z1ini;
+double iniDatum2Tool[3];
 double old_Datum2Tool[3];
+double Piv2Datum[3];
 FILE* SCAD;
 struct TOOL *tl;
 int tool;
 int nsetup;
 int op;
-double *Piv2Datum;
 
 public:
 
@@ -58,7 +58,7 @@ int  AddLine(double *Datum2Tool, int lnumber, double feed, int *fpause, double t
 		old_nsetup = nsetup  ;
 		old_op = op ;
 		for (int i=0; i<3; i++) old_Datum2Tool[i]=Datum2Tool[i];
-		x1ini = Datum2Tool[0]; y1ini = Datum2Tool[1]; z1ini = Datum2Tool[2];
+		for (int i=0; i<3; i++) iniDatum2Tool[i]=Datum2Tool[i];
 		return 0;
 	}
 
@@ -66,8 +66,9 @@ int  AddLine(double *Datum2Tool, int lnumber, double feed, int *fpause, double t
 	fprintf(SCAD, "/* line -> %d */\n",  lnumber);
 	if (feed <= 0) fprintf(SCAD, "color(\"blue\",0.3) ");
 	else fprintf(SCAD, "color(\"yellow\",0.3) ");
-	fprintf(SCAD, "translate([xd,yd,zd]) hull(){translate([%.2f,%.2f,%.2f]) cylinder(1,rtool,rtool); translate([%.2f,%.2f,%.2f]) cylinder(1,rtool,rtool);}\n",
-	old_Datum2Tool[0], old_Datum2Tool[1], old_Datum2Tool[2], Datum2Tool[0], Datum2Tool[1], Datum2Tool[2]);
+	fprintf(SCAD,"translate([xd,yd,zd]) hull()");
+	fprintf(SCAD,"{translate([%.2f,%.2f,%.2f]) cylinder(1,rtool,rtool); translate([%.2f,%.2f,%.2f]) cylinder(1,rtool,rtool);}\n"
+			, old_Datum2Tool[0], old_Datum2Tool[1], old_Datum2Tool[2], Datum2Tool[0], Datum2Tool[1], Datum2Tool[2]);
 
 	for (int i=0; i<3 ; i++) old_Datum2Tool[i]=Datum2Tool[i];
 
@@ -77,6 +78,7 @@ int  AddLine(double *Datum2Tool, int lnumber, double feed, int *fpause, double t
 int AddDepth(double *Datum2Tool, int lnumber, double dist, double length, int *fpause, double thetab) {
 
 	if (length <0) length = - length;
+	/* see if it missis machine range */
 	if  (Datum2Tool[2]+Piv2Datum[2]+Mac2Pivot[2]+tl[tool].DL-length <= MachineLimits[4]) {
 		if (thetab <=90 ){
 			fprintf(SCAD, "//Depth x=%.0f;y=%.0f;z=%.0f;/*Line %d Out of machine range*/\n",
@@ -161,9 +163,14 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 		Piv2Datum[0] + Shift[0], Piv2Datum[1] + Shift[1], Piv2Datum[2] + Shift[2]);
 	fprintf(SCAD, "xd0=%f; yd0=%f; zd0=%f; /* Datum relative to pivot unrotated */\n", Piv2Datum[0], Piv2Datum[1], Piv2Datum[2]);
 	fprintf(SCAD, "l=%f; ltool=%f; rtool=%f;\n", tl[tool].DL, tl[tool].lcad, tl[tool].rcad);
-	/* table */
-	fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) color(\"grey\") difference(){\ntranslate([0,0,-25]) cylinder(50,350,350,center = true);\ntranslate([0,-500,-75]) linear_extrude(100) square(500,center=true);\ntranslate([0,500,-75]) linear_extrude(100) square(500,center=true);}\n", 
-		-thetab, -thetac-thetatable,machine_table[0]-Mac2Pivot[0],machine_table[1]-Mac2Pivot[1],machine_table[2]-Mac2Pivot[2]);
+	/* draw table */
+	fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) ", 
+		-thetab, -thetac-thetatable,machine_table[0]-Mac2Pivot[0],
+		machine_table[1]-Mac2Pivot[1],machine_table[2]-Mac2Pivot[2]);
+	fprintf(SCAD, "color(\"grey\") difference(){\ntranslate([0,0,-25]) cylinder(50,350,350,center = true);\n"); 
+	fprintf(SCAD, "translate([0,0,-25]) cylinder(50,350,350,center = true);\n");
+	fprintf(SCAD, "translate([0,-500,-75]) linear_extrude(100) square(500,center=true);\n");
+	fprintf(SCAD, "translate([0,500,-75]) linear_extrude(100) square(500,center=true);}\n"); 
 
 	/* STL of the part */
 #if defined(_WIN64)
@@ -191,7 +198,8 @@ int close(double *Stock, double thetab, double thetac, double *Shift) {
 	if (SCAD == NULL) return -1;
 
 	fprintf(SCAD,"x=%.3lf;y=%.3lf;z=%.3lf; /* Near the table */\n", 
-			x1ini+Piv2Datum[0]+Shift[0], y1ini+Piv2Datum[1]+Shift[1], z1ini+Piv2Datum[2]+Shift[2]);
+			iniDatum2Tool[0]+Piv2Datum[0]+Shift[0], iniDatum2Tool[1]+Piv2Datum[1]+Shift[1], 
+			iniDatum2Tool[2]+Piv2Datum[2]+Shift[2]);
 
 	/* machine head xd to be replaced by x */
 	fprintf(SCAD, "color(\"white\") translate([x,y,z]) union(){\ntranslate([7.5,0,280-l]) linear_extrude(500) square(295,center=true);\ntranslate([0,0,230-l]) cylinder(100,75,75,center=true);\ntranslate([0,0,90+ltool/2]) cylinder(180-ltool,35,35,center=true);\ntranslate([0,0,ltool/2]) cylinder(ltool,rtool,rtool,center=true);}\n");
