@@ -34,7 +34,7 @@ int Open(double *Piv2Datum) {
         fprintf(REF,"BEGIN PGM 0REF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
 	nref=0;
 	ntool=0;
-
+ 
 	return 0;
 }
 

@@ -293,7 +293,7 @@ int main(int argc, char **argv) {
 				feedscale = MachineMaxSpindle/(1.0*tools.tl[toolcall].speed);
 				tools.tl[toolcall].speed = MachineMaxSpindle;
 			} feedscale = 1.0;
-			if (strstr(com+2*COMSIZE, "CircleCenterLW")) tools.tl[toolcall].clockwise = -1; 
+			if (strstr(com+2*COMSIZE, "CCLW")) tools.tl[toolcall].clockwise = -1; 
 			else  tools.tl[toolcall].clockwise = 1;
 			updated |= NEW_SPINDLE;
 
@@ -473,7 +473,7 @@ int main(int argc, char **argv) {
 			}
 			if (updated & CIRCLE_ON) {
 				if (( CircleCenter[0] != old_CircleCenter[0]) || ( CircleCenter[1] != old_CircleCenter[1])) {
-					fprintf(OUT, "%d CircleCenter",lnumber); 
+					fprintf(OUT, "%d CC",lnumber); 
 					printVAR(OUT,"X",CircleCenter[0]); 
 					printVAR(OUT,"Y", CircleCenter[1]); 
 					fprintf(OUT,"\n"); ++lnumber;
