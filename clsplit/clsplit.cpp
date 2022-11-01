@@ -394,6 +394,10 @@ int main(int argc, char **argv) {
 		} else if (strstr(lineapt, "CYCLE/INIT") != 0) {
 			updated |= CYCLE_ON;
 
+		/* CYCLE clear */
+		} else if (strstr(lineapt, "CYCLE/CLEAR") != 0) {
+			updated |= CYCLE_ON;
+
 		/* CYCLE deep drill */
 		} else if (strstr(lineapt, "CYCLE/DEEP2") != 0) {
 			        nA=ReadArrayCom(com, lineapt + strlen("CYCLE/DEEP2"), ',');
@@ -404,6 +408,21 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d CYCL DEF 1.4 DWELL0\n", lnumber); ++lnumber;
 				fprintf(OUT, "%d CYCL DEF 1.5 F%.0f\n", lnumber,atof(com+7*COMSIZE)); ++lnumber;
 				dist=atof(com+11*COMSIZE);
+				length=atof(com+COMSIZE);
+				if (dry!=1) { fprintf(OUT, "%d M08\n",lnumber); ++ lnumber; }
+				else { fprintf(OUT, "%d M09\n",lnumber); ++ lnumber; }
+				updated &= ~NEW_FLOOD;
+
+		/* CYCLE deep */
+		} else if (strstr(lineapt, "CYCLE/DEEP") != 0) {
+			        nA=ReadArrayCom(com, lineapt + strlen("CYCLE/DEEP"), ',');
+				fprintf(OUT, "%d CYCL DEF 1.0 PECKING\n", lnumber); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.1 DIST%.3f\n", lnumber,atof(com+9*COMSIZE)); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.2 DEPTH%.3f\n", lnumber,-atof(com+COMSIZE)); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.3 PLNGNG%.1f\n", lnumber,atof(com+7*COMSIZE)); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.4 DWELL0\n", lnumber); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.5 F%.0f\n", lnumber,atof(com+5*COMSIZE)); ++lnumber;
+				dist=atof(com+9*COMSIZE);
 				length=atof(com+COMSIZE);
 				if (dry!=1) { fprintf(OUT, "%d M08\n",lnumber); ++ lnumber; }
 				else { fprintf(OUT, "%d M09\n",lnumber); ++ lnumber; }
