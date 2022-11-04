@@ -1,7 +1,6 @@
  // clsplit.cpp
 // Antonio Amorim CENTRA-FCUL 2021
 
-#include "../machine.h"
 
 #include <cinttypes>
 #include <stdio.h>
@@ -27,8 +26,10 @@
  
 using namespace std;
 
+#include "../machine.h"
 #include "clsplit.h"
 
+#include "APT.h"
 #include "TOOLS.h"
 #include "CSCAD.h"
 #include "TRef.h"
@@ -44,7 +45,7 @@ int main(int argc, char **argv) {
 	uint32_t updated=0;
 	char filename[MAXLINE];
 	char lineapt[MAXLINE];
-	FILE *APT, *OUT;
+	FILE *OUT;
 	double Stock[3];
 	int fpause;
 	/* Datum has the Pivot coordinates subtrated in ReadCoord() */
@@ -67,6 +68,8 @@ int main(int argc, char **argv) {
 	double feed = -1, feedscale=1.0,  rtool,ltool,temp;
 	int dry=0;
 
+	APT apt;
+	Machine mach;
 	TRef tref;
 	CSCAD scad;
 	TOOLS tools;
@@ -101,11 +104,7 @@ int main(int argc, char **argv) {
                 printf(" running dry\n");
 		dry=1;
         }
-	if ( (APT=fopen(argv[1], "r")) == NULL) {
-		printf("cannot open apt file %s\n", argv[1]);
-		return -1;
-	}
-
+	apt.open(argv[1]);
 
 	/* read the tool table TOOL.T */
 	tools.ReadTool(fpause);
@@ -115,7 +114,7 @@ int main(int argc, char **argv) {
 	/* end SCAD in FINI, CSYS and LOAD TOOL */
 	/* start SCAD in first addline or addcircle with data from CSYS */
 
-	sprintf(filename, DMUDIR, 11);
+	snprintf(filename, MAXLINE, DMUDIR, 11);
 	if ( (OUT=fopen(filename, "w")) == NULL) {
 		printf("cannot open OUT file %s\n", filename);
 		return -1;
@@ -156,10 +155,11 @@ int main(int argc, char **argv) {
 	toolcall = -1;
 
 	/* main loop on the apt file commands. Real output happens in first GOTO */
-	while (ReadLine(lineapt, APT)) {
+	while (apt.ReadLine(lineapt)) {
 
 		/* begin of program */
-		if (strstr(lineapt, "UNIT/MM") != 0) {  /* begining of program */
+		if ( apt.findUNIT_MM(lineapt) ) {  /* begining of program */
+
 			fprintf(OUT, "%d BEGIN PGM 11 MM\n",lnumber);++lnumber;
 			fprintf(OUT, "%d ;First setup of file %s\n", lnumber, argv[1]);++lnumber;
 			tref.Open(Piv2Datum);
@@ -257,9 +257,9 @@ int main(int argc, char **argv) {
 					/* open file for new setup */
 					tools.Undefine();
 					/* if milling from bellow generate file with number 900+ */
-					if ( thetab > 90 ) sprintf(filename, DMUDIR, nsetup+900+11);
+					if ( thetab > 90 ) snprintf(filename, MAXLINE, DMUDIR, nsetup+900+11);
 					else {
-						sprintf(filename, DMUDIR, nsetup+11);
+						snprintf(filename, MAXLINE, DMUDIR, nsetup+11);
 						/* if first add previous */
 						if ( nsetup==1) tref.AddRef(nsetup-1);
 						tref.AddRef(nsetup);
@@ -300,13 +300,13 @@ int main(int argc, char **argv) {
 		/* CSI_SET_FLUTE_LENGTH */
 		} else if (strstr(lineapt, "CSI_SET_FLUTE_LENGTH/") != 0) { /* tool CSI_SET_FLUTE_LENGTH */
 			sscanf(lineapt+strlen("CSI_SET_FLUTE_LENGTH/"),"%lf", &temp);
-			sprintf(com, " FLUTE LEN %.1lf", temp); 
+			snprintf(com, COMSIZE, " FLUTE LEN %.1lf", temp); 
 			strcat(tools.tl[toolcall].name,com);
 
 		/* CSI_SET_EXTENSION_LENGTH */
 		} else if (strstr(lineapt, "CSI_SET_EXTENSION_LENGTH/") != 0) { /* tool CSI_SET_EXTENSION_LENGTH */
 			sscanf(lineapt+strlen("CSI_SET_EXTENSION_LENGTH/"),"%lf", &temp);
-			sprintf(com, " FLUTE EXT %.1lf", temp); 
+			snprintf(com, COMSIZE, " FLUTE EXT %.1lf", temp); 
 			strcat(tools.tl[toolcall].name,com);
 
 		/* load the tool */
@@ -642,7 +642,7 @@ int main(int argc, char **argv) {
 	tools.WriteTool(fpause);
 	tref.Close(tools.tl);
 
-	fclose(APT);
+	apt.close();
 	fclose(OUT);
 #if defined(_WIN64)
 	if (fpause != 0) system("PAUSE");

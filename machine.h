@@ -15,3 +15,8 @@ const double machine_table_size[3]={500,350,50};
 const int machine_table_round=1;
 
 const double invalid_coord=-9999.0;
+
+
+class Machine{
+
+};

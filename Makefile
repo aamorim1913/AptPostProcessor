@@ -29,12 +29,16 @@ create2:
 clean:
 	$(MAKE) -C clsplit clean
 	rm -f clsplit/CMakeCache.txt
+	rm -rf clsplit/CMakeFiles/
 	$(MAKE) -C cirpivot clean
 	rm -f cirpivot/CMakeCache.txt
+	rm -rf cirpivot/CMakeFiles/
 	$(MAKE) -C flip clean
 	rm -f flip/CMakeCache.txt
+	rm -rf flip/CMakeFiles/
 	$(MAKE) -C micromeasure clean
 	rm -f micromeasure/CMakeCache.txt
+	rm -rf micromeasure/CMakeFiles/
 
 cleanwindows:
 	erase /S CMakeCache.txt

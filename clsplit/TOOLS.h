@@ -106,7 +106,7 @@ int WriteTool(int &fpause) {
 			for (int j = 0; j < strlen(tl[i].name) ; j++)  if (tl[i].name[j] == ' ') tl[i].name[j]='_';
 		int namestart=0;
 		for (int j = 0; j < strlen(tl[i].name); j++)  if (tl[i].name[j] == ']') namestart=j+2;
-		sprintf(sbuff, "%-4d %.16s %-+10.3lf %-+10.3lf %-+7.3lf %-+7.3lf        %d     %d     %d",
+		snprintf(sbuff, 1024, "%-4d %.16s %-+10.3lf %-+10.3lf %-+7.3lf %-+7.3lf        %d     %d     %d",
 			i,tl[i].name+namestart,tl[i].DL,tl[i].rcad,0.0,tl[i].DR,tl[i].T1,tl[i].T2,tl[i].T3);
 		for (int j = 0; j < 1024; j++) {
 			if (sbuff[j] == '\0') break;

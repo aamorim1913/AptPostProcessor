@@ -152,8 +152,8 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 	op=setop;
 	for (int i=0; i<3; i++) Piv2Datum[i]=Datum[i];
 
-	if (thetab >90 )  sprintf(filename, DMUDIRSCAD, 900 + nsetup + 11, op);
-	else sprintf(filename, DMUDIRSCAD, nsetup + 11, op);
+	if (thetab >90 )  snprintf(filename, MAXLINE, DMUDIRSCAD, 900 + nsetup + 11, op);
+	else snprintf(filename, MAXLINE, DMUDIRSCAD, nsetup + 11, op);
 	if ((SCAD = fopen(filename, "w")) == NULL) {
 		printf("cannot write SCAD file %s\n", filename);
 		return 1;

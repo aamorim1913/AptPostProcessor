@@ -18,7 +18,7 @@ int printVAR(FILE* OUT, const char* VAR, double x) {
 int CleanFiles(char* filename) {
 
 	/* remove 0t0.SCAD */
-	sprintf(filename, DMUDIRSCAD, 0, 0);
+	snprintf(filename, MAXLINE, DMUDIRSCAD, 0, 0);
 #if defined(_WIN64)
 	_unlink(filename);
 #else
@@ -26,7 +26,7 @@ int CleanFiles(char* filename) {
 #endif
 
 	/* remove 0TRef.h */
-	sprintf(filename, FILETREF);
+	snprintf(filename, MAXLINE, FILETREF);
 #if defined(_WIN64)
 	_unlink(filename);
 #else
@@ -34,7 +34,7 @@ int CleanFiles(char* filename) {
 #endif
 
 	/* remove 0Ref.h */
-	sprintf(filename, FILEREF);
+	snprintf(filename, MAXLINE, FILEREF);
 #if defined(_WIN64)
 	_unlink(filename);
 #else
@@ -42,37 +42,37 @@ int CleanFiles(char* filename) {
 #endif
 
 	for (int i = 11; i < 32; i++) {
-		sprintf(filename, DMUDIR, i);
+		snprintf(filename, MAXLINE, DMUDIR, i);
 #if defined(_WIN64)
 		/* remove i.h */
 		_unlink(filename); 
-		sprintf(filename, DMUDIR, i+900);
+		snprintf(filename, MAXLINE, DMUDIR, i+900);
 		_unlink(filename);
 #else
 		unlink(filename);
-		sprintf(filename, DMUDIR, i+900);
+		snprintf(filename, MAXLINE, DMUDIR, i+900);
 		unlink(filename);
 #endif
-		sprintf(filename, DMUDIRSETUP, i);
+		snprintf(filename, MAXLINE, DMUDIRSETUP, i);
 #if defined(_WIN64)
 		_unlink(filename); 
-		sprintf(filename, DMUDIRSETUP, i+900);
+		snprintf(filename, MAXLINE, DMUDIRSETUP, i+900);
 		_unlink(filename);
 #else
 		unlink(filename);
-		sprintf(filename, DMUDIRSETUP, i+900);
+		snprintf(filename, MAXLINE, DMUDIRSETUP, i+900);
 		unlink(filename);
 #endif
 		/* remove itj.SCAD */
 		for (int j = 1; j < 64; j++) {
-			sprintf(filename, DMUDIRSCAD, i, j);
+			snprintf(filename, MAXLINE, DMUDIRSCAD, i, j);
 #if defined(_WIN64)
 			_unlink(filename);
-			sprintf(filename, DMUDIRSCAD, i+900, j);
+			snprintf(filename, MAXLINE, DMUDIRSCAD, i+900, j);
 			_unlink(filename);
 #else
 			unlink(filename);
-			sprintf(filename, DMUDIRSCAD, i+900, j);
+			snprintf(filename, MAXLINE, DMUDIRSCAD, i+900, j);
 			unlink(filename);
 #endif
 		}
@@ -142,8 +142,8 @@ int WriteSetup(int ns, double axis[3], double Shift[3]) {
 	char filename[MAXLINE];
 	FILE* SETUP;
 
-	if (axis[2]<0 ) sprintf(filename, DMUDIRSETUP, 900+ns);
-	else sprintf(filename, DMUDIRSETUP, ns);
+	if (axis[2]<0 ) snprintf(filename, MAXLINE, DMUDIRSETUP, 900+ns);
+	else snprintf(filename, MAXLINE, DMUDIRSETUP, ns);
 	if ( (SETUP=fopen(filename, "w") ) == NULL ) {
 		printf("cannot write SETUP file %s\n", filename);
 		return 1;
