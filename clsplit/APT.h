@@ -30,5 +30,22 @@ public:
 	return (strstr(lineapt, "UNIT/MM") != 0);
      }
 
+     int findINSERT_StockSize(char* lineapt, double *Stock) {
+	size_t counter;
+	if (strstr(lineapt,"INSERT/Stock Size") != 0) {
+             counter = strlen("INSERT/Stock Size"); 
+	     while (lineapt[counter] != '\0') { 
+		     if ((lineapt[counter]=='X')|| (lineapt[counter]=='Y')||(lineapt[counter]=='Z')) 
+			     lineapt[counter]=' ';
+	             counter++;
+	     } 
+	     sscanf(lineapt+strlen("INSERT/Stock Size"),"%lf %lf %lf",Stock,Stock+1,Stock+2);
+	     return 1;
+         } else  return 0; 
+     }
+
+     int findINSERT_STOP(char *lineapt) {
+	  return  (strstr(lineapt, "INSERT/STOP") != 0);
+     }
 
 };

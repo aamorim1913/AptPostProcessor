@@ -61,7 +61,6 @@ int main(int argc, char **argv) {
 	double theta1, theta2, CircleR;
 	char com[12*COMSIZE];
 	int nA;
-	size_t counter;
 	int nsetup,ncoord,ntools,lnumber;
 	char RL='0', used_RL='0', Sense='+';
 	int toolcall; 
@@ -165,18 +164,11 @@ int main(int argc, char **argv) {
 			tref.Open(Piv2Datum);
 
 		/* Stock Size comment converted to BLK */
-		} else if (strstr(lineapt,"INSERT/Stock Size") != 0) { 
-			counter = strlen("INSERT/Stock Size");
-			while (lineapt[counter] != '\0') {
-				if ((lineapt[counter]=='X')||
-						(lineapt[counter]=='Y')||(lineapt[counter]=='Z')) lineapt[counter]=' ';
-				counter++;
-			}
-			sscanf(lineapt+strlen("INSERT/Stock Size"),"%lf %lf %lf",Stock,Stock+1,Stock+2);
+		} else if ( apt.findINSERT_StockSize(lineapt, Stock) ) { 
 			updated |= NEW_BLK;
 
 		/* When one inserts a comment at the begining of a feature that is invoked in manuall operation */
-		} else if (strstr(lineapt, "INSERT/STOP") != 0) {
+		} else if ( apt.findINSERT_STOP(lineapt) ) {
 			fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber);  ++lnumber;
 			fprintf(OUT, "%d STOP\n",lnumber);  ++lnumber;
