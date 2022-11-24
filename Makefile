@@ -46,3 +46,7 @@ cleanwindows:
 	cd cirpivot && $(MAKE) clean
 	cd flip && $(MAKE) clean
 	cd micromeasure && $(MAKE) clean
+
+storetests:
+	cd parts-2021 && ../clsplit/clsplit clean
+	cd parts-2021 && ../clsplit/clsplit Sacrifice-Board.apt 
