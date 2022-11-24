@@ -2,7 +2,7 @@
 
 if [ "$1" = "" ]
 then
-   echo "Please provide option -  run diff getA store clean - and .apt name or all."
+   echo "Please provide option -  run diff rdiff getA store rstore clean - and .apt name or all."
    exit
 fi
 
@@ -29,6 +29,12 @@ case $1 in
 	do
 	  diff -q machine-code/$FILE tests/$ADIR/$2/$FILE
 	done
+	;;
+   rstore)
+	cd $ADIR && ../clsplit/clsplit $2.apt
+	cd ..
+	mkdir -p tests/$ADIR/$2/
+	cp -f machine-code/%FN15RUN.A machine-code/[123456789]*.h  machine-code/*.scad tests/$ADIR/$2
 	;;
    diff)
 	FILES="`ls tests/$ADIR/$2/`"
