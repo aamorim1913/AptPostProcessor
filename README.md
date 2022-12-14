@@ -61,6 +61,7 @@ To compile and install
 		make  install
 	
 	else if windows 10 go to x64 visual studio command prompt:
+        (if VS 2022 start by running BuildWindowsX64.bat in developer command prompt)
 		cmake  -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=<opencv_install_dir>  -DOPENCV_EXTRA_MODULES_PATH=<opencv_contrib>\modules <opencv_source_directory>
 		nmake 
 		nmake install
