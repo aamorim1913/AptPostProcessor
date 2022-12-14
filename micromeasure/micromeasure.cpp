@@ -163,7 +163,7 @@ void detectCharucoBoardWithoutCalibration(int camid, float measure, int niterati
 
         std::vector<int> markerIds;
         std::vector<std::vector<cv::Point2f>> markerCorners;
-        cv::aruco::detectMarkers(image, board->dictionary, markerCorners, markerIds, params);
+        cv::aruco::detectMarkers(image, dictionary, markerCorners, markerIds, params);
 
         if (markerIds.size() > 0)
         {
