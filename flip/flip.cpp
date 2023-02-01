@@ -150,7 +150,7 @@ int rm(char *filename){
 
 int CleanFiles(char *file){
 	char name[MAXLINE];
-	char fn[MAXLINE];
+	char fn[MAXLINE+100];
 
 	strcpy(name,file);
 	name[strlen(name)-4]='\0';
