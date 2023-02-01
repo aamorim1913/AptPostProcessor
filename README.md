@@ -71,3 +71,7 @@ On windows to prepare for compilation download build tools:
 	
 	Build tools from https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022 
 	- After run the Visual studio installer and install the C++ development.
+
+On Linux (ubunto) do:
+	sudo apt install libopencv-dev
+
