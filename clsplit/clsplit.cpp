@@ -181,7 +181,7 @@ int main(int argc, char **argv) {
 			fprintf(OUT," FMAX\n"); ++lnumber;
 
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
-		} else if (strstr(lineapt, "CSYS/") != 0) { 
+		} else if ( apt.findINSERT_CSYS(lineapt) ) { 
 
 			if ( op > 0) scad.close(Stock, thetab, thetac, Shift);
 
@@ -269,16 +269,16 @@ int main(int argc, char **argv) {
 			scad.open(argv[1], nsetup, op, toolcall, Stock, tools.tl, Shift, Piv2Datum, thetab, thetac, thetatable);
 
 		/* comment copy  */
-		} else if (strstr(lineapt, "INSERT/") != 0) {  /* INSERT is copied to comment (maybe tool name)*/
+		} else if ( apt.findINSERT_INSERT(lineapt) ) {  /* INSERT is copied to comment (maybe tool name)*/
 			strcpy(last_comment,lineapt+strlen("INSERT/"));
 
 		/* properties of the tool */
-		} else if (strstr(lineapt, "CUTTER/") != 0) {
+		} else if (apt.findINSERT_CUTTER(lineapt) ){
 			sscanf(lineapt+strlen("CUTTER/"),"%lf,%lf,%lf,%lf,%lf,%lf,%lf",
 				&rtool,&temp,&temp,&temp,&temp,&temp,&ltool); rtool=rtool/2; 
 
 		/* spindle speed and spinsence */
-		} else if (strstr(lineapt, "SPINDL/") != 0) { /* SPINDLE prints the TOOL statment if tool number is defined */
+		} else if ( apt.findSPINDL(lineapt) ) { /* SPINDLE prints the TOOL statment if tool number is defined */
 			nA=ReadArrayCom(com, lineapt + strlen("SPINDL/"), ',');
 			tools.tl[toolcall].speed = atoi(com);
 			if ( tools.tl[toolcall].speed > MachineMaxSpindle){
@@ -290,19 +290,19 @@ int main(int argc, char **argv) {
 			updated |= NEW_SPINDLE;
 
 		/* CSI_SET_FLUTE_LENGTH */
-		} else if (strstr(lineapt, "CSI_SET_FLUTE_LENGTH/") != 0) { /* tool CSI_SET_FLUTE_LENGTH */
+		} else if (apt.findCSI_SET_FLUTE_LENGTH(lineapt) ) { /* tool CSI_SET_FLUTE_LENGTH */
 			sscanf(lineapt+strlen("CSI_SET_FLUTE_LENGTH/"),"%lf", &temp);
 			snprintf(com, COMSIZE, " FLUTE LEN %.1lf", temp); 
 			strcat(tools.tl[toolcall].name,com);
 
 		/* CSI_SET_EXTENSION_LENGTH */
-		} else if (strstr(lineapt, "CSI_SET_EXTENSION_LENGTH/") != 0) { /* tool CSI_SET_EXTENSION_LENGTH */
+		} else if (apt.findCSI_CSI_SET_EXTENSION_LENGTH(lineapt) ) { /* tool CSI_SET_EXTENSION_LENGTH */
 			sscanf(lineapt+strlen("CSI_SET_EXTENSION_LENGTH/"),"%lf", &temp);
 			snprintf(com, COMSIZE, " FLUTE EXT %.1lf", temp); 
 			strcat(tools.tl[toolcall].name,com);
 
 		/* load the tool */
-		} else if (strstr(lineapt, "LOAD/TOOL,") != 0) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
+		} else if ( apt.findLOAD_TOOL(lineapt) ) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
 			if (toolcall != -1) {} /* close SCAD  for this tool */
 			toolcall = atoi(lineapt + strlen("LOAD/TOOL,"));
 			strcpy(tools.tl[toolcall].name,last_comment);
@@ -320,24 +320,24 @@ int main(int argc, char **argv) {
 			}
 
 		/* used for authomatic feeder */
-		} else if (strstr(lineapt, "SELECT/TOOL,") != 0) { /* SELECT/TOOL defines the next tool to be used - carrousel */
+		} else if (apt.findSELECT_TOOL(lineapt) ) { /* SELECT/TOOL defines the next tool to be used - carrousel */
 
 		/* used only if delta r is not it CAM */
-		} else if (strstr(lineapt, "CUTCOM/LEFT") != 0) { /* Define for RR R0 */
+		} else if (apt.findCUTCOM_LEFT(lineapt) ) { /* Define for RR R0 */
 		//	RL = 'L';
 			RL = '0';
 
 		/* used only if delta r is not it CAM */
-		} else if (strstr(lineapt, "CUTCOM/RIGHT") != 0) { /* Define for RR R0 */
+		} else if (apt.findCUTCOM_RIGHT(lineapt) ) { /* Define for RR R0 */
 		//	RL = 'R';
 			RL = '0';
 
 		/* used only if delta r is not it CAM */
-		} else if (strstr(lineapt, "CUTCOM/OFF") != 0) { /* cancel */
+		} else if (apt.findCUTCOM_OFF(lineapt) ) { /* cancel */
 			RL = '0';
 
 		/* We do coolent from the feed different from FMAX */
-		} else if (strstr(lineapt, "COOLNT/FLOOD") != 0) { /* flood on */
+		} else if (apt.findCOOLNT_FLOOD(lineapt)) { /* flood on */
 
 		/* set feed to FMAX */
 		} else if (strstr(lineapt, "RAPID/") != 0) { /* go with FMAX */
@@ -441,7 +441,7 @@ int main(int argc, char **argv) {
 			dist=0.0;
 
 		/* This is where everything should happen */
-		} else if (strstr(lineapt, "GOTO/") != 0) { /* print goto if circle or line */
+		} else if (apt.findGOTO(lineapt) ) { /* print goto if circle or line */
 			if (updated & NEW_BLK ) {
 				if ((cos(thetac)==1.0) && (cos(thetab)==1.0)) {
 				fprintf(OUT, "%d BLK FORM 0.1 Z X%+.3lf Y%+.3lf Z%+.3lf\n",lnumber,0.0,0.0,-Stock[2]); ++lnumber;
@@ -610,14 +610,14 @@ int main(int argc, char **argv) {
 			used_RL=RL;
 
 		/* FINI close last setup */
-		} else if (strstr(lineapt, "FINI") != 0) { /* end program */
+		} else if (apt.findFINI(lineapt) ) { /* end program */
 			fprintf(OUT, "%d L Z-10 R0 FMAX M91 M9\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d M30\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d END PGM %d MM\n", lnumber, nsetup + 11); ++lnumber;
 			scad.close(Stock, thetab, thetac,Shift);
 
 		/* do nothing for part number */
-		} else if (strstr(lineapt, "PARTNO/") != 0) {
+		} else if (apt.findPARTNO(lineapt) ) {
 
 		/* everything else put as comment */
 		} else {
