@@ -79,11 +79,7 @@ int Close(struct TOOL *tl) {
 	/* measure tool sensor here */
 	fprintf(TREF,"STOP\n;Heimer on top tool sensor\n"); 
 	fprintf(TREF,"FN18: SYSREAD Q5 = ID240 NR1 IDX3\n");
-	/* correct tool lenght */
-	for (int i=0; i< ntool ; i++){
-		fprintf(TREF,"Q4 = Q%d8 -  Q5\n",i+1);
-		fprintf(TREF,"Q%d8 = Q4\n",i+1);
-	}
+	
 	/* measure references */
 	fprintf(TREF,"FN0: Q3 = 1.995\n"); fprintf(REF,"FN0: Q3 = 1.995\n");
 	for (int j=0; j<2 ; j++) {
@@ -105,7 +101,7 @@ int Close(struct TOOL *tl) {
 		fprintf(fls[j],"CYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
 	   }
 	}
-	fprintf(TREF,"FN0: Q4 = %.0lf\n",invalid_coord); fprintf(REF,"FN0: Q4 = %.0lf\n",invalid_coord);
+	fprintf(TREF,"FN0: Q6 = %.0lf\n",invalid_coord); fprintf(REF,"FN0: Q6 = %.0lf\n",invalid_coord);
 	for (int i=0; i<ntool; i++) {
 		fprintf(REF,"FN0: Q%d7 = %d\n",i+1,tnum[i]);
 		fprintf(REF,"FN0: Q%d6 = %.3lf\n",i+1,tl[tnum[i]].DR);
@@ -121,6 +117,9 @@ int Close(struct TOOL *tl) {
 		fprintf(TREF,"TOOL CALL %d Z S%d\n",tnum[i]+100,tl[tnum[i]].speed);
 		fprintf(TREF,"STOP\n;tool on zero of sensor\n");
 		fprintf(TREF,"FN18: SYSREAD Q%d8 = ID240 NR1 IDX3\n",i+1);
+		/* correct tool lenght */
+		fprintf(TREF,"Q4 = Q%d8 -  Q5\n",i+1);
+		fprintf(TREF,"Q%d8 = Q4\n",i+1);
 		fprintf(TREF,"FN0: Q%d6 = 0\n",i+1);
 	}
 
@@ -129,7 +128,7 @@ int Close(struct TOOL *tl) {
 	for (int i=0; i<nref; i++) {
 		fprintf(TREF,"FN15: PRINT Q%d0/Q%d1/Q%d2\n",i+1,i+1,i+1); fprintf(REF,"FN15: PRINT Q%d0/Q%d1/Q%d2\n",i+1,i+1,i+1);
 	}
-	fprintf(TREF,"FN15: PRINT Q4/Q2/Q5\n"); fprintf(REF,"FN15: PRINT Q4/Q2/Q5\n");
+	fprintf(TREF,"FN15: PRINT Q6/Q2/Q5\n"); fprintf(REF,"FN15: PRINT Q4/Q2/Q5\n");
 	for (int i=0; i<ntool; i++) {
 		fprintf(TREF,"FN15: PRINT Q%d7/Q%d6/Q%d8\n",i+1,i+1,i+1);
 		fprintf(REF,"FN15: PRINT Q%d7/Q%d6/Q%d8\n",i+1,i+1,i+1);
