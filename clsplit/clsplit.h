@@ -33,14 +33,6 @@ int CleanFiles(char* filename) {
 	unlink(filename);
 #endif
 
-	/* remove 0Ref.h */
-	snprintf(filename, MAXLINE, FILEREF);
-#if defined(_WIN64)
-	_unlink(filename);
-#else
-	unlink(filename);
-#endif
-
 	for (int i = 11; i < 32; i++) {
 		snprintf(filename, MAXLINE, DMUDIR, i);
 #if defined(_WIN64)

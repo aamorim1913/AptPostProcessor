@@ -22,7 +22,6 @@
 #define DMUDIRSETUP "../machine-code/%dsetup.h"
 #define SETCOORNAME "../machine-code/%FN15RUN.A"
 #define FILETREF "../machine-code/0TREF.h"
-#define FILEREF "../machine-code/0REF.h"
  
 using namespace std;
 
