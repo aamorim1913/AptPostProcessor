@@ -118,9 +118,12 @@ int Close(struct TOOL *tl) {
 		fprintf(TREF,"STOP\n;tool on zero of sensor\n");
 		fprintf(TREF,"FN18: SYSREAD Q%d8 = ID240 NR1 IDX3\n",i+1);
 		/* correct tool lenght */
+		fprintf(TREF,"Q4 = %3lf\n",tl[tnum[i]].DL);
+		fprintf(TREF,"FN9: IF +Q%d8 EQU -10 GOTO LBL%d\n",i+1,i+1);
 		fprintf(TREF,"Q4 = Q%d8 -  Q5\n",i+1);
 		fprintf(TREF,"Q%d8 = Q4\n",i+1);
 		fprintf(TREF,"FN0: Q%d6 = 0\n",i+1);
+		fprintf(TREF,"LBL%d\n",i+1);
 	}
 
 	/* start printing */

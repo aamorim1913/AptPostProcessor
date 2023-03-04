@@ -105,9 +105,6 @@ int main(int argc, char **argv) {
         }
 	apt.open(argv[1]);
 
-	/* read the tool table TOOL.T */
-	tools.ReadTool(fpause);
-
 	/* -------------------- enter APT processing option ------------------------------------------------ */
 
 	/* end SCAD in FINI, CSYS and LOAD TOOL */
@@ -630,8 +627,6 @@ int main(int argc, char **argv) {
 	}
 	printf("Found %d setups. Output in ../machine-code/ directory.\n", nsetup+1);
 
-	/* write the tool table TOOL.h */
-	tools.WriteTool(fpause);
 	tref.Close(tools.tl);
 
 	apt.close();
