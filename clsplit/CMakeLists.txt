@@ -5,6 +5,8 @@ cmake_minimum_required (VERSION 3.8)
 
 project ("clsplit")
 
+include_directories(${PROJECT_SOURCE_DIR})
+
 # Add source to this project's executable.
 add_executable (clsplit "clsplit.cpp" "clsplit.h" "CSCAD.h" "readtools.h" "TOOLS.h" "TRef.h" "APT.h")
 

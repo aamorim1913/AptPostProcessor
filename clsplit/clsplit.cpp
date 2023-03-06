@@ -22,6 +22,7 @@
 #define DMUDIRSETUP "../machine-code/%dsetup.h"
 #define SETCOORNAME "../machine-code/%FN15RUN.A"
 #define FILETREF "../machine-code/0TREF.h"
+#define FILETOOLSET "../machine-code/SET.TOOLS"
  
 using namespace std;
 
@@ -65,6 +66,9 @@ int main(int argc, char **argv) {
 	int toolcall; 
 	double feed = -1, feedscale=1.0,  rtool,ltool,temp;
 	int dry=0;
+	char toolname[100];
+	int toolsmeasured=1;
+	int toolschanged=0;
 
 	APT apt;
 	Machine mach;
@@ -86,6 +90,7 @@ int main(int argc, char **argv) {
 		cout<<"                                         :... ... ..."<< endl;
 		cout<<"  clean - to remove all generated files "<< endl;
 		cout<<"  ... apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> <thetatable> "<< endl;
+		cout<<"  ... apt storetools"<< endl;
 		cout<<"  ... apt dry"<< endl;
 		exit(1);
 	}
@@ -117,6 +122,8 @@ int main(int argc, char **argv) {
 
 	/* read all coordinates in the %FN15RUN.A file up to end or invalid_coord (if exists) */
 	ncoord=ReadCoord(xDatum2Ref,yDatum2Ref,zDatum2Ref,Piv2Datum);
+	/* read all tool measurements from SET.TOOLS */
+	tools.ReadToolSet();
 	/* read all tool measurements from the %FN15RUN.A file */
 	ntools=tools.ReadToolCoord(fpause);
 
@@ -301,6 +308,8 @@ int main(int argc, char **argv) {
 		} else if ( apt.findLOAD_TOOL(lineapt) ) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
 			if (toolcall != -1) {} /* close SCAD  for this tool */
 			toolcall = atoi(lineapt + strlen("LOAD/TOOL,"));
+			strcpy(toolname,tools.tl[toolcall].name);
+
 			strcpy(tools.tl[toolcall].name,last_comment);
 			updated |= NEW_TOOL;
 			tools.tl[toolcall].rcad = rtool; 
@@ -311,7 +320,8 @@ int main(int argc, char **argv) {
 			}
 			tools.tl[toolcall].lcad = ltool;
 			if (tools.tl[toolcall].DL == 0.0) {
-				printf("Error:  tool %d lenght is 0 in TOOL.h. Measure! \n",toolcall);
+				toolsmeasured=0;
+				printf("Tool %d lenght is 0 and needs to be measured\n",toolcall+1);
 				fpause=1;
 			}
 
@@ -460,6 +470,10 @@ int main(int argc, char **argv) {
                 		int namestart=0;
                 		for (int j = 0; j < strlen(tools.tl[toolcall].name); j++)  
 					if (tools.tl[toolcall].name[j] == '=') namestart=j+1;
+				if (strcmp(toolname,tools.tl[toolcall].name) != 0){
+					toolschanged=1;
+					printf("Tool %d has been modifyed. Call with storetools option. \n",toolcall+1);
+				}
 				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name+namestart); ++lnumber;
 				if (tools.tl[toolcall].defined==0) {
 					fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, toolcall+100, 
@@ -627,6 +641,10 @@ int main(int argc, char **argv) {
 	printf("Found %d setups. Output in ../machine-code/ directory.\n", nsetup+1);
 
 	tref.Close(tools.tl);
+
+	if (toolsmeasured==1){ 
+		if ((toolschanged==0)||( (argc>2) && (strcmp(argv[2],"storetools")))) tools.DumpToolSet();
+	}
 
 	apt.close();
 	fclose(OUT);
