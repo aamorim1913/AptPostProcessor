@@ -77,8 +77,8 @@ int DumpToolSet(){
 		if (tl[i].name[0]=='\0') continue;
 		fprintf(TOOLSET,"%d\n",i+1);	
 		fprintf(TOOLSET,"%s\n",tl[i].name);
-		fprintf(TOOLSET,"%d %d %d %lf %lf %lf %lf %lf\n", 
-			tl[i].defined,tl[i].speed,tl[i].clockwise,
+		fprintf(TOOLSET,"%d %d %lf %lf %lf %lf %lf\n", 
+			tl[i].speed,tl[i].clockwise,
 			tl[i].DL,tl[i].DR,tl[i].lcad,tl[i].rtable,tl[i].rcad);
 	}
 	fclose(TOOLSET);
@@ -97,19 +97,19 @@ int ReadToolSet(){
 	fgets(buff, MAXLINE, TOOLSET) ;
 	int i;
 	while (fscanf(TOOLSET,"%d\n",&i)==1) {
-		i=i-1;
+		i=i+1;
 		fgets(tl[i].name,100,TOOLSET);
 		/* remove newline */
 		char *tmp;
 		if ((tmp = strrchr(tl[i].name, '\n')) != NULL) *tmp = '\0';
 
-		fscanf(TOOLSET,"%d %d %d %lf %lf %lf %lf %lf\n", 
-			&(tl[i].defined),&(tl[i].speed),&(tl[i].clockwise),
+		fscanf(TOOLSET,"%d %d %lf %lf %lf %lf %lf\n", 
+			&(tl[i].speed),&(tl[i].clockwise),
 			&(tl[i].DL),&(tl[i].DR),&(tl[i].lcad),&(tl[i].rtable),&(tl[i].rcad));
 	}
 	fclose(TOOLSET);
 
-	return 0;
+	return i;
 }
 
 
