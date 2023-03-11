@@ -16,7 +16,3 @@ const int machine_table_round=1;
 
 const double invalid_coord=-9999.0;
 
-
-class Machine{
-
-};

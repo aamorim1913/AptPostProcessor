@@ -38,7 +38,6 @@ using namespace std;
 
 int main(int argc, char **argv) {
 
-	char filename[MAXLINE];
 	FILE *OUT;
 	double Stock[3];
 	int fpause;
@@ -64,8 +63,8 @@ int main(int argc, char **argv) {
 	int toolsmeasured=1;
 	int toolschanged=0;
 
+	/* create an object of all main classes for the apt file, the measurement file for the scad and for the tool parameters */
 	APT apt;
-	Machine mach;
 	TRef tref;
 	CSCAD scad;
 	TOOLS tools;
@@ -74,54 +73,53 @@ int main(int argc, char **argv) {
 	fpause = 0;
 	if (argc < 2) {
 		cout<< endl;
-		cout<<"Provide the APT (....apt) file name. A %FN15RUN.A file must be present."<< endl;
-		cout<<" The %FN15RUN.A file syntax:              DatumX DatumY DatumZ (machine coord)"<< endl;
-		cout<<" reference sphere relative to Datum (for each setup): X   Y  Z"<< endl;
-		cout<<"                                    (another setup):... ... ..."<< endl;
-		cout<<"                                    (another setup):... ... ..."<< endl;
-		cout<<"                                    :-9999 sin(theta) of table rotation z0 of tool meas."<< endl;
-		cout<<"                                         :tooln DR DL"<< endl;
-		cout<<"                                         :... ... ..."<< endl;
-		cout<<"  clean - to remove all generated files "<< endl;
-		cout<<"  ... apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> <thetatable> "<< endl;
-		cout<<"  ... apt storetools"<< endl;
-		cout<<"  ... apt usestoredtools"<< endl;
-		cout<<"  ... apt dry"<< endl;
+		cout<<"Provide the APT (....apt) file name or:" << endl;
+		cout<<"    clean - to remove all generated files "<< endl;
+		cout<<"    <>.apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> <thetatable> (override %FN15RUN.A)"<< endl;
+		cout<<"    <>.apt <opt1> <opt2> "<< endl;
+		cout<<"where <opt1>,<opt2> can be storetools, usestoredtools, dry"<< endl << endl;
+		cout<<"A %FN15RUN.A file must be present in ../machine-code with the syntax"<< endl;
+		cout<<"		DatumX DatumY DatumZ (in machine coordinates)"<< endl;
+		cout<<"		<X> <Y> <Z> (setup 1 reference sphere relative to Datum)"<< endl;
+		cout<<"     ... ... ... (setup 2)"<< endl;
+		cout<<"     ... ... ..."<< endl;
+		cout<<"     -9999 SinTheta Z0 (sin(theta) of table rotation and Z0 of tool measurement) "<< endl;
+		cout<<"     toolnumber DR DL"<< endl;
+		cout<<"     ... ... ..."<< endl;
+
 		exit(1);
 	}
 
-	/* Erase 11.h ... files */
-	CleanFiles(filename);
+	/* Erase ../machine-code/11.h ... files */
+	CleanFiles();
 	if (strstr(argv[1],"clean")!=0) return 0;
 
 	if (strstr(argv[1],".apt")==0) {
-		printf(" argument must be an .apt file\n");
+		printf("first argument must be an .apt file\n");
 		return -1;
 	}
-	if ((argc>=3)&&(strstr(argv[2],"dry")!=0)) {
+
+	/* -------------------- enter APT processing------------------------------------------------ */
+	apt.open(argv[1]);
+
+	if (ifarg("dry",argc,argv)) {
                 printf(" running dry\n");
 		dry=1;
     }
-	apt.open(argv[1]);
-
-	/* -------------------- enter APT processing option ------------------------------------------------ */
-
+	
 	/* end SCAD in FINI, CSYS and LOAD TOOL */
 	/* start SCAD in first addline or addcircle with data from CSYS */
 
-	snprintf(filename, MAXLINE, DMUDIR, 11);
-	if ( (OUT=fopen(filename, "w")) == NULL) {
-		printf("cannot open OUT file %s\n", filename);
-		return -1;
-	}
-
+	/* open 11.h output code file */
+	OUT=OpenH(11);
+	
 	/* read all coordinates in the %FN15RUN.A file up to end or invalid_coord (if exists) */
 	ncoord=ReadCoord(xDatum2Ref,yDatum2Ref,zDatum2Ref,Piv2Datum);
 	/* read all tool measurements from SET.TOOLS */
 	tools.ReadToolSet();
 	/* read all tool measurements from the %FN15RUN.A file */
-	if ((argc>=3)&&(strstr(argv[2],"usestoredtools")!=0)) {
-                printf(" running usedstoredtools\n");
+	if (ifarg("usestoredtools",argc,argv)) {
+                printf("running usedstoredtools\n");
     } else tools.ReadToolCoord(fpause);
 
 	/* yDatum2Ref[ncoord] is cos(theta) of table rotation and zDatum2Ref[ncoord] is z0 of tool measure  */
@@ -247,14 +245,14 @@ int main(int argc, char **argv) {
 					/* open file for new setup */
 					tools.Undefine();
 					/* if milling from bellow generate file with number 900+ */
-					if ( thetab > 90 ) snprintf(filename, MAXLINE, DMUDIR, nsetup+900+11);
+					if ( thetab > 90 ) OUT=OpenH(nsetup+900+11);
 					else {
-						snprintf(filename, MAXLINE, DMUDIR, nsetup+11);
+						OUT=OpenH(nsetup+11);
 						/* if first add previous */
 						if ( nsetup==1) tref.AddRef(nsetup-1);
 						tref.AddRef(nsetup);
 					}
-					OUT=fopen(filename, "w");
+					
 					fprintf(OUT, "0 BEGIN PGM %d MM\n1 ;setup of file %s\n", nsetup+11,argv[1]);
 					lnumber = 2;
 					apt.setnewX();
@@ -445,7 +443,7 @@ int main(int argc, char **argv) {
 					if (tools.tl[toolcall].name[j] == '=') namestart=j+1;
 				if (strcmp(toolname,tools.tl[toolcall].name) != 0){
 					toolschanged=1;
-					printf("Tool %d has been modifyed. Call with storetools option. \n",toolcall+1);
+					if (tools.tl[toolcall].DL!=0) printf("Tool %d has been modifyed. Call with storetools option. \n",toolcall+1);
 				}
 				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name+namestart); ++lnumber;
 				if (tools.tl[toolcall].defined==0) {
@@ -615,7 +613,7 @@ int main(int argc, char **argv) {
 	tref.Close(tools.tl);
 
 	if (toolsmeasured==1){ 
-		if ((toolschanged==0)||( (argc>2) && (strcmp(argv[2],"storetools")))) tools.DumpToolSet();
+		if ((toolschanged==0)||( ifarg("storetools",argc,argv))) tools.DumpToolSet();
 	}
 
 	apt.close();

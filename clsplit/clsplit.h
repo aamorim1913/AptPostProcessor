@@ -15,8 +15,12 @@ int printVAR(FILE* OUT, const char* VAR, double x) {
 	return 0;
 }
 
-int CleanFiles(char* filename) {
+int ifarg(char* arg, int argc, char **argv){
+	return ((argc>=3)&&(strstr(argv[2],arg)!=0)) || ((argc>=4)&&(strstr(argv[3],arg)!=0));
+}
 
+int CleanFiles() {
+	char filename[MAXLINE];
 	/* remove 0t0.SCAD */
 	snprintf(filename, MAXLINE, DMUDIRSCAD, 0, 0);
 #if defined(_WIN64)
@@ -70,6 +74,16 @@ int CleanFiles(char* filename) {
 		}
 	}
 	return 0;
+}
+
+FILE *OpenH(int n){
+	char filename[MAXLINE];
+	FILE *OUT;
+	snprintf(filename, MAXLINE, DMUDIR, n);
+		if ( (OUT=fopen(filename, "w")) == NULL) {
+			printf("cannot open OUT file %s\n", filename);
+			return 0;
+		} else return OUT;
 }
 
 int RotateArray(double* vec, double* axis, double& thetab, double& thetac) {
