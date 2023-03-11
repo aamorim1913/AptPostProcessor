@@ -97,7 +97,7 @@ int ReadToolSet(){
 	fgets(buff, MAXLINE, TOOLSET) ;
 	int i;
 	while (fscanf(TOOLSET,"%d\n",&i)==1) {
-		i=i+1;
+		i=i-1;
 		fgets(tl[i].name,100,TOOLSET);
 		/* remove newline */
 		char *tmp;

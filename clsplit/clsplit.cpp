@@ -59,7 +59,6 @@ int main(int argc, char **argv) {
 	int toolcall; 
 	double feed = -1, feedscale=1.0,  rtool,ltool,temp;
 	int dry=0;
-	char toolname[100];
 	int toolsmeasured=1;
 	int toolschanged=0;
 
@@ -290,7 +289,10 @@ int main(int argc, char **argv) {
 
 		/* load the tool */
 		} else if ( apt.findLOAD_TOOL(&toolcall) ) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
-			strcpy(toolname,tools.tl[toolcall].name);
+			if (strncmp(last_comment,tools.tl[toolcall].name,strlen(last_comment)) != 0){
+				toolschanged=1;
+				if (tools.tl[toolcall].DL!=0) printf("Tool %d has been modifyed. Call with storetools option.\n",toolcall+1);
+			}
 			strcpy(tools.tl[toolcall].name,last_comment);
 			tools.tl[toolcall].rcad = rtool; 
 			if ((tools.tl[toolcall].rtable != 0) && (tools.tl[toolcall].rtable != tools.tl[toolcall].rcad)) {
@@ -310,11 +312,13 @@ int main(int argc, char **argv) {
 
 		/* used only if delta r is not it CAM */
 		} else if ( apt.findCUTCOM_LEFT() ) { /* Define for RR R0 */
-			RL = 'L';
+			if (tools.tl[toolcall].DL != 0.0) RL = 'L';
+			else RL = '0';
 
 		/* used only if delta r is not it CAM */
 		} else if ( apt.findCUTCOM_RIGHT() ) { /* Define for RR R0 */
-			RL = 'R';
+			if (tools.tl[toolcall].DL != 0.0) RL = 'R';
+			else RL = '0';
 
 		/* used only if delta r is not it CAM */
 		} else if ( apt.findCUTCOM_OFF() ) { /* cancel */
@@ -438,13 +442,9 @@ int main(int argc, char **argv) {
 			if ((apt.isnewspindle() ) && (apt.isnewtool())) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
-                		int namestart=0;
-                		for (int j = 0; j < strlen(tools.tl[toolcall].name); j++)  
-					if (tools.tl[toolcall].name[j] == '=') namestart=j+1;
-				if (strcmp(toolname,tools.tl[toolcall].name) != 0){
-					toolschanged=1;
-					if (tools.tl[toolcall].DL!=0) printf("Tool %d has been modifyed. Call with storetools option. \n",toolcall+1);
-				}
+                int namestart=0;
+                for (int j = 0; j < strlen(tools.tl[toolcall].name); j++)  
+							if (tools.tl[toolcall].name[j] == '=') namestart=j+1;
 				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name+namestart); ++lnumber;
 				if (tools.tl[toolcall].defined==0) {
 					fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, toolcall+100, 
