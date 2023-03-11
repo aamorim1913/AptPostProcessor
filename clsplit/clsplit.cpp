@@ -312,12 +312,12 @@ int main(int argc, char **argv) {
 
 		/* used only if delta r is not it CAM */
 		} else if ( apt.findCUTCOM_LEFT() ) { /* Define for RR R0 */
-			if (tools.tl[toolcall].DL != 0.0) RL = 'L';
+			if (tools.tl[toolcall].DR != 0.0) RL = 'L';
 			else RL = '0';
 
 		/* used only if delta r is not it CAM */
 		} else if ( apt.findCUTCOM_RIGHT() ) { /* Define for RR R0 */
-			if (tools.tl[toolcall].DL != 0.0) RL = 'R';
+			if (tools.tl[toolcall].DR != 0.0) RL = 'R';
 			else RL = '0';
 
 		/* used only if delta r is not it CAM */
@@ -524,7 +524,7 @@ int main(int argc, char **argv) {
 				if (apt.isnewZ()) printVAR(OUT,"Z",Datum2Tool[2]);
 				/* use only with tool R=0 to correct DR */
 				if ( used_RL != RL ) fprintf(OUT, " R%c",RL);
-				if (feed == -1) fprintf(OUT, " FMAX");
+				if ((feed == -1)&&(!apt.iscycleon())) fprintf(OUT, " FMAX");
 				else if ( apt.isnewfeed() ) fprintf(OUT, " F%.0f", feed);
 				if (apt.isnewflood()) {
 					if ((dry==1)||(feed == -1)) fprintf(OUT," M09");
