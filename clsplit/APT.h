@@ -11,6 +11,7 @@ private:
      FILE *APT;
      char lineapt[MAXLINE];
      uint32_t updated=0;
+     char pcom[12*COMSIZE];
 
      enum update_flags { 
 		NEW_CSYS=(1<<0),  NEW_SPINDLE=(1<<1), NEW_TOOL=(1<<2), NEW_BLK=(1<<3), NEW_FEED=(1<<4),
@@ -255,13 +256,27 @@ public:
      	  return (strstr(lineapt, "COOLNT/FLOOD") != 0);
      }
 
-     int findRAPID() {
-     	  return (strstr(lineapt, "RAPID/") != 0);
+     int findRAPID(double * feed) {
+          if (strstr(lineapt, "RAPID/") != 0) {
+            	if (*feed != -1) {
+				*feed = -1; 
+				setnewfeed();
+				setnewflood();
+			}
+               return 1;
+          } else return 0;
      }
  
-     int findFEDRAT(int *nA, char *com) {
-     	 if (strstr(lineapt, "FEDRAT/") != 0) {
-               *nA=ReadArrayCom(com, lineapt + strlen("FEDRAT/"), ',');
+     int findFEEDRAT(int *nA, double *feed) {
+          double temp;
+     	if (strstr(lineapt, "FEDRAT/") != 0) {
+               *nA=ReadArrayCom(pcom, lineapt + strlen("FEDRAT/"), ',');
+               temp = atof(pcom);
+               if ( temp != *feed ) {
+				if (*feed==-1) setnewflood(); 
+				*feed = temp; 
+				setnewfeed(); 
+			}
                return 1;
            } else return 0;
      }

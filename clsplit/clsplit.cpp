@@ -26,9 +26,26 @@
  
 using namespace std;
 
-#include "../machine.h"
-#include "clsplit.h"
 
+
+
+// max spindle speed the speed is reduced and the feeds are reduced accordingly.
+const int MachineMaxSpindle = 3500;
+
+// Machine Pivot coordinates only for the machine limits used in CSCAD.h and ref file CreateTRef.h  */
+const double Mac2Pivot[3]={-200.66, -193.7836, -338.3841};
+
+/* machine limits in machine coordinates xmin, xmax, ymin, ymax, zmin, zmax */
+const double MachineLimits[6]={-500,0,-400,0,-400,0};
+
+/* table center with z meassured included  3d sensor lenght */
+const double machine_table[3]={-200.66,-193.72,-388.18};
+const double machine_table_size[3]={500,350,50};
+const int machine_table_round=1;
+
+const double invalid_coord=-9999.0;
+
+#include "clsplit.h"
 #include "APT.h"
 #include "TOOLS.h"
 #include "CSCAD.h"
@@ -57,7 +74,7 @@ int main(int argc, char **argv) {
 	int nsetup,ncoord,lnumber;
 	char RL='0', used_RL='0', Sense='+';
 	int toolcall; 
-	double feed = -1, feedscale=1.0,  rtool,ltool,temp;
+	double feed = -1, feedscale=1.0,  rtool,ltool;
 	int dry=0;
 	int toolsmeasured=1;
 	int toolschanged=0;
@@ -328,21 +345,10 @@ int main(int argc, char **argv) {
 		} else if ( apt.findCOOLNT_FLOOD()) { /* flood on */
 
 		/* set feed to FMAX */
-		} else if ( apt.findRAPID()) { /* go with FMAX */
-			if (feed != -1) {
-				feed = -1; 
-				apt.setnewfeed();
-				apt.setnewflood();
-			}
+		} else if ( apt.findRAPID(&feed)) { /* go with FMAX */
 
 		/* set FEED rate */
-		} else if ( apt.findFEDRAT(&nA,com)) { /* Go with a FEEED rate */
-			temp =  atof(com);
-			if ( temp != feed ) {
-				if (feed==-1) apt.setnewflood(); 
-				feed = temp; 
-				apt.setnewfeed(); 
-			}
+		} else if ( apt.findFEEDRAT(&nA,&feed)) { /* Go with a FEEED rate */
 
 		/* ignore WORLD */
 		} else if ( apt.findTRNTYP_WORLD()) {
@@ -524,7 +530,7 @@ int main(int argc, char **argv) {
 				if (apt.isnewZ()) printVAR(OUT,"Z",Datum2Tool[2]);
 				/* use only with tool R=0 to correct DR */
 				if ( used_RL != RL ) fprintf(OUT, " R%c",RL);
-				if ((feed == -1)&&(!apt.iscycleon())) fprintf(OUT, " FMAX");
+				if ( feed == -1 ) fprintf(OUT, " FMAX");
 				else if ( apt.isnewfeed() ) fprintf(OUT, " F%.0f", feed);
 				if (apt.isnewflood()) {
 					if ((dry==1)||(feed == -1)) fprintf(OUT," M09");

@@ -1,7 +1,7 @@
  // ccirpivot.cpp
 // Antonio Amorim CENTRA-FCUL 2021
 
-#include "../machine.h"
+const double invalid_coord=-9999.0;
 
 //managed by CMAKE
 //#define NUMREC 
