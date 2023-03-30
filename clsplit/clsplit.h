@@ -15,7 +15,7 @@ int printVAR(FILE* OUT, const char* VAR, double x) {
 	return 0;
 }
 
-int ifarg(char* arg, int argc, char **argv){
+int ifarg(const char* arg, int argc, char **argv){
 	return ((argc>=3)&&(strstr(argv[2],arg)!=0)) || ((argc>=4)&&(strstr(argv[3],arg)!=0));
 }
 

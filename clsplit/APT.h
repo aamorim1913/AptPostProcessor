@@ -13,6 +13,8 @@ private:
      uint32_t updated=0;
      char pcom[12*COMSIZE];
 
+     double Stock[3];
+
      enum update_flags { 
 		NEW_CSYS=(1<<0),  NEW_SPINDLE=(1<<1), NEW_TOOL=(1<<2), NEW_BLK=(1<<3), NEW_FEED=(1<<4),
 		NEW_X=(1<<5), NEW_Y=(1<<6), NEW_Z=(1<<7), NEW_FLOOD=(1<<8), CIRCLE_ON=(1<<9), CYCLE_ON=(1<<10) 
@@ -25,6 +27,10 @@ public:
                 return -1;
         }
 	return 0;
+     }
+
+     double *getStock(){
+	     return Stock;
      }
 
      int resetupdated(){
@@ -153,7 +159,7 @@ public:
 	return (strstr(lineapt, "UNIT/MM") != 0);
      }
 
-     int findINSERT_StockSize(double *Stock) {
+     int findINSERT_StockSize() {
 	size_t counter;
 	if (strstr(lineapt,"INSERT/Stock Size") != 0) {
              counter = strlen("INSERT/Stock Size"); 

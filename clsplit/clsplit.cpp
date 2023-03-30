@@ -56,7 +56,6 @@ const double invalid_coord=-9999.0;
 int main(int argc, char **argv) {
 
 	FILE *OUT;
-	double Stock[3];
 	int fpause;
 	/* Datum has the Pivot coordinates subtrated in ReadCoord() */
 	double Piv2Datum[3], xDatum2Ref[32], yDatum2Ref[32], zDatum2Ref[32]; 
@@ -178,15 +177,27 @@ int main(int argc, char **argv) {
 			tref.Open(Piv2Datum);
 
 		/* Stock Size comment converted to BLK */
-		} else if ( apt.findINSERT_StockSize(Stock) ) { 
-		/* When one inserts a comment at the begining of a feature that is invoked in manuall operation */
+		} else if ( apt.findINSERT_StockSize() ) { 
+		/* When one inserts a comment at the begining of a feature that is invoked in manual operation */
 		} else if ( apt.findINSERT_STOP(com) ) {
 			fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber);  ++lnumber;
 			fprintf(OUT, "%d STOP\n",lnumber);  ++lnumber;
 			fprintf(OUT, "%d ;%s\n", lnumber, com);  ++lnumber;
-			if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d M03\n",lnumber); 
-			else fprintf(OUT, "%d M04\n",lnumber); ++lnumber;
+			/* warm spindle for 10 seconds */
+			if (tools.tl[toolcall].speed>2000){
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, 1500); ++lnumber;
+				if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
+				else fprintf(OUT, "%d L M04\n",lnumber); 
+				++lnumber;
+				fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
+				fprintf(OUT, "%d CYCLE DEF 9.1 10\n",lnumber); ++lnumber;
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, tools.tl[toolcall].speed); ++lnumber;
+			}
+			if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
+			else fprintf(OUT, "%d L M04\n",lnumber); ++lnumber;
+			fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
+			fprintf(OUT, "%d CYCLE DEF 9.1 2\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L ",lnumber); 
 			printVAR(OUT,"Z", old_Datum2Tool[2]);
 			fprintf(OUT," FMAX\n"); ++lnumber;
@@ -194,7 +205,7 @@ int main(int argc, char **argv) {
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
 		} else if ( apt.findINSERT_CSYS(com) ) { 
 
-			if ( op > 0) scad.close(Stock, thetab, thetac, Shift);
+			if ( op > 0) scad.close(apt.getStock(), thetab, thetac, Shift);
 
 			++op;
 			nA = ReadArray(A, com, ',');
@@ -278,7 +289,7 @@ int main(int argc, char **argv) {
 			} else {
 				fprintf(OUT, "%d ;NewFeature\n", lnumber); ++lnumber;
 			}
-			scad.open(argv[1], nsetup, op, toolcall, Stock, tools.tl, Shift, Piv2Datum, thetab, thetac, thetatable);
+			scad.open(argv[1], nsetup, op, toolcall, apt.getStock(), tools.tl, Shift, Piv2Datum, thetab, thetac, thetatable);
 
 		/* comment copy  */
 		} else if ( apt.findINSERT_INSERT(last_comment) ) {  /* INSERT is copied to comment (maybe tool name)*/
@@ -431,8 +442,8 @@ int main(int argc, char **argv) {
 		} else if ( apt.findGOTO(&nA, Datum2Tool) ) { /* print goto if circle or line */
 			if ( apt.isnewblock() ) {
 				if ((cos(thetac)==1.0) && (cos(thetab)==1.0)) {
-				fprintf(OUT, "%d BLK FORM 0.1 Z X%+.3lf Y%+.3lf Z%+.3lf\n",lnumber,0.0,0.0,-Stock[2]); ++lnumber;
-				fprintf(OUT, "%d BLK FORM 0.2 X%+.3lf Y%+.3lf Z%+.3lf\n",lnumber,Stock[0],Stock[1],0.0); ++lnumber;
+				fprintf(OUT, "%d BLK FORM 0.1 Z X%+.3lf Y%+.3lf Z%+.3lf\n",lnumber,0.0,0.0,-apt.getStock()[2]); ++lnumber;
+				fprintf(OUT, "%d BLK FORM 0.2 X%+.3lf Y%+.3lf Z%+.3lf\n",lnumber,apt.getStock()[0],apt.getStock()[1],0.0); ++lnumber;
 				}
 				apt.setoldblock();
 			}
@@ -461,12 +472,24 @@ int main(int argc, char **argv) {
 					tools.tl[toolcall].speed); ++lnumber;
 				tref.AddTool(toolcall,tools.tl);
 				if (old_Datum2Tool[2]!=invalid_coord) {
-					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_Datum2Tool[2]);
-					++lnumber; 
+					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_Datum2Tool[2]); ++lnumber; 
 				}
 				apt.setnewflood();
-				if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d M3\n",lnumber); 
-				else fprintf(OUT, "%d M4\n",lnumber); ++lnumber;
+				/* warm spindle for 10 seconds*/
+				if (tools.tl[toolcall].speed>2000){
+					fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, 1500); ++lnumber;
+					if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
+					else fprintf(OUT, "%d L M04\n",lnumber);
+					++lnumber;
+					fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
+					fprintf(OUT, "%d CYCLE DEF 9.1 10\n",lnumber); ++lnumber;
+					fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, tools.tl[toolcall].speed); ++lnumber;
+				}
+				if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber);
+				else fprintf(OUT, "%d L M04\n",lnumber); 
+				++lnumber;
+				fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
+				fprintf(OUT, "%d CYCLE DEF 9.1 2\n",lnumber); ++lnumber;
 				apt.resetnewtool();
 			}
 			if ( apt.iscircleon() ) {
@@ -600,7 +623,7 @@ int main(int argc, char **argv) {
 			fprintf(OUT, "%d L Z-10 R0 FMAX M91 M9\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d M30\n", lnumber); ++lnumber;
 			fprintf(OUT, "%d END PGM %d MM\n", lnumber, nsetup + 11); ++lnumber;
-			scad.close(Stock, thetab, thetac,Shift);
+			scad.close(apt.getStock(), thetab, thetac,Shift);
 
 		/* do nothing for part number */
 		} else if ( apt.findPARTNO() ) {
