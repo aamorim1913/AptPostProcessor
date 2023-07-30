@@ -122,9 +122,9 @@ int ReadToolSet(){
 
 class APT{
 private:
-     FILE *APT;
+     FILE *FILEAPT;
      char lineapt[MAXLINE];
-     uint32_t updated=0;
+     uint32_t updated;
      char pcom[12*COMSIZE];
 
      double Stock[3];
@@ -135,8 +135,12 @@ private:
 	};
 
 public:
+     APT(){
+          updated=0;
+     }
+
      int open(char * filename){
-        if ( (APT=fopen(filename, "r")) == NULL) {
+        if ( (FILEAPT=fopen(filename, "r")) == NULL) {
                 printf("cannot open apt file %s\n", filename);
                 return -1;
         }
@@ -262,11 +266,11 @@ public:
      }
 
      int ReadLine(){
-	return ::ReadLine(lineapt,APT);
+	return ::ReadLine(lineapt,FILEAPT);
      }
 
      int close(){
-	return fclose(APT);
+	return fclose(FILEAPT);
      }
 
      int findUNIT_MM(){

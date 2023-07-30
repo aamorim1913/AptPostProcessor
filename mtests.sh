@@ -52,15 +52,28 @@ case $1 in
 				done
 			done
 		done
-		mv machine-code/%FN15RUN.A-save machine-code/%FN15RUN.A
+		mv -f machine-code/%FN15RUN.A-save machine-code/%FN15RUN.A
 	else
+		mv machine-code/%FN15RUN.A machine-code/%FN15RUN.A-save
+		cp tests/$ADIR/$2/%FN15RUN.A machine-code/%FN15RUN.A
 		cd $ADIR && ../clsplit/clsplit $2.apt
 		cd ..
 		FILES="`ls tests/$ADIR/$2/`"
 		for FILE in ${FILES}
 		do
+                    if [[ $FILE == *.h ]]; then
+			cut -d " " -f 2- machine-code/$FILE > tests/$FILE.new
+			cut -d " " -f 2- tests/$ADIR/$2/$FILE > tests/$FILE.old
+	  		if diff -q tests/$FILE.old tests/$FILE.new ; then
+			   echo "equal $FILE"
+	  		else
+                           echo "                    diff -u -d tests/$FILE.old tests/$FILE.new"
+      			fi
+		    else
 	  		diff -q machine-code/$FILE tests/$ADIR/$2/$FILE
+		    fi
 		done
+		mv -f machine-code/%FN15RUN.A-save machine-code/%FN15RUN.A
 	fi
 	;;
    rstore)
