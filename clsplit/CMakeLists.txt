@@ -8,7 +8,7 @@ project ("clsplit")
 include_directories(${PROJECT_SOURCE_DIR})
 
 # Add source to this project's executable.
-add_executable (clsplit "clsplit.cpp" "clsplit.h" "CSCAD.h" "readtools.h" "TOOLS.h" "TRef.h" "APT.h")
+add_executable (clsplit "clsplit.cpp" "clsplit.h" "CSCAD.h" "readtools.h" "APT.h")
 
 # TODO: Add tests and install targets if needed.
 
