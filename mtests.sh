@@ -19,6 +19,7 @@ else
 	FIND="`find . -name $2.apt `"
 	FIND=${FIND#*/}
 	ADIR=${FIND%/*}
+        echo "File $2.apt found in $ADIR"
 fi
 
 case $1 in
@@ -42,13 +43,26 @@ case $1 in
 				F=${F%.apt}
 				F=${F##*/}
 				cd $A 
+				echo "**********************************************************"
+				echo "Processing $F from $A"
+				echo "**********************************************************"
 				cp ../tests/$A/$F/%FN15RUN.A ../machine-code/%FN15RUN.A
 				../clsplit/clsplit $F.apt
 				cd ..
 				FILES="`ls tests/$A/$F/`"
 				for FILE in ${FILES}
 				do
-	  				diff -q machine-code/$FILE tests/$A/$F/$FILE
+                    			if [[ $FILE == *.h ]]; then
+	  			           if diff -q tests/$A/$F/$FILE machine-code/$FILE ; then
+			   			echo "equal $FILE in $F in $A" 
+	  			           else
+			   			cut -d " " -f 2- machine-code/$FILE > tests/$F-$FILE.new
+			   			cut -d " " -f 2- tests/$A/$F/$FILE > tests/$F-$FILE.old
+                           			echo "                    diff -u -d tests/$F-$FILE.old tests/$F-$FILE.new"
+      					   fi
+		     			else
+	  			 		diff -q machine-code/$FILE tests/$A/$F/$FILE
+					fi
 				done
 			done
 		done
@@ -62,12 +76,12 @@ case $1 in
 		for FILE in ${FILES}
 		do
                     if [[ $FILE == *.h ]]; then
-			cut -d " " -f 2- machine-code/$FILE > tests/$FILE.new
-			cut -d " " -f 2- tests/$ADIR/$2/$FILE > tests/$FILE.old
-	  		if diff -q tests/$FILE.old tests/$FILE.new ; then
-			   echo "equal $FILE"
+	  		if diff -q tests/$ADIR/$2/$FILE machine-code/$FILE ; then
+			   echo "equal $FILE in $2"
 	  		else
-                           echo "                    diff -u -d tests/$FILE.old tests/$FILE.new"
+			   cut -d " " -f 2- machine-code/$FILE > tests/$2-$FILE.new
+			   cut -d " " -f 2- tests/$ADIR/$2/$FILE > tests/$2-$FILE.old
+                           echo "                    diff -u -d tests/$2-$FILE.old tests/$2-$FILE.new"
       			fi
 		    else
 	  		diff -q machine-code/$FILE tests/$ADIR/$2/$FILE
@@ -119,7 +133,7 @@ case $1 in
    clean)
 	if [ "$2" = "all" ]
 	then
-		rm -rf tests
+		rm -rf tests/*.old tests/*.new
 	else
 		rm -rf tests/$ADIR/$2/
 	fi
