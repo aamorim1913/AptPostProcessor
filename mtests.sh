@@ -135,7 +135,7 @@ case $1 in
 	then
 		rm -rf tests/*.old tests/*.new
 	else
-		rm -rf tests/$ADIR/$2/
+		rm -rf tests/$2-*.old tests/$2-*.new
 	fi
 	;;
    list)
