@@ -17,6 +17,11 @@ then
 	ADIR="`ls -d parts-* `"
 else
 	FIND="`find . -name $2.apt `"
+
+	if [ "$FIND" = "" ] ; then
+		echo "File $2.apt not found in parts-*."
+		exit
+	fi  
 	FIND=${FIND#*/}
 	ADIR=${FIND%/*}
         echo "File $2.apt found in $ADIR"
