@@ -420,8 +420,7 @@ int main(int argc, char **argv) {
 			else feedscale = 1.0;
 
 		/* CSI_SET_FLUTE_LENGTH */
-		} else if ( apt.findCSI_SET_FLUTE_LENGTH(com) ) { /* tool CSI_SET_FLUTE_LENGTH */
-				strcat(tools.tl[toolcall].name,com);
+		} else if ( apt.findCSI_SET_FLUTE_LENGTH(tools.tl[toolcall].name) ) { /* tool CSI_SET_FLUTE_LENGTH */
 
 		/* CSI_SET_EXTENSION_LENGTH */
 		} else if ( apt.findCSI_CSI_SET_EXTENSION_LENGTH(com) ) { /* tool CSI_SET_EXTENSION_LENGTH */

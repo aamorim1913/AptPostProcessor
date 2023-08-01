@@ -343,11 +343,12 @@ public:
           } else return 0;
      }
 
-     int findCSI_SET_FLUTE_LENGTH(char *com) {
+     int findCSI_SET_FLUTE_LENGTH(char *text) {
           double temp;
      	if (strstr(lineapt, "CSI_SET_FLUTE_LENGTH/") != 0) {
             	sscanf(lineapt+strlen("CSI_SET_FLUTE_LENGTH/"),"%lf", &temp);
 			snprintf(com, COMSIZE, " FLUTE LEN %.1lf", temp);
+               strcat(text,com);
                return 1;
           } else return 0;
      }
