@@ -103,7 +103,7 @@ case $1 in
 	cd $ADIR && ../clsplit/clsplit $2.apt
 	cd ..
 	mkdir -p tests/$ADIR/$2/
-	cp -f machine-code/%FN15RUN.A machine-code/[123456789]*.h  machine-code/*.scad tests/$ADIR/$2
+	cp -f machine-code/%FN15RUN.A machine-code/[0123456789]*.h  machine-code/*.scad tests/$ADIR/$2
 	mv -f machine-code/%FN15RUN.A-save machine-code/%FN15RUN.A
 	;;
    diff)
@@ -133,7 +133,7 @@ case $1 in
 		exit
 	fi
 	mkdir -p tests/$ADIR/$2/
-	cp -f machine-code/%FN15RUN.A machine-code/[123456789]*.h  machine-code/*.scad tests/$ADIR/$2
+	cp -f machine-code/%FN15RUN.A machine-code/[0123456789]*.h  machine-code/*.scad tests/$ADIR/$2
 	;;
    clean)
 	if [ "$2" = "all" ]
