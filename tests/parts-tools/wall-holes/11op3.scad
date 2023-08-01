@@ -7,7 +7,7 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-0.000000,0]) rotate([0,0,-0.000000]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-tools/wall-holes.STL");
-/* line -> 198 */
+/* line -> 446 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([25.00,50.00,25.00]) cylinder(1,rtool,rtool); translate([25.00,50.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([25.00,50.00,-5.00]) cylinder(30.00,rtool,rtool);
 x=-24.340;y=43.784;z=113.384; /* Near the table */

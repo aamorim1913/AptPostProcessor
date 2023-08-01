@@ -7,29 +7,29 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-0.000000,0]) rotate([0,0,-0.000000]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-2022/SupPetriLED.STL");
-/* line -> 222 */
+/* line -> 513 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([59.50,59.50,25.00]) cylinder(1,rtool,rtool); translate([59.50,59.50,-16.00]) cylinder(1,rtool,rtool);}
-/* line -> 223 */
+/* line -> 516 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([59.50,59.50,-16.00]) cylinder(1,rtool,rtool); translate([59.50,59.50,-24.00]) cylinder(1,rtool,rtool);}
-/* line -> 224 */
+/* line -> 520 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([59.50,59.50,-24.00]) cylinder(1,rtool,rtool); translate([22.28,66.85,-24.00]) cylinder(1,rtool,rtool);}
-/* line -> 225 */
+/* line -> 522 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([22.28,66.85,-24.00]) cylinder(1,rtool,rtool); translate([16.96,61.88,-24.00]) cylinder(1,rtool,rtool);}
-/* line -> 228 */
+/* line -> 527 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([17.92, 60.85, -23.50]) rotate([0,0,133.13]) rotate_extrude(angle=45.00, convexity = 10, $fn=50) translate([1.40, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 230 */
+/* line -> 532 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([59.50, 59.50, -23.50]) rotate([0,0,178.13]) rotate_extrude(angle=1.87, convexity = 10, $fn=50) translate([43.00, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 231 */
+/* line -> 535 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([59.50, 59.50, -23.50]) rotate([0,0,180.00]) rotate_extrude(angle=360.00, convexity = 10, $fn=50) translate([43.00, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 232 */
+/* line -> 538 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([59.50, 59.50, -23.50]) rotate([0,0,180.00]) rotate_extrude(angle=1.87, convexity = 10, $fn=50) translate([43.00, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 234 */
+/* line -> 542 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([17.92, 58.15, -23.50]) rotate([0,0,-178.13]) rotate_extrude(angle=45.00, convexity = 10, $fn=50) translate([1.40, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 234 */
+/* line -> 544 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([16.96,57.12,-24.00]) cylinder(1,rtool,rtool); translate([22.28,52.15,-24.00]) cylinder(1,rtool,rtool);}
-/* line -> 235 */
+/* line -> 547 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([22.28,52.15,-24.00]) cylinder(1,rtool,rtool); translate([22.28,52.15,-16.00]) cylinder(1,rtool,rtool);}
-/* line -> 236 */
+/* line -> 550 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([22.28,52.15,-16.00]) cylinder(1,rtool,rtool); translate([22.28,52.15,25.00]) cylinder(1,rtool,rtool);}
 x=-133.573;y=-46.716;z=34.899; /* Near the table */
 color("white") translate([x,y,z]) union(){

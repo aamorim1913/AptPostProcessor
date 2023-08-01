@@ -7,7 +7,7 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-0.000000,0]) rotate([0,0,-0.000000]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-2023/Teflon-gasket.STL");
-/* line -> 30 */
+/* line -> 47 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([15.00,15.00,25.00]) cylinder(1,rtool,rtool); translate([15.00,15.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([15.00,15.00,-9.68]) cylinder(34.67,rtool,rtool);
 x=-178.073;y=-91.216;z=34.899; /* Near the table */

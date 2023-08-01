@@ -7,16 +7,16 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-0.000000,0]) rotate([0,0,-0.000000]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-2022/Dem-target1.STL");
-/* line -> 30 */
+/* line -> 46 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([110.00,212.00,25.00]) cylinder(1,rtool,rtool); translate([110.00,212.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([110.00,212.00,-24.62]) cylinder(49.62,rtool,rtool);
-/* line -> 31 */
+/* line -> 48 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([110.00,212.00,25.00]) cylinder(1,rtool,rtool); translate([9.00,110.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([9.00,110.00,-24.62]) cylinder(49.62,rtool,rtool);
-/* line -> 32 */
+/* line -> 50 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([9.00,110.00,25.00]) cylinder(1,rtool,rtool); translate([110.00,8.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([110.00,8.00,-24.62]) cylinder(49.62,rtool,rtool);
-/* line -> 33 */
+/* line -> 52 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([110.00,8.00,25.00]) cylinder(1,rtool,rtool); translate([211.00,110.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([211.00,110.00,-24.62]) cylinder(49.62,rtool,rtool);
 x=-83.073;y=105.784;z=34.899; /* Near the table */

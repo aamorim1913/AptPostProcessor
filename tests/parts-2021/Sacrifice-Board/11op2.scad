@@ -7,22 +7,22 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-0.000000,0]) rotate([0,0,-0.000000]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-2021/Sacrifice-Board.STL");
-/* line -> 59 */
+/* line -> 96 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([77.50,145.00,25.00]) cylinder(1,rtool,rtool); translate([77.50,145.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([77.50,145.00,-31.10]) cylinder(56.10,rtool,rtool);
-/* line -> 60 */
+/* line -> 98 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([77.50,145.00,25.00]) cylinder(1,rtool,rtool); translate([77.50,20.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([77.50,20.00,-31.10]) cylinder(56.10,rtool,rtool);
-/* line -> 61 */
+/* line -> 100 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([77.50,20.00,25.00]) cylinder(1,rtool,rtool); translate([202.50,20.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([202.50,20.00,-31.10]) cylinder(56.10,rtool,rtool);
-/* line -> 62 */
+/* line -> 102 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([202.50,20.00,25.00]) cylinder(1,rtool,rtool); translate([202.50,145.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([202.50,145.00,-31.10]) cylinder(56.10,rtool,rtool);
-/* line -> 63 */
+/* line -> 104 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([202.50,145.00,25.00]) cylinder(1,rtool,rtool); translate([327.50,145.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([327.50,145.00,-31.10]) cylinder(56.10,rtool,rtool);
-/* line -> 64 */
+/* line -> 106 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([327.50,145.00,25.00]) cylinder(1,rtool,rtool); translate([327.50,20.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([327.50,20.00,-31.10]) cylinder(56.10,rtool,rtool);
 x=-191.840;y=38.784;z=34.899; /* Near the table */

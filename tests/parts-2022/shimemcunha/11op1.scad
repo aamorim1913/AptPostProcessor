@@ -7,19 +7,19 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-0.289975,0]) rotate([0,0,-0.000000]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-2022/shimemcunha.STL");
-/* line -> 21 */
+/* line -> 37 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([-52.49,15.63,25.18]) cylinder(1,rtool,rtool); translate([-52.49,15.63,3.18]) cylinder(1,rtool,rtool);}
-/* line -> 22 */
+/* line -> 40 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-52.49,15.63,3.18]) cylinder(1,rtool,rtool); translate([-52.49,15.63,-0.31]) cylinder(1,rtool,rtool);}
-/* line -> 23 */
+/* line -> 43 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-52.49,15.63,-0.31]) cylinder(1,rtool,rtool); translate([0.01,15.63,-0.31]) cylinder(1,rtool,rtool);}
-/* line -> 24 */
+/* line -> 46 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([0.01,15.63,-0.31]) cylinder(1,rtool,rtool); translate([36.26,15.63,-0.31]) cylinder(1,rtool,rtool);}
-/* line -> 25 */
+/* line -> 49 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.26,15.63,-0.31]) cylinder(1,rtool,rtool); translate([88.76,15.63,-0.31]) cylinder(1,rtool,rtool);}
-/* line -> 26 */
+/* line -> 52 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([88.76,15.63,-0.31]) cylinder(1,rtool,rtool); translate([88.76,15.63,3.18]) cylinder(1,rtool,rtool);}
-/* line -> 27 */
+/* line -> 55 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([88.76,15.63,3.18]) cylinder(1,rtool,rtool); translate([88.76,15.63,25.18]) cylinder(1,rtool,rtool);}
 x=-245.613;y=-90.584;z=34.105; /* Near the table */
 color("white") translate([x,y,z]) union(){

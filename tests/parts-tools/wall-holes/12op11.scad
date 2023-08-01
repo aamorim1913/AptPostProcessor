@@ -7,859 +7,859 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-90.000000,0]) rotate([0,0,-180.000000]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-tools/wall-holes.STL");
-/* line -> 22 */
+/* line -> 25 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,25.00]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 23 */
+/* line -> 28 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-3.00]) cylinder(1,rtool,rtool);}
-/* line -> 26 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -2.50]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 26 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-3.00]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-3.00]) cylinder(1,rtool,rtool);}
-/* line -> 27 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-3.00]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-3.00]) cylinder(1,rtool,rtool);}
-/* line -> 30 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -2.50]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 30 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-3.00]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-3.00]) cylinder(1,rtool,rtool);}
-/* line -> 31 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-3.00]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-3.00]) cylinder(1,rtool,rtool);}
 /* line -> 34 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -2.50]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 34 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-3.00]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-3.00]) cylinder(1,rtool,rtool);}
 /* line -> 35 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-3.00]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-3.00]) cylinder(1,rtool,rtool);}
+/* line -> 37 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-3.00]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-3.00]) cylinder(1,rtool,rtool);}
-/* line -> 38 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -2.50]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 38 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-3.00]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-3.00]) cylinder(1,rtool,rtool);}
-/* line -> 39 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-3.00]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-3.00]) cylinder(1,rtool,rtool);}
-/* line -> 40 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-3.00]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 41 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-0.50]) cylinder(1,rtool,rtool);}
 /* line -> 42 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-0.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-5.92]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -2.50]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 43 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-3.00]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-3.00]) cylinder(1,rtool,rtool);}
 /* line -> 45 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -5.42]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 45 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-5.92]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-5.92]) cylinder(1,rtool,rtool);}
-/* line -> 46 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-5.92]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-5.92]) cylinder(1,rtool,rtool);}
-/* line -> 49 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -5.42]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 49 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-5.92]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-5.92]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-3.00]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-3.00]) cylinder(1,rtool,rtool);}
 /* line -> 50 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-5.92]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-5.92]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -2.50]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 51 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-3.00]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-3.00]) cylinder(1,rtool,rtool);}
 /* line -> 53 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -5.42]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 53 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-5.92]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-5.92]) cylinder(1,rtool,rtool);}
-/* line -> 54 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-5.92]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-5.92]) cylinder(1,rtool,rtool);}
-/* line -> 57 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -5.42]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 57 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-5.92]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-5.92]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-3.00]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-3.00]) cylinder(1,rtool,rtool);}
 /* line -> 58 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-5.92]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-5.92]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -2.50]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 59 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-5.92]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 60 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-3.42]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-3.00]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-3.00]) cylinder(1,rtool,rtool);}
 /* line -> 61 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-3.42]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-8.84]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-3.00]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-3.00]) cylinder(1,rtool,rtool);}
 /* line -> 64 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -8.34]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 64 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-8.84]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-8.84]) cylinder(1,rtool,rtool);}
-/* line -> 65 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-8.84]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-8.84]) cylinder(1,rtool,rtool);}
-/* line -> 68 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -8.34]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 68 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-8.84]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-8.84]) cylinder(1,rtool,rtool);}
-/* line -> 69 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-8.84]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-8.84]) cylinder(1,rtool,rtool);}
-/* line -> 72 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -8.34]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 72 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-8.84]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-8.84]) cylinder(1,rtool,rtool);}
-/* line -> 73 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-8.84]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-8.84]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-3.00]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 67 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-0.50]) cylinder(1,rtool,rtool);}
+/* line -> 70 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-0.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-5.92]) cylinder(1,rtool,rtool);}
 /* line -> 76 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -8.34]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 76 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-8.84]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-8.84]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -5.42]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 77 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-8.84]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-8.84]) cylinder(1,rtool,rtool);}
-/* line -> 78 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-8.84]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-5.92]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-5.92]) cylinder(1,rtool,rtool);}
 /* line -> 79 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-6.34]) cylinder(1,rtool,rtool);}
-/* line -> 80 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-6.34]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-11.77]) cylinder(1,rtool,rtool);}
-/* line -> 83 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -11.27]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 83 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-11.77]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-11.77]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-5.92]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-5.92]) cylinder(1,rtool,rtool);}
 /* line -> 84 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-11.77]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-11.77]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -5.42]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 85 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-5.92]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-5.92]) cylinder(1,rtool,rtool);}
 /* line -> 87 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -11.27]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 87 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-11.77]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-11.77]) cylinder(1,rtool,rtool);}
-/* line -> 88 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-11.77]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-11.77]) cylinder(1,rtool,rtool);}
-/* line -> 91 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -11.27]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 91 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-11.77]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-11.77]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-5.92]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-5.92]) cylinder(1,rtool,rtool);}
 /* line -> 92 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-11.77]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-11.77]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -5.42]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 93 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-5.92]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-5.92]) cylinder(1,rtool,rtool);}
 /* line -> 95 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -11.27]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 95 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-11.77]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-11.77]) cylinder(1,rtool,rtool);}
-/* line -> 96 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-11.77]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-11.77]) cylinder(1,rtool,rtool);}
-/* line -> 97 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-11.77]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 98 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-9.27]) cylinder(1,rtool,rtool);}
-/* line -> 99 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-9.27]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-14.69]) cylinder(1,rtool,rtool);}
-/* line -> 102 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -14.19]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 102 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-14.69]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-14.69]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-5.92]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-5.92]) cylinder(1,rtool,rtool);}
+/* line -> 100 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -5.42]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 101 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-5.92]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-5.92]) cylinder(1,rtool,rtool);}
 /* line -> 103 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-14.69]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-14.69]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-5.92]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-5.92]) cylinder(1,rtool,rtool);}
 /* line -> 106 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -14.19]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 106 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-14.69]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-14.69]) cylinder(1,rtool,rtool);}
-/* line -> 107 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-14.69]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-14.69]) cylinder(1,rtool,rtool);}
-/* line -> 110 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -14.19]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 110 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-14.69]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-14.69]) cylinder(1,rtool,rtool);}
-/* line -> 111 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-14.69]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-14.69]) cylinder(1,rtool,rtool);}
-/* line -> 114 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -14.19]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 114 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-14.69]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-14.69]) cylinder(1,rtool,rtool);}
-/* line -> 115 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-14.69]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-14.69]) cylinder(1,rtool,rtool);}
-/* line -> 116 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-14.69]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 117 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-12.19]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-5.92]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 109 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-3.42]) cylinder(1,rtool,rtool);}
+/* line -> 112 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-3.42]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-8.84]) cylinder(1,rtool,rtool);}
 /* line -> 118 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-12.19]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-17.61]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -8.34]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 119 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-8.84]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-8.84]) cylinder(1,rtool,rtool);}
 /* line -> 121 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -17.11]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 121 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-17.61]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-17.61]) cylinder(1,rtool,rtool);}
-/* line -> 122 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-17.61]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-17.61]) cylinder(1,rtool,rtool);}
-/* line -> 125 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -17.11]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 125 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-17.61]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-17.61]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-8.84]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-8.84]) cylinder(1,rtool,rtool);}
 /* line -> 126 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-17.61]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-17.61]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -8.34]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 127 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-8.84]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-8.84]) cylinder(1,rtool,rtool);}
 /* line -> 129 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -17.11]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 129 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-17.61]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-17.61]) cylinder(1,rtool,rtool);}
-/* line -> 130 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-17.61]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-17.61]) cylinder(1,rtool,rtool);}
-/* line -> 133 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -17.11]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 133 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-17.61]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-17.61]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-8.84]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-8.84]) cylinder(1,rtool,rtool);}
 /* line -> 134 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-17.61]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-17.61]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -8.34]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 135 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-17.61]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 136 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-15.11]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-8.84]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-8.84]) cylinder(1,rtool,rtool);}
 /* line -> 137 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-15.11]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-20.53]) cylinder(1,rtool,rtool);}
-/* line -> 140 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -20.03]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 140 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-20.53]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-20.53]) cylinder(1,rtool,rtool);}
-/* line -> 141 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-20.53]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-20.53]) cylinder(1,rtool,rtool);}
-/* line -> 144 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -20.03]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 144 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-20.53]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-20.53]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-8.84]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-8.84]) cylinder(1,rtool,rtool);}
+/* line -> 142 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -8.34]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 143 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-8.84]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-8.84]) cylinder(1,rtool,rtool);}
 /* line -> 145 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-20.53]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-20.53]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-8.84]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-8.84]) cylinder(1,rtool,rtool);}
 /* line -> 148 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -20.03]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 148 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-20.53]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-20.53]) cylinder(1,rtool,rtool);}
-/* line -> 149 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-20.53]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-20.53]) cylinder(1,rtool,rtool);}
-/* line -> 152 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -20.03]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 152 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-20.53]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-20.53]) cylinder(1,rtool,rtool);}
-/* line -> 153 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-20.53]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-20.53]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-8.84]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 151 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-6.34]) cylinder(1,rtool,rtool);}
 /* line -> 154 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-20.53]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 155 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-18.03]) cylinder(1,rtool,rtool);}
-/* line -> 156 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-18.03]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-23.46]) cylinder(1,rtool,rtool);}
-/* line -> 159 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -22.96]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 159 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-23.46]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-23.46]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-6.34]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-11.77]) cylinder(1,rtool,rtool);}
 /* line -> 160 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-23.46]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-23.46]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -11.27]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 161 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-11.77]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-11.77]) cylinder(1,rtool,rtool);}
 /* line -> 163 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -22.96]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 163 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-23.46]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-23.46]) cylinder(1,rtool,rtool);}
-/* line -> 164 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-23.46]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-23.46]) cylinder(1,rtool,rtool);}
-/* line -> 167 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -22.96]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 167 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-23.46]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-23.46]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-11.77]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-11.77]) cylinder(1,rtool,rtool);}
 /* line -> 168 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-23.46]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-23.46]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -11.27]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 169 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-11.77]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-11.77]) cylinder(1,rtool,rtool);}
 /* line -> 171 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -22.96]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 171 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-23.46]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-23.46]) cylinder(1,rtool,rtool);}
-/* line -> 172 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-23.46]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-23.46]) cylinder(1,rtool,rtool);}
-/* line -> 173 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-23.46]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 174 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-20.96]) cylinder(1,rtool,rtool);}
-/* line -> 175 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-20.96]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-26.38]) cylinder(1,rtool,rtool);}
-/* line -> 178 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -25.88]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 178 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-26.38]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-26.38]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-11.77]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-11.77]) cylinder(1,rtool,rtool);}
+/* line -> 176 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -11.27]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 177 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-11.77]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-11.77]) cylinder(1,rtool,rtool);}
 /* line -> 179 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-26.38]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-26.38]) cylinder(1,rtool,rtool);}
-/* line -> 182 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -25.88]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 182 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-26.38]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-26.38]) cylinder(1,rtool,rtool);}
-/* line -> 183 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-26.38]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-26.38]) cylinder(1,rtool,rtool);}
-/* line -> 186 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -25.88]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 186 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-26.38]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-26.38]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-11.77]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-11.77]) cylinder(1,rtool,rtool);}
+/* line -> 184 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -11.27]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 185 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-11.77]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-11.77]) cylinder(1,rtool,rtool);}
 /* line -> 187 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-26.38]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-26.38]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-11.77]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-11.77]) cylinder(1,rtool,rtool);}
 /* line -> 190 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -25.88]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 190 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-26.38]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-26.38]) cylinder(1,rtool,rtool);}
-/* line -> 191 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-26.38]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-26.38]) cylinder(1,rtool,rtool);}
-/* line -> 192 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-26.38]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-11.77]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
 /* line -> 193 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-23.88]) cylinder(1,rtool,rtool);}
-/* line -> 194 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-23.88]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-29.30]) cylinder(1,rtool,rtool);}
-/* line -> 197 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -28.80]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 197 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-29.30]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-29.30]) cylinder(1,rtool,rtool);}
-/* line -> 198 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-29.30]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-29.30]) cylinder(1,rtool,rtool);}
-/* line -> 201 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -28.80]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 201 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-29.30]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-29.30]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-9.27]) cylinder(1,rtool,rtool);}
+/* line -> 196 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-9.27]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-14.69]) cylinder(1,rtool,rtool);}
 /* line -> 202 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-29.30]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-29.30]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -14.19]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 203 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-14.69]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-14.69]) cylinder(1,rtool,rtool);}
 /* line -> 205 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -28.80]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 205 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-29.30]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-29.30]) cylinder(1,rtool,rtool);}
-/* line -> 206 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-29.30]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-29.30]) cylinder(1,rtool,rtool);}
-/* line -> 209 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -28.80]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 209 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-29.30]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-29.30]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-14.69]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-14.69]) cylinder(1,rtool,rtool);}
 /* line -> 210 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-29.30]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-29.30]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -14.19]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 211 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-29.30]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 212 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-26.80]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-14.69]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-14.69]) cylinder(1,rtool,rtool);}
 /* line -> 213 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-26.80]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-32.22]) cylinder(1,rtool,rtool);}
-/* line -> 216 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -31.72]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 216 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-32.22]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-32.22]) cylinder(1,rtool,rtool);}
-/* line -> 217 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-32.22]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-32.22]) cylinder(1,rtool,rtool);}
-/* line -> 220 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -31.72]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 220 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-32.22]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-32.22]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-14.69]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-14.69]) cylinder(1,rtool,rtool);}
+/* line -> 218 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -14.19]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 219 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-14.69]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-14.69]) cylinder(1,rtool,rtool);}
 /* line -> 221 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-32.22]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-32.22]) cylinder(1,rtool,rtool);}
-/* line -> 224 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -31.72]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 224 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-32.22]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-32.22]) cylinder(1,rtool,rtool);}
-/* line -> 225 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-32.22]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-32.22]) cylinder(1,rtool,rtool);}
-/* line -> 228 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -31.72]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 228 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-32.22]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-32.22]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-14.69]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-14.69]) cylinder(1,rtool,rtool);}
+/* line -> 226 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -14.19]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 227 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-14.69]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-14.69]) cylinder(1,rtool,rtool);}
 /* line -> 229 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-32.22]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-32.22]) cylinder(1,rtool,rtool);}
-/* line -> 230 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-32.22]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 231 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-29.72]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-14.69]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-14.69]) cylinder(1,rtool,rtool);}
 /* line -> 232 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-29.72]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-35.14]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-14.69]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
 /* line -> 235 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -34.64]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 235 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-35.14]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-35.14]) cylinder(1,rtool,rtool);}
-/* line -> 236 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-35.14]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-35.14]) cylinder(1,rtool,rtool);}
-/* line -> 239 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -34.64]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 239 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-35.14]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-35.14]) cylinder(1,rtool,rtool);}
-/* line -> 240 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-35.14]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-35.14]) cylinder(1,rtool,rtool);}
-/* line -> 243 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -34.64]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 243 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-35.14]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-35.14]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-12.19]) cylinder(1,rtool,rtool);}
+/* line -> 238 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-12.19]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-17.61]) cylinder(1,rtool,rtool);}
 /* line -> 244 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-35.14]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-35.14]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -17.11]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 245 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-17.61]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-17.61]) cylinder(1,rtool,rtool);}
 /* line -> 247 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -34.64]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 247 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-35.14]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-35.14]) cylinder(1,rtool,rtool);}
-/* line -> 248 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-35.14]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-35.14]) cylinder(1,rtool,rtool);}
-/* line -> 249 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-35.14]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 250 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-32.64]) cylinder(1,rtool,rtool);}
-/* line -> 251 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-32.64]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-38.07]) cylinder(1,rtool,rtool);}
-/* line -> 254 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -37.57]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 254 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-38.07]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-38.07]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-17.61]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-17.61]) cylinder(1,rtool,rtool);}
+/* line -> 252 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -17.11]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 253 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-17.61]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-17.61]) cylinder(1,rtool,rtool);}
 /* line -> 255 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-38.07]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-38.07]) cylinder(1,rtool,rtool);}
-/* line -> 258 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -37.57]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 258 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-38.07]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-38.07]) cylinder(1,rtool,rtool);}
-/* line -> 259 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-38.07]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-38.07]) cylinder(1,rtool,rtool);}
-/* line -> 262 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -37.57]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 262 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-38.07]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-38.07]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-17.61]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-17.61]) cylinder(1,rtool,rtool);}
+/* line -> 260 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -17.11]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 261 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-17.61]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-17.61]) cylinder(1,rtool,rtool);}
 /* line -> 263 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-38.07]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-38.07]) cylinder(1,rtool,rtool);}
-/* line -> 266 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -37.57]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 266 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-38.07]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-38.07]) cylinder(1,rtool,rtool);}
-/* line -> 267 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-38.07]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-38.07]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-17.61]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-17.61]) cylinder(1,rtool,rtool);}
 /* line -> 268 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-38.07]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -17.11]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 269 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-35.57]) cylinder(1,rtool,rtool);}
-/* line -> 270 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-35.57]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-40.99]) cylinder(1,rtool,rtool);}
-/* line -> 273 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -40.49]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 273 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-40.99]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-40.99]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-17.61]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-17.61]) cylinder(1,rtool,rtool);}
+/* line -> 271 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-17.61]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-17.61]) cylinder(1,rtool,rtool);}
 /* line -> 274 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-40.99]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-40.99]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-17.61]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
 /* line -> 277 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -40.49]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 277 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-40.99]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-40.99]) cylinder(1,rtool,rtool);}
-/* line -> 278 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-40.99]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-40.99]) cylinder(1,rtool,rtool);}
-/* line -> 281 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -40.49]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 281 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-40.99]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-40.99]) cylinder(1,rtool,rtool);}
-/* line -> 282 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-40.99]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-40.99]) cylinder(1,rtool,rtool);}
-/* line -> 285 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -40.49]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 285 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-40.99]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-40.99]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-15.11]) cylinder(1,rtool,rtool);}
+/* line -> 280 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-15.11]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-20.53]) cylinder(1,rtool,rtool);}
 /* line -> 286 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-40.99]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-40.99]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -20.03]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 287 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-40.99]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 288 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-38.49]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-20.53]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-20.53]) cylinder(1,rtool,rtool);}
 /* line -> 289 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-38.49]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-43.91]) cylinder(1,rtool,rtool);}
-/* line -> 292 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -43.41]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 292 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-43.91]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-43.91]) cylinder(1,rtool,rtool);}
-/* line -> 293 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-43.91]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-43.91]) cylinder(1,rtool,rtool);}
-/* line -> 296 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -43.41]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 296 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-43.91]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-43.91]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-20.53]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-20.53]) cylinder(1,rtool,rtool);}
+/* line -> 294 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -20.03]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 295 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-20.53]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-20.53]) cylinder(1,rtool,rtool);}
 /* line -> 297 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-43.91]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-43.91]) cylinder(1,rtool,rtool);}
-/* line -> 300 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -43.41]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 300 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-43.91]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-43.91]) cylinder(1,rtool,rtool);}
-/* line -> 301 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-43.91]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-43.91]) cylinder(1,rtool,rtool);}
-/* line -> 304 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -43.41]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 304 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-43.91]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-43.91]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-20.53]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-20.53]) cylinder(1,rtool,rtool);}
+/* line -> 302 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -20.03]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 303 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-20.53]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-20.53]) cylinder(1,rtool,rtool);}
 /* line -> 305 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-43.91]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-43.91]) cylinder(1,rtool,rtool);}
-/* line -> 306 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-43.91]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 307 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-41.41]) cylinder(1,rtool,rtool);}
-/* line -> 308 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-41.41]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-46.83]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-20.53]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-20.53]) cylinder(1,rtool,rtool);}
+/* line -> 310 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -20.03]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 311 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -46.33]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 311 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-46.83]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-46.83]) cylinder(1,rtool,rtool);}
-/* line -> 312 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-46.83]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-46.83]) cylinder(1,rtool,rtool);}
-/* line -> 315 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -46.33]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 315 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-46.83]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-46.83]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-20.53]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-20.53]) cylinder(1,rtool,rtool);}
+/* line -> 313 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-20.53]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-20.53]) cylinder(1,rtool,rtool);}
 /* line -> 316 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-46.83]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-46.83]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-20.53]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
 /* line -> 319 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -46.33]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 319 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-46.83]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-46.83]) cylinder(1,rtool,rtool);}
-/* line -> 320 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-46.83]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-46.83]) cylinder(1,rtool,rtool);}
-/* line -> 323 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -46.33]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 323 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-46.83]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-46.83]) cylinder(1,rtool,rtool);}
-/* line -> 324 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-46.83]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-46.83]) cylinder(1,rtool,rtool);}
-/* line -> 325 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-46.83]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 326 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-44.33]) cylinder(1,rtool,rtool);}
-/* line -> 327 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-44.33]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-49.76]) cylinder(1,rtool,rtool);}
-/* line -> 330 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -49.26]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 330 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-49.76]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-49.76]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-18.03]) cylinder(1,rtool,rtool);}
+/* line -> 322 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-18.03]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-23.46]) cylinder(1,rtool,rtool);}
+/* line -> 328 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -22.96]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 329 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-23.46]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-23.46]) cylinder(1,rtool,rtool);}
 /* line -> 331 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-49.76]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-49.76]) cylinder(1,rtool,rtool);}
-/* line -> 334 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -49.26]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 334 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-49.76]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-49.76]) cylinder(1,rtool,rtool);}
-/* line -> 335 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-49.76]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-49.76]) cylinder(1,rtool,rtool);}
-/* line -> 338 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -49.26]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 338 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-49.76]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-49.76]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-23.46]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-23.46]) cylinder(1,rtool,rtool);}
+/* line -> 336 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -22.96]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 337 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-23.46]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-23.46]) cylinder(1,rtool,rtool);}
 /* line -> 339 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-49.76]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-49.76]) cylinder(1,rtool,rtool);}
-/* line -> 342 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -49.26]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 342 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-49.76]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-49.76]) cylinder(1,rtool,rtool);}
-/* line -> 343 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-49.76]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-49.76]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-23.46]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-23.46]) cylinder(1,rtool,rtool);}
 /* line -> 344 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-49.76]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -22.96]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 345 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-47.26]) cylinder(1,rtool,rtool);}
-/* line -> 346 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-47.26]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-50.01]) cylinder(1,rtool,rtool);}
-/* line -> 349 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -49.51]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 349 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-50.01]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-50.01]) cylinder(1,rtool,rtool);}
-/* line -> 350 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-50.01]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-50.01]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-23.46]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-23.46]) cylinder(1,rtool,rtool);}
+/* line -> 347 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-23.46]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-23.46]) cylinder(1,rtool,rtool);}
+/* line -> 352 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -22.96]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 353 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -49.51]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 353 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-50.01]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-50.01]) cylinder(1,rtool,rtool);}
-/* line -> 354 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-50.01]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-50.01]) cylinder(1,rtool,rtool);}
-/* line -> 357 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -49.51]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 357 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-50.01]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-50.01]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-23.46]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-23.46]) cylinder(1,rtool,rtool);}
+/* line -> 355 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-23.46]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-23.46]) cylinder(1,rtool,rtool);}
 /* line -> 358 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-50.01]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-50.01]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-23.46]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
 /* line -> 361 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -49.51]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 361 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-50.01]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-50.01]) cylinder(1,rtool,rtool);}
-/* line -> 362 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-50.01]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-50.01]) cylinder(1,rtool,rtool);}
-/* line -> 363 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-50.01]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-20.96]) cylinder(1,rtool,rtool);}
 /* line -> 364 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,25.00]) cylinder(1,rtool,rtool);}
-/* line -> 365 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,25.00]) cylinder(1,rtool,rtool); translate([31.20,-66.20,25.00]) cylinder(1,rtool,rtool);}
-/* line -> 366 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,25.00]) cylinder(1,rtool,rtool); translate([31.20,-66.20,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 367 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,2.50]) cylinder(1,rtool,rtool); translate([31.20,-66.20,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 368 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,0.25]) cylinder(1,rtool,rtool); translate([31.20,-28.80,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 369 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-28.80,0.25]) cylinder(1,rtool,rtool); translate([28.80,-28.80,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-20.96]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-26.38]) cylinder(1,rtool,rtool);}
 /* line -> 370 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([28.80,-28.80,0.25]) cylinder(1,rtool,rtool); translate([28.80,-66.20,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -25.88]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 371 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([28.80,-66.20,0.25]) cylinder(1,rtool,rtool); translate([31.20,-66.20,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 372 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,0.25]) cylinder(1,rtool,rtool); translate([33.60,-68.60,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-26.38]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-26.38]) cylinder(1,rtool,rtool);}
 /* line -> 373 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-68.60,0.25]) cylinder(1,rtool,rtool); translate([33.60,-26.40,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 374 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-26.40,0.25]) cylinder(1,rtool,rtool); translate([26.40,-26.40,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 375 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([26.40,-26.40,0.25]) cylinder(1,rtool,rtool); translate([26.40,-68.60,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 376 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([26.40,-68.60,0.25]) cylinder(1,rtool,rtool); translate([33.60,-68.60,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 377 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-68.60,0.25]) cylinder(1,rtool,rtool); translate([36.00,-71.00,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-26.38]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-26.38]) cylinder(1,rtool,rtool);}
 /* line -> 378 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-71.00,0.25]) cylinder(1,rtool,rtool); translate([36.00,-24.00,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -25.88]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 379 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-24.00,0.25]) cylinder(1,rtool,rtool); translate([24.00,-24.00,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 380 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([24.00,-24.00,0.25]) cylinder(1,rtool,rtool); translate([24.00,-71.00,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-26.38]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-26.38]) cylinder(1,rtool,rtool);}
 /* line -> 381 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([24.00,-71.00,0.25]) cylinder(1,rtool,rtool); translate([36.00,-71.00,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 382 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-71.00,0.25]) cylinder(1,rtool,rtool); translate([38.40,-73.40,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 383 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-73.40,0.25]) cylinder(1,rtool,rtool); translate([38.40,-21.60,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 384 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-21.60,0.25]) cylinder(1,rtool,rtool); translate([21.60,-21.60,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 385 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([21.60,-21.60,0.25]) cylinder(1,rtool,rtool); translate([21.60,-73.40,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-26.38]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-26.38]) cylinder(1,rtool,rtool);}
 /* line -> 386 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([21.60,-73.40,0.25]) cylinder(1,rtool,rtool); translate([38.40,-73.40,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -25.88]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 387 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-73.40,0.25]) cylinder(1,rtool,rtool); translate([40.80,-75.80,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 388 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-75.80,0.25]) cylinder(1,rtool,rtool); translate([40.80,-19.20,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-26.38]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-26.38]) cylinder(1,rtool,rtool);}
 /* line -> 389 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-19.20,0.25]) cylinder(1,rtool,rtool); translate([19.20,-19.20,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 390 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([19.20,-19.20,0.25]) cylinder(1,rtool,rtool); translate([19.20,-75.80,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 391 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([19.20,-75.80,0.25]) cylinder(1,rtool,rtool); translate([40.80,-75.80,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 392 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-75.80,0.25]) cylinder(1,rtool,rtool); translate([43.20,-78.20,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 393 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-78.20,0.25]) cylinder(1,rtool,rtool); translate([43.20,-16.80,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-26.38]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-26.38]) cylinder(1,rtool,rtool);}
 /* line -> 394 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-16.80,0.25]) cylinder(1,rtool,rtool); translate([16.80,-16.80,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -25.88]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 395 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([16.80,-16.80,0.25]) cylinder(1,rtool,rtool); translate([16.80,-78.20,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 396 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([16.80,-78.20,0.25]) cylinder(1,rtool,rtool); translate([43.20,-78.20,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-26.38]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-26.38]) cylinder(1,rtool,rtool);}
 /* line -> 397 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-78.20,0.25]) cylinder(1,rtool,rtool); translate([45.60,-80.60,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 398 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-80.60,0.25]) cylinder(1,rtool,rtool); translate([45.60,-14.40,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 399 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-14.40,0.25]) cylinder(1,rtool,rtool); translate([14.40,-14.40,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-26.38]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-26.38]) cylinder(1,rtool,rtool);}
 /* line -> 400 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([14.40,-14.40,0.25]) cylinder(1,rtool,rtool); translate([14.40,-80.60,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 401 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([14.40,-80.60,0.25]) cylinder(1,rtool,rtool); translate([45.60,-80.60,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 402 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-80.60,0.25]) cylinder(1,rtool,rtool); translate([48.00,-83.05,0.25]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-26.38]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
 /* line -> 403 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-83.05,0.25]) cylinder(1,rtool,rtool); translate([48.00,-12.00,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 404 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-12.00,0.25]) cylinder(1,rtool,rtool); translate([12.00,-12.00,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 405 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([12.00,-12.00,0.25]) cylinder(1,rtool,rtool); translate([12.00,-83.00,0.25]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-23.88]) cylinder(1,rtool,rtool);}
 /* line -> 406 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([12.00,-83.00,0.25]) cylinder(1,rtool,rtool); translate([46.75,-83.00,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 409 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-4.70, convexity = 10, $fn=50) translate([15.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 409 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-83.05,0.25]) cylinder(1,rtool,rtool); translate([50.40,-85.93,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 410 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-85.93,0.25]) cylinder(1,rtool,rtool); translate([50.40,-9.60,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 411 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-9.60,0.25]) cylinder(1,rtool,rtool); translate([9.60,-9.60,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-23.88]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-29.30]) cylinder(1,rtool,rtool);}
 /* line -> 412 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([9.60,-9.60,0.25]) cylinder(1,rtool,rtool); translate([9.60,-85.40,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -28.80]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 413 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([9.60,-85.40,0.25]) cylinder(1,rtool,rtool); translate([46.75,-85.40,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-29.30]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-29.30]) cylinder(1,rtool,rtool);}
 /* line -> 415 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-16.50, convexity = 10, $fn=50) translate([12.85, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 415 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-85.93,0.25]) cylinder(1,rtool,rtool); translate([52.80,-89.73,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 416 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-89.73,0.25]) cylinder(1,rtool,rtool); translate([52.80,-7.20,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 417 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-7.20,0.25]) cylinder(1,rtool,rtool); translate([7.20,-7.20,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 418 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([7.20,-7.20,0.25]) cylinder(1,rtool,rtool); translate([7.20,-87.80,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 419 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([7.20,-87.80,0.25]) cylinder(1,rtool,rtool); translate([46.75,-87.80,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-29.30]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-29.30]) cylinder(1,rtool,rtool);}
+/* line -> 420 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -28.80]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 421 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-35.38, convexity = 10, $fn=50) translate([10.45, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 421 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-89.73,0.25]) cylinder(1,rtool,rtool); translate([55.20,-95.20,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 422 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-95.20,0.25]) cylinder(1,rtool,rtool); translate([55.20,-4.80,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-29.30]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-29.30]) cylinder(1,rtool,rtool);}
 /* line -> 423 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-4.80,0.25]) cylinder(1,rtool,rtool); translate([4.80,-4.80,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 424 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([4.80,-4.80,0.25]) cylinder(1,rtool,rtool); translate([4.80,-90.20,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 425 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([4.80,-90.20,0.25]) cylinder(1,rtool,rtool); translate([46.75,-90.20,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 427 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-67.74, convexity = 10, $fn=50) translate([8.05, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 427 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([54.20,-95.20,0.25]) cylinder(1,rtool,rtool); translate([55.20,-95.20,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-29.30]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-29.30]) cylinder(1,rtool,rtool);}
 /* line -> 428 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-95.20,0.25]) cylinder(1,rtool,rtool); translate([57.60,-97.60,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -28.80]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 429 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-97.60,0.25]) cylinder(1,rtool,rtool); translate([57.60,-2.40,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 430 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-2.40,0.25]) cylinder(1,rtool,rtool); translate([2.40,-2.40,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-29.30]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-29.30]) cylinder(1,rtool,rtool);}
 /* line -> 431 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([2.40,-2.40,0.25]) cylinder(1,rtool,rtool); translate([2.40,-92.60,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 432 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([2.40,-92.60,0.25]) cylinder(1,rtool,rtool); translate([46.75,-92.60,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 434 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-83.39, convexity = 10, $fn=50) translate([5.65, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 434 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.36,-97.60,0.25]) cylinder(1,rtool,rtool); translate([57.60,-97.60,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 435 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-97.60,0.25]) cylinder(1,rtool,rtool); translate([60.00,-100.00,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-29.30]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-29.30]) cylinder(1,rtool,rtool);}
 /* line -> 436 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-100.00,0.25]) cylinder(1,rtool,rtool); translate([60.00,0.00,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -28.80]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 437 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([60.00,0.00,0.25]) cylinder(1,rtool,rtool); translate([0.00,0.00,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 438 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([0.00,0.00,0.25]) cylinder(1,rtool,rtool); translate([0.00,-95.00,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-29.30]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-29.30]) cylinder(1,rtool,rtool);}
 /* line -> 439 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([0.00,-95.00,0.25]) cylinder(1,rtool,rtool); translate([46.75,-95.00,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 441 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-90.00, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 441 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.00,-98.25,0.25]) cylinder(1,rtool,rtool); translate([50.00,-100.00,0.25]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-29.30]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-29.30]) cylinder(1,rtool,rtool);}
 /* line -> 442 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.00,-100.00,0.25]) cylinder(1,rtool,rtool); translate([60.00,-100.00,0.25]) cylinder(1,rtool,rtool);}
-/* line -> 443 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-100.00,0.25]) cylinder(1,rtool,rtool); translate([60.00,-100.00,2.50]) cylinder(1,rtool,rtool);}
-/* line -> 444 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-100.00,2.50]) cylinder(1,rtool,rtool); translate([31.20,-66.20,2.50]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-29.30]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
 /* line -> 445 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,2.50]) cylinder(1,rtool,rtool); translate([31.20,-66.20,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 446 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,0.00]) cylinder(1,rtool,rtool); translate([31.20,-28.80,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 447 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-28.80,0.00]) cylinder(1,rtool,rtool); translate([28.80,-28.80,0.00]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-26.80]) cylinder(1,rtool,rtool);}
 /* line -> 448 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([28.80,-28.80,0.00]) cylinder(1,rtool,rtool); translate([28.80,-66.20,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 449 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([28.80,-66.20,0.00]) cylinder(1,rtool,rtool); translate([31.20,-66.20,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 450 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,0.00]) cylinder(1,rtool,rtool); translate([33.60,-68.60,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 451 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-68.60,0.00]) cylinder(1,rtool,rtool); translate([33.60,-26.40,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 452 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-26.40,0.00]) cylinder(1,rtool,rtool); translate([26.40,-26.40,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 453 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([26.40,-26.40,0.00]) cylinder(1,rtool,rtool); translate([26.40,-68.60,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-26.80]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-32.22]) cylinder(1,rtool,rtool);}
 /* line -> 454 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([26.40,-68.60,0.00]) cylinder(1,rtool,rtool); translate([33.60,-68.60,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -31.72]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 455 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-68.60,0.00]) cylinder(1,rtool,rtool); translate([36.00,-71.00,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 456 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-71.00,0.00]) cylinder(1,rtool,rtool); translate([36.00,-24.00,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-32.22]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-32.22]) cylinder(1,rtool,rtool);}
 /* line -> 457 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-24.00,0.00]) cylinder(1,rtool,rtool); translate([24.00,-24.00,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 458 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([24.00,-24.00,0.00]) cylinder(1,rtool,rtool); translate([24.00,-71.00,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 459 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([24.00,-71.00,0.00]) cylinder(1,rtool,rtool); translate([36.00,-71.00,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 460 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-71.00,0.00]) cylinder(1,rtool,rtool); translate([38.40,-73.40,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 461 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-73.40,0.00]) cylinder(1,rtool,rtool); translate([38.40,-21.60,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-32.22]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-32.22]) cylinder(1,rtool,rtool);}
 /* line -> 462 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-21.60,0.00]) cylinder(1,rtool,rtool); translate([21.60,-21.60,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -31.72]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 463 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([21.60,-21.60,0.00]) cylinder(1,rtool,rtool); translate([21.60,-73.40,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 464 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([21.60,-73.40,0.00]) cylinder(1,rtool,rtool); translate([38.40,-73.40,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-32.22]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-32.22]) cylinder(1,rtool,rtool);}
 /* line -> 465 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-73.40,0.00]) cylinder(1,rtool,rtool); translate([40.80,-75.80,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 466 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-75.80,0.00]) cylinder(1,rtool,rtool); translate([40.80,-19.20,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 467 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-19.20,0.00]) cylinder(1,rtool,rtool); translate([19.20,-19.20,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 468 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([19.20,-19.20,0.00]) cylinder(1,rtool,rtool); translate([19.20,-75.80,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 469 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([19.20,-75.80,0.00]) cylinder(1,rtool,rtool); translate([40.80,-75.80,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-32.22]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-32.22]) cylinder(1,rtool,rtool);}
 /* line -> 470 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-75.80,0.00]) cylinder(1,rtool,rtool); translate([43.20,-78.20,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -31.72]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 471 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-78.20,0.00]) cylinder(1,rtool,rtool); translate([43.20,-16.80,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 472 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-16.80,0.00]) cylinder(1,rtool,rtool); translate([16.80,-16.80,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-32.22]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-32.22]) cylinder(1,rtool,rtool);}
 /* line -> 473 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([16.80,-16.80,0.00]) cylinder(1,rtool,rtool); translate([16.80,-78.20,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 474 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([16.80,-78.20,0.00]) cylinder(1,rtool,rtool); translate([43.20,-78.20,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 475 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-78.20,0.00]) cylinder(1,rtool,rtool); translate([45.60,-80.60,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 476 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-80.60,0.00]) cylinder(1,rtool,rtool); translate([45.60,-14.40,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 477 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-14.40,0.00]) cylinder(1,rtool,rtool); translate([14.40,-14.40,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-32.22]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-32.22]) cylinder(1,rtool,rtool);}
 /* line -> 478 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([14.40,-14.40,0.00]) cylinder(1,rtool,rtool); translate([14.40,-80.60,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -31.72]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 479 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([14.40,-80.60,0.00]) cylinder(1,rtool,rtool); translate([45.60,-80.60,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 480 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-80.60,0.00]) cylinder(1,rtool,rtool); translate([48.00,-83.05,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-32.22]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-32.22]) cylinder(1,rtool,rtool);}
 /* line -> 481 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-83.05,0.00]) cylinder(1,rtool,rtool); translate([48.00,-12.00,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 482 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-12.00,0.00]) cylinder(1,rtool,rtool); translate([12.00,-12.00,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 483 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([12.00,-12.00,0.00]) cylinder(1,rtool,rtool); translate([12.00,-83.00,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-32.22]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-32.22]) cylinder(1,rtool,rtool);}
 /* line -> 484 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([12.00,-83.00,0.00]) cylinder(1,rtool,rtool); translate([46.75,-83.00,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 486 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-4.70, convexity = 10, $fn=50) translate([15.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 486 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-83.05,0.00]) cylinder(1,rtool,rtool); translate([50.40,-85.93,0.00]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-32.22]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
 /* line -> 487 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-85.93,0.00]) cylinder(1,rtool,rtool); translate([50.40,-9.60,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 488 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-9.60,0.00]) cylinder(1,rtool,rtool); translate([9.60,-9.60,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 489 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([9.60,-9.60,0.00]) cylinder(1,rtool,rtool); translate([9.60,-85.40,0.00]) cylinder(1,rtool,rtool);}
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-29.72]) cylinder(1,rtool,rtool);}
 /* line -> 490 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([9.60,-85.40,0.00]) cylinder(1,rtool,rtool); translate([46.75,-85.40,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 492 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-16.50, convexity = 10, $fn=50) translate([12.85, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 492 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-85.93,0.00]) cylinder(1,rtool,rtool); translate([52.80,-89.73,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 493 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-89.73,0.00]) cylinder(1,rtool,rtool); translate([52.80,-7.20,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 494 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-7.20,0.00]) cylinder(1,rtool,rtool); translate([7.20,-7.20,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 495 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([7.20,-7.20,0.00]) cylinder(1,rtool,rtool); translate([7.20,-87.80,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-29.72]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-35.14]) cylinder(1,rtool,rtool);}
 /* line -> 496 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([7.20,-87.80,0.00]) cylinder(1,rtool,rtool); translate([46.75,-87.80,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 498 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-35.38, convexity = 10, $fn=50) translate([10.45, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 498 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-89.73,0.00]) cylinder(1,rtool,rtool); translate([55.20,-95.20,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -34.64]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 497 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-35.14]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-35.14]) cylinder(1,rtool,rtool);}
 /* line -> 499 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-95.20,0.00]) cylinder(1,rtool,rtool); translate([55.20,-4.80,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 500 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-4.80,0.00]) cylinder(1,rtool,rtool); translate([4.80,-4.80,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 501 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([4.80,-4.80,0.00]) cylinder(1,rtool,rtool); translate([4.80,-90.20,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 502 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([4.80,-90.20,0.00]) cylinder(1,rtool,rtool); translate([46.75,-90.20,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-35.14]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-35.14]) cylinder(1,rtool,rtool);}
 /* line -> 504 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-67.74, convexity = 10, $fn=50) translate([8.05, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 504 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([54.20,-95.20,0.00]) cylinder(1,rtool,rtool); translate([55.20,-95.20,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -34.64]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 505 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-95.20,0.00]) cylinder(1,rtool,rtool); translate([57.60,-97.60,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 506 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-97.60,0.00]) cylinder(1,rtool,rtool); translate([57.60,-2.40,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-35.14]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-35.14]) cylinder(1,rtool,rtool);}
 /* line -> 507 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-2.40,0.00]) cylinder(1,rtool,rtool); translate([2.40,-2.40,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 508 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([2.40,-2.40,0.00]) cylinder(1,rtool,rtool); translate([2.40,-92.60,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 509 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([2.40,-92.60,0.00]) cylinder(1,rtool,rtool); translate([46.75,-92.60,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 511 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-83.39, convexity = 10, $fn=50) translate([5.65, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 511 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.36,-97.60,0.00]) cylinder(1,rtool,rtool); translate([57.60,-97.60,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-35.14]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-35.14]) cylinder(1,rtool,rtool);}
 /* line -> 512 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-97.60,0.00]) cylinder(1,rtool,rtool); translate([60.00,-100.00,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -34.64]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 513 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-100.00,0.00]) cylinder(1,rtool,rtool); translate([60.00,-0.00,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 514 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-0.00,0.00]) cylinder(1,rtool,rtool); translate([0.00,-0.00,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-35.14]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-35.14]) cylinder(1,rtool,rtool);}
 /* line -> 515 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([0.00,-0.00,0.00]) cylinder(1,rtool,rtool); translate([0.00,-95.00,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 516 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([0.00,-95.00,0.00]) cylinder(1,rtool,rtool); translate([46.75,-95.00,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 518 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-90.00, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 518 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.00,-98.25,0.00]) cylinder(1,rtool,rtool); translate([50.00,-100.00,0.00]) cylinder(1,rtool,rtool);}
-/* line -> 519 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.00,-100.00,0.00]) cylinder(1,rtool,rtool); translate([60.00,-100.00,0.00]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-35.14]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-35.14]) cylinder(1,rtool,rtool);}
 /* line -> 520 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-100.00,0.00]) cylinder(1,rtool,rtool); translate([60.00,-100.00,2.50]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -34.64]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 521 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-35.14]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-35.14]) cylinder(1,rtool,rtool);}
+/* line -> 523 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-35.14]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-35.14]) cylinder(1,rtool,rtool);}
+/* line -> 526 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-35.14]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 529 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-32.64]) cylinder(1,rtool,rtool);}
+/* line -> 532 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-32.64]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-38.07]) cylinder(1,rtool,rtool);}
+/* line -> 538 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -37.57]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 539 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-38.07]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-38.07]) cylinder(1,rtool,rtool);}
+/* line -> 541 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-38.07]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-38.07]) cylinder(1,rtool,rtool);}
+/* line -> 546 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -37.57]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 547 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-38.07]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-38.07]) cylinder(1,rtool,rtool);}
+/* line -> 549 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-38.07]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-38.07]) cylinder(1,rtool,rtool);}
+/* line -> 554 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -37.57]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 555 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-38.07]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-38.07]) cylinder(1,rtool,rtool);}
+/* line -> 557 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-38.07]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-38.07]) cylinder(1,rtool,rtool);}
+/* line -> 562 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -37.57]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 563 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-38.07]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-38.07]) cylinder(1,rtool,rtool);}
+/* line -> 565 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-38.07]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-38.07]) cylinder(1,rtool,rtool);}
+/* line -> 568 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-38.07]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 571 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-35.57]) cylinder(1,rtool,rtool);}
+/* line -> 574 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-35.57]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-40.99]) cylinder(1,rtool,rtool);}
+/* line -> 580 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -40.49]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 581 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-40.99]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-40.99]) cylinder(1,rtool,rtool);}
+/* line -> 583 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-40.99]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-40.99]) cylinder(1,rtool,rtool);}
+/* line -> 588 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -40.49]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 589 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-40.99]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-40.99]) cylinder(1,rtool,rtool);}
+/* line -> 591 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-40.99]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-40.99]) cylinder(1,rtool,rtool);}
+/* line -> 596 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -40.49]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 597 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-40.99]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-40.99]) cylinder(1,rtool,rtool);}
+/* line -> 599 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-40.99]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-40.99]) cylinder(1,rtool,rtool);}
+/* line -> 604 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -40.49]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 605 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-40.99]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-40.99]) cylinder(1,rtool,rtool);}
+/* line -> 607 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-40.99]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-40.99]) cylinder(1,rtool,rtool);}
+/* line -> 610 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-40.99]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 613 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-38.49]) cylinder(1,rtool,rtool);}
+/* line -> 616 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-38.49]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-43.91]) cylinder(1,rtool,rtool);}
+/* line -> 622 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -43.41]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 623 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-43.91]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-43.91]) cylinder(1,rtool,rtool);}
+/* line -> 625 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-43.91]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-43.91]) cylinder(1,rtool,rtool);}
+/* line -> 630 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -43.41]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 631 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-43.91]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-43.91]) cylinder(1,rtool,rtool);}
+/* line -> 633 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-43.91]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-43.91]) cylinder(1,rtool,rtool);}
+/* line -> 638 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -43.41]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 639 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-43.91]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-43.91]) cylinder(1,rtool,rtool);}
+/* line -> 641 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-43.91]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-43.91]) cylinder(1,rtool,rtool);}
+/* line -> 646 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -43.41]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 647 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-43.91]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-43.91]) cylinder(1,rtool,rtool);}
+/* line -> 649 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-43.91]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-43.91]) cylinder(1,rtool,rtool);}
+/* line -> 652 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-43.91]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 655 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-41.41]) cylinder(1,rtool,rtool);}
+/* line -> 658 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-41.41]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-46.83]) cylinder(1,rtool,rtool);}
+/* line -> 664 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -46.33]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 665 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-46.83]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-46.83]) cylinder(1,rtool,rtool);}
+/* line -> 667 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-46.83]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-46.83]) cylinder(1,rtool,rtool);}
+/* line -> 672 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -46.33]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 673 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-46.83]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-46.83]) cylinder(1,rtool,rtool);}
+/* line -> 675 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-46.83]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-46.83]) cylinder(1,rtool,rtool);}
+/* line -> 680 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -46.33]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 681 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-46.83]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-46.83]) cylinder(1,rtool,rtool);}
+/* line -> 683 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-46.83]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-46.83]) cylinder(1,rtool,rtool);}
+/* line -> 688 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -46.33]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 689 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-46.83]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-46.83]) cylinder(1,rtool,rtool);}
+/* line -> 691 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-46.83]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-46.83]) cylinder(1,rtool,rtool);}
+/* line -> 694 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-46.83]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 697 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-44.33]) cylinder(1,rtool,rtool);}
+/* line -> 700 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-44.33]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-49.76]) cylinder(1,rtool,rtool);}
+/* line -> 706 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -49.26]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 707 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-49.76]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-49.76]) cylinder(1,rtool,rtool);}
+/* line -> 709 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-49.76]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-49.76]) cylinder(1,rtool,rtool);}
+/* line -> 714 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -49.26]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 715 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-49.76]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-49.76]) cylinder(1,rtool,rtool);}
+/* line -> 717 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-49.76]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-49.76]) cylinder(1,rtool,rtool);}
+/* line -> 722 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -49.26]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 723 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-49.76]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-49.76]) cylinder(1,rtool,rtool);}
+/* line -> 725 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-49.76]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-49.76]) cylinder(1,rtool,rtool);}
+/* line -> 730 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -49.26]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 731 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-49.76]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-49.76]) cylinder(1,rtool,rtool);}
+/* line -> 733 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-49.76]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-49.76]) cylinder(1,rtool,rtool);}
+/* line -> 736 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-49.76]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 739 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-47.26]) cylinder(1,rtool,rtool);}
+/* line -> 742 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-47.26]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-50.01]) cylinder(1,rtool,rtool);}
+/* line -> 748 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -49.51]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 749 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-50.01]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-50.01]) cylinder(1,rtool,rtool);}
+/* line -> 751 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-50.01]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-50.01]) cylinder(1,rtool,rtool);}
+/* line -> 756 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -49.51]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 757 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-50.01]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-50.01]) cylinder(1,rtool,rtool);}
+/* line -> 759 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-50.01]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-50.01]) cylinder(1,rtool,rtool);}
+/* line -> 764 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([50.00, -100.00, -49.51]) rotate([0,0,-153.75]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 765 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-100.00,-50.01]) cylinder(1,rtool,rtool); translate([46.75,-98.25,-50.01]) cylinder(1,rtool,rtool);}
+/* line -> 767 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([46.75,-98.25,-50.01]) cylinder(1,rtool,rtool); translate([0.00,-98.25,-50.01]) cylinder(1,rtool,rtool);}
+/* line -> 772 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([0.00, -95.00, -49.51]) rotate([0,0,-90.00]) rotate_extrude(angle=-26.25, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 773 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-97.91,-50.01]) cylinder(1,rtool,rtool); translate([-1.44,-101.44,-50.01]) cylinder(1,rtool,rtool);}
+/* line -> 775 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([-1.44,-101.44,-50.01]) cylinder(1,rtool,rtool); translate([47.09,-101.44,-50.01]) cylinder(1,rtool,rtool);}
+/* line -> 778 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,-50.01]) cylinder(1,rtool,rtool); translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 781 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,2.50]) cylinder(1,rtool,rtool); translate([47.09,-101.44,25.00]) cylinder(1,rtool,rtool);}
+/* line -> 784 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([47.09,-101.44,25.00]) cylinder(1,rtool,rtool); translate([31.20,-66.20,25.00]) cylinder(1,rtool,rtool);}
+/* line -> 787 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,25.00]) cylinder(1,rtool,rtool); translate([31.20,-66.20,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 790 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,2.50]) cylinder(1,rtool,rtool); translate([31.20,-66.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 793 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,0.25]) cylinder(1,rtool,rtool); translate([31.20,-28.80,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 795 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-28.80,0.25]) cylinder(1,rtool,rtool); translate([28.80,-28.80,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 797 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([28.80,-28.80,0.25]) cylinder(1,rtool,rtool); translate([28.80,-66.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 799 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([28.80,-66.20,0.25]) cylinder(1,rtool,rtool); translate([31.20,-66.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 801 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,0.25]) cylinder(1,rtool,rtool); translate([33.60,-68.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 803 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-68.60,0.25]) cylinder(1,rtool,rtool); translate([33.60,-26.40,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 805 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-26.40,0.25]) cylinder(1,rtool,rtool); translate([26.40,-26.40,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 807 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([26.40,-26.40,0.25]) cylinder(1,rtool,rtool); translate([26.40,-68.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 809 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([26.40,-68.60,0.25]) cylinder(1,rtool,rtool); translate([33.60,-68.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 811 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-68.60,0.25]) cylinder(1,rtool,rtool); translate([36.00,-71.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 813 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-71.00,0.25]) cylinder(1,rtool,rtool); translate([36.00,-24.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 815 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-24.00,0.25]) cylinder(1,rtool,rtool); translate([24.00,-24.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 817 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([24.00,-24.00,0.25]) cylinder(1,rtool,rtool); translate([24.00,-71.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 819 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([24.00,-71.00,0.25]) cylinder(1,rtool,rtool); translate([36.00,-71.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 821 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-71.00,0.25]) cylinder(1,rtool,rtool); translate([38.40,-73.40,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 823 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-73.40,0.25]) cylinder(1,rtool,rtool); translate([38.40,-21.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 825 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-21.60,0.25]) cylinder(1,rtool,rtool); translate([21.60,-21.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 827 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([21.60,-21.60,0.25]) cylinder(1,rtool,rtool); translate([21.60,-73.40,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 829 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([21.60,-73.40,0.25]) cylinder(1,rtool,rtool); translate([38.40,-73.40,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 831 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-73.40,0.25]) cylinder(1,rtool,rtool); translate([40.80,-75.80,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 833 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-75.80,0.25]) cylinder(1,rtool,rtool); translate([40.80,-19.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 835 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-19.20,0.25]) cylinder(1,rtool,rtool); translate([19.20,-19.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 837 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([19.20,-19.20,0.25]) cylinder(1,rtool,rtool); translate([19.20,-75.80,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 839 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([19.20,-75.80,0.25]) cylinder(1,rtool,rtool); translate([40.80,-75.80,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 841 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-75.80,0.25]) cylinder(1,rtool,rtool); translate([43.20,-78.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 843 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-78.20,0.25]) cylinder(1,rtool,rtool); translate([43.20,-16.80,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 845 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-16.80,0.25]) cylinder(1,rtool,rtool); translate([16.80,-16.80,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 847 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([16.80,-16.80,0.25]) cylinder(1,rtool,rtool); translate([16.80,-78.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 849 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([16.80,-78.20,0.25]) cylinder(1,rtool,rtool); translate([43.20,-78.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 851 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-78.20,0.25]) cylinder(1,rtool,rtool); translate([45.60,-80.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 853 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-80.60,0.25]) cylinder(1,rtool,rtool); translate([45.60,-14.40,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 855 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-14.40,0.25]) cylinder(1,rtool,rtool); translate([14.40,-14.40,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 857 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([14.40,-14.40,0.25]) cylinder(1,rtool,rtool); translate([14.40,-80.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 859 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([14.40,-80.60,0.25]) cylinder(1,rtool,rtool); translate([45.60,-80.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 861 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-80.60,0.25]) cylinder(1,rtool,rtool); translate([48.00,-83.05,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 863 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-83.05,0.25]) cylinder(1,rtool,rtool); translate([48.00,-12.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 865 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-12.00,0.25]) cylinder(1,rtool,rtool); translate([12.00,-12.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 867 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([12.00,-12.00,0.25]) cylinder(1,rtool,rtool); translate([12.00,-83.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 869 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([12.00,-83.00,0.25]) cylinder(1,rtool,rtool); translate([46.75,-83.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 874 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-4.70, convexity = 10, $fn=50) translate([15.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 875 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-83.05,0.25]) cylinder(1,rtool,rtool); translate([50.40,-85.93,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 877 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-85.93,0.25]) cylinder(1,rtool,rtool); translate([50.40,-9.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 879 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-9.60,0.25]) cylinder(1,rtool,rtool); translate([9.60,-9.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 881 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([9.60,-9.60,0.25]) cylinder(1,rtool,rtool); translate([9.60,-85.40,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 883 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([9.60,-85.40,0.25]) cylinder(1,rtool,rtool); translate([46.75,-85.40,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 887 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-16.50, convexity = 10, $fn=50) translate([12.85, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 888 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-85.93,0.25]) cylinder(1,rtool,rtool); translate([52.80,-89.73,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 890 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-89.73,0.25]) cylinder(1,rtool,rtool); translate([52.80,-7.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 892 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-7.20,0.25]) cylinder(1,rtool,rtool); translate([7.20,-7.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 894 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([7.20,-7.20,0.25]) cylinder(1,rtool,rtool); translate([7.20,-87.80,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 896 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([7.20,-87.80,0.25]) cylinder(1,rtool,rtool); translate([46.75,-87.80,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 900 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-35.38, convexity = 10, $fn=50) translate([10.45, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 901 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-89.73,0.25]) cylinder(1,rtool,rtool); translate([55.20,-95.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 903 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-95.20,0.25]) cylinder(1,rtool,rtool); translate([55.20,-4.80,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 905 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-4.80,0.25]) cylinder(1,rtool,rtool); translate([4.80,-4.80,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 907 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([4.80,-4.80,0.25]) cylinder(1,rtool,rtool); translate([4.80,-90.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 909 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([4.80,-90.20,0.25]) cylinder(1,rtool,rtool); translate([46.75,-90.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 913 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-67.74, convexity = 10, $fn=50) translate([8.05, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 914 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([54.20,-95.20,0.25]) cylinder(1,rtool,rtool); translate([55.20,-95.20,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 916 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-95.20,0.25]) cylinder(1,rtool,rtool); translate([57.60,-97.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 918 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-97.60,0.25]) cylinder(1,rtool,rtool); translate([57.60,-2.40,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 920 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-2.40,0.25]) cylinder(1,rtool,rtool); translate([2.40,-2.40,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 922 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([2.40,-2.40,0.25]) cylinder(1,rtool,rtool); translate([2.40,-92.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 924 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([2.40,-92.60,0.25]) cylinder(1,rtool,rtool); translate([46.75,-92.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 928 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-83.39, convexity = 10, $fn=50) translate([5.65, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 929 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.36,-97.60,0.25]) cylinder(1,rtool,rtool); translate([57.60,-97.60,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 931 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-97.60,0.25]) cylinder(1,rtool,rtool); translate([60.00,-100.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 933 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-100.00,0.25]) cylinder(1,rtool,rtool); translate([60.00,0.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 935 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([60.00,0.00,0.25]) cylinder(1,rtool,rtool); translate([0.00,0.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 937 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([0.00,0.00,0.25]) cylinder(1,rtool,rtool); translate([0.00,-95.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 939 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([0.00,-95.00,0.25]) cylinder(1,rtool,rtool); translate([46.75,-95.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 943 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.75]) rotate([0,0,90.00]) rotate_extrude(angle=-90.00, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 944 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.00,-98.25,0.25]) cylinder(1,rtool,rtool); translate([50.00,-100.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 946 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.00,-100.00,0.25]) cylinder(1,rtool,rtool); translate([60.00,-100.00,0.25]) cylinder(1,rtool,rtool);}
+/* line -> 949 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-100.00,0.25]) cylinder(1,rtool,rtool); translate([60.00,-100.00,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 952 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-100.00,2.50]) cylinder(1,rtool,rtool); translate([31.20,-66.20,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 955 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,2.50]) cylinder(1,rtool,rtool); translate([31.20,-66.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 958 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,0.00]) cylinder(1,rtool,rtool); translate([31.20,-28.80,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 960 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-28.80,0.00]) cylinder(1,rtool,rtool); translate([28.80,-28.80,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 962 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([28.80,-28.80,0.00]) cylinder(1,rtool,rtool); translate([28.80,-66.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 964 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([28.80,-66.20,0.00]) cylinder(1,rtool,rtool); translate([31.20,-66.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 966 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([31.20,-66.20,0.00]) cylinder(1,rtool,rtool); translate([33.60,-68.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 968 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-68.60,0.00]) cylinder(1,rtool,rtool); translate([33.60,-26.40,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 970 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-26.40,0.00]) cylinder(1,rtool,rtool); translate([26.40,-26.40,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 972 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([26.40,-26.40,0.00]) cylinder(1,rtool,rtool); translate([26.40,-68.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 974 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([26.40,-68.60,0.00]) cylinder(1,rtool,rtool); translate([33.60,-68.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 976 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([33.60,-68.60,0.00]) cylinder(1,rtool,rtool); translate([36.00,-71.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 978 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-71.00,0.00]) cylinder(1,rtool,rtool); translate([36.00,-24.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 980 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-24.00,0.00]) cylinder(1,rtool,rtool); translate([24.00,-24.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 982 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([24.00,-24.00,0.00]) cylinder(1,rtool,rtool); translate([24.00,-71.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 984 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([24.00,-71.00,0.00]) cylinder(1,rtool,rtool); translate([36.00,-71.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 986 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([36.00,-71.00,0.00]) cylinder(1,rtool,rtool); translate([38.40,-73.40,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 988 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-73.40,0.00]) cylinder(1,rtool,rtool); translate([38.40,-21.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 990 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-21.60,0.00]) cylinder(1,rtool,rtool); translate([21.60,-21.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 992 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([21.60,-21.60,0.00]) cylinder(1,rtool,rtool); translate([21.60,-73.40,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 994 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([21.60,-73.40,0.00]) cylinder(1,rtool,rtool); translate([38.40,-73.40,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 996 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([38.40,-73.40,0.00]) cylinder(1,rtool,rtool); translate([40.80,-75.80,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 998 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-75.80,0.00]) cylinder(1,rtool,rtool); translate([40.80,-19.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1000 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-19.20,0.00]) cylinder(1,rtool,rtool); translate([19.20,-19.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1002 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([19.20,-19.20,0.00]) cylinder(1,rtool,rtool); translate([19.20,-75.80,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1004 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([19.20,-75.80,0.00]) cylinder(1,rtool,rtool); translate([40.80,-75.80,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1006 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([40.80,-75.80,0.00]) cylinder(1,rtool,rtool); translate([43.20,-78.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1008 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-78.20,0.00]) cylinder(1,rtool,rtool); translate([43.20,-16.80,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1010 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-16.80,0.00]) cylinder(1,rtool,rtool); translate([16.80,-16.80,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1012 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([16.80,-16.80,0.00]) cylinder(1,rtool,rtool); translate([16.80,-78.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1014 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([16.80,-78.20,0.00]) cylinder(1,rtool,rtool); translate([43.20,-78.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1016 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([43.20,-78.20,0.00]) cylinder(1,rtool,rtool); translate([45.60,-80.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1018 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-80.60,0.00]) cylinder(1,rtool,rtool); translate([45.60,-14.40,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1020 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-14.40,0.00]) cylinder(1,rtool,rtool); translate([14.40,-14.40,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1022 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([14.40,-14.40,0.00]) cylinder(1,rtool,rtool); translate([14.40,-80.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1024 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([14.40,-80.60,0.00]) cylinder(1,rtool,rtool); translate([45.60,-80.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1026 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([45.60,-80.60,0.00]) cylinder(1,rtool,rtool); translate([48.00,-83.05,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1028 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-83.05,0.00]) cylinder(1,rtool,rtool); translate([48.00,-12.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1030 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-12.00,0.00]) cylinder(1,rtool,rtool); translate([12.00,-12.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1032 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([12.00,-12.00,0.00]) cylinder(1,rtool,rtool); translate([12.00,-83.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1034 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([12.00,-83.00,0.00]) cylinder(1,rtool,rtool); translate([46.75,-83.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1038 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-4.70, convexity = 10, $fn=50) translate([15.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 1039 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([48.00,-83.05,0.00]) cylinder(1,rtool,rtool); translate([50.40,-85.93,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1041 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-85.93,0.00]) cylinder(1,rtool,rtool); translate([50.40,-9.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1043 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-9.60,0.00]) cylinder(1,rtool,rtool); translate([9.60,-9.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1045 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([9.60,-9.60,0.00]) cylinder(1,rtool,rtool); translate([9.60,-85.40,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1047 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([9.60,-85.40,0.00]) cylinder(1,rtool,rtool); translate([46.75,-85.40,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1051 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-16.50, convexity = 10, $fn=50) translate([12.85, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 1052 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.40,-85.93,0.00]) cylinder(1,rtool,rtool); translate([52.80,-89.73,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1054 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-89.73,0.00]) cylinder(1,rtool,rtool); translate([52.80,-7.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1056 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-7.20,0.00]) cylinder(1,rtool,rtool); translate([7.20,-7.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1058 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([7.20,-7.20,0.00]) cylinder(1,rtool,rtool); translate([7.20,-87.80,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1060 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([7.20,-87.80,0.00]) cylinder(1,rtool,rtool); translate([46.75,-87.80,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1064 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-35.38, convexity = 10, $fn=50) translate([10.45, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 1065 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.80,-89.73,0.00]) cylinder(1,rtool,rtool); translate([55.20,-95.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1067 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-95.20,0.00]) cylinder(1,rtool,rtool); translate([55.20,-4.80,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1069 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-4.80,0.00]) cylinder(1,rtool,rtool); translate([4.80,-4.80,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1071 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([4.80,-4.80,0.00]) cylinder(1,rtool,rtool); translate([4.80,-90.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1073 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([4.80,-90.20,0.00]) cylinder(1,rtool,rtool); translate([46.75,-90.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1077 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-67.74, convexity = 10, $fn=50) translate([8.05, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 1078 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([54.20,-95.20,0.00]) cylinder(1,rtool,rtool); translate([55.20,-95.20,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1080 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([55.20,-95.20,0.00]) cylinder(1,rtool,rtool); translate([57.60,-97.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1082 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-97.60,0.00]) cylinder(1,rtool,rtool); translate([57.60,-2.40,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1084 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-2.40,0.00]) cylinder(1,rtool,rtool); translate([2.40,-2.40,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1086 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([2.40,-2.40,0.00]) cylinder(1,rtool,rtool); translate([2.40,-92.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1088 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([2.40,-92.60,0.00]) cylinder(1,rtool,rtool); translate([46.75,-92.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1092 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-83.39, convexity = 10, $fn=50) translate([5.65, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 1093 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([52.36,-97.60,0.00]) cylinder(1,rtool,rtool); translate([57.60,-97.60,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1095 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([57.60,-97.60,0.00]) cylinder(1,rtool,rtool); translate([60.00,-100.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1097 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-100.00,0.00]) cylinder(1,rtool,rtool); translate([60.00,-0.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1099 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-0.00,0.00]) cylinder(1,rtool,rtool); translate([0.00,-0.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1101 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([0.00,-0.00,0.00]) cylinder(1,rtool,rtool); translate([0.00,-95.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1103 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([0.00,-95.00,0.00]) cylinder(1,rtool,rtool); translate([46.75,-95.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1107 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([46.75, -98.25, 0.50]) rotate([0,0,90.00]) rotate_extrude(angle=-90.00, convexity = 10, $fn=50) translate([3.25, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 1108 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.00,-98.25,0.00]) cylinder(1,rtool,rtool); translate([50.00,-100.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1110 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([50.00,-100.00,0.00]) cylinder(1,rtool,rtool); translate([60.00,-100.00,0.00]) cylinder(1,rtool,rtool);}
+/* line -> 1113 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-100.00,0.00]) cylinder(1,rtool,rtool); translate([60.00,-100.00,2.50]) cylinder(1,rtool,rtool);}
+/* line -> 1116 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([60.00,-100.00,2.50]) cylinder(1,rtool,rtool); translate([60.00,-100.00,25.00]) cylinder(1,rtool,rtool);}
 x=-41.299;y=-95.221;z=74.340; /* Near the table */
 color("white") translate([x,y,z]) union(){

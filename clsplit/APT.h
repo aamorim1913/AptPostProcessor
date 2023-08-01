@@ -133,6 +133,10 @@ private:
 		NEW_CSYS=(1<<0),  NEW_SPINDLE=(1<<1), NEW_TOOL=(1<<2), NEW_BLK=(1<<3), NEW_FEED=(1<<4),
 		NEW_X=(1<<5), NEW_Y=(1<<6), NEW_Z=(1<<7), NEW_FLOOD=(1<<8), CIRCLE_ON=(1<<9), CYCLE_ON=(1<<10) 
 	};
+     
+     char com[12*COMSIZE];
+	int nA;
+     double A[12];
 
 public:
      APT(){
@@ -292,9 +296,9 @@ public:
          } else  return 0; 
      }
 
-     int findINSERT_STOP(char *com) {
+     int findINSERT_STOP(char *com2) {
 	  if  (strstr(lineapt, "INSERT/STOP") != 0) {
-          strcpy(com , lineapt + strlen("INSERT/STOP"));
+          strcpy(com2 , lineapt + strlen("INSERT/STOP"));
           updated |= NEW_FLOOD;
           return 1;
        } else return 0;
@@ -302,9 +306,6 @@ public:
 
      int findINSERT_CSYS(double axis[]) {
 	     if (strstr(lineapt, "CSYS") != 0) {
-               int nA;
-               double A[12];
-               char com[12*COMSIZE];
                strcpy(com, lineapt + strlen("CSYS/"));
                nA = ReadArray(A, com, ',');
 			/* axis stored in A[3], A[4], A[5] */
@@ -331,12 +332,12 @@ public:
             } else return 0;
      }
 
-     int findSPINDL(int *speed) {
-          int nA;
-          char com[1024];
+     int findSPINDL(int *speed,int *clockwise) {
      	if (strstr(lineapt, "SPINDL/") != 0){
                nA=ReadArrayCom(com, lineapt + strlen("SPINDL/"), ',');
 		     *speed = atoi(com);
+               if (strstr(com+2*COMSIZE, "CCLW")) *clockwise = -1; 
+			else  *clockwise = 1;
                updated |= NEW_SPINDLE;
                return 1;
           } else return 0;

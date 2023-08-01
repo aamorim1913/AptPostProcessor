@@ -2,7 +2,7 @@
 
 if [ "$1" = "" ]
 then
-   echo "Please provide option -  run diff rdiff getA store rstore clean - and .apt name or all."
+   echo "Please provide option -  run rundebug diff rdiff getA store rstore clean - and .apt name or all."
    exit
 fi
 
@@ -29,18 +29,38 @@ fi
 
 case $1 in
    run)
+	mv machine-code/%FN15RUN.A machine-code/%FN15RUN.A-save
 	if [ "$2" = "all" ]
 	then
 		"With all use rdiff instead"
 		exit
 	fi
+	if test -f "tests/$ADIR/$2/%FN15RUN.A"; then
+    	    	cp -f tests/$ADIR/$2/%FN15RUN.A  machine-code/%FN15RUN.A
+	fi
 	cd $ADIR && ../clsplit/clsplit $2.apt
 	cd ..
+	mv -f machine-code/%FN15RUN.A-save machine-code/%FN15RUN.A
+	;;
+   rundebug)
+	mv machine-code/%FN15RUN.A machine-code/%FN15RUN.A-save
+	if [ "$2" = "all" ]
+	then
+		"With all use rdiff instead"
+		exit
+	fi
+	if test -f "tests/$ADIR/$2/%FN15RUN.A"; then
+    	    	cp -f tests/$ADIR/$2/%FN15RUN.A  machine-code/%FN15RUN.A
+	fi
+	cd $ADIR && ../clsplit/clsplit $2.apt debug
+	cd ..
+	mv -f machine-code/%FN15RUN.A-save machine-code/%FN15RUN.A
 	;;
    rdiff)
 	if [ "$2" = "all" ]
 	then
 		mv machine-code/%FN15RUN.A machine-code/%FN15RUN.A-save
+		rm tests/*.old tests/*.new
 		for A in $ADIR
 		do
 			for F in `ls $A/*.apt`
@@ -74,6 +94,7 @@ case $1 in
 		mv -f machine-code/%FN15RUN.A-save machine-code/%FN15RUN.A
 	else
 		mv machine-code/%FN15RUN.A machine-code/%FN15RUN.A-save
+		rm tests/$2*.old tests/$2*.new
 		cp tests/$ADIR/$2/%FN15RUN.A machine-code/%FN15RUN.A
 		cd $ADIR && ../clsplit/clsplit $2.apt
 		cd ..

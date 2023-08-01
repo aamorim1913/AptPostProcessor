@@ -7,16 +7,16 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-0.000000,0]) rotate([0,0,-0.000000]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-2022/Top-light-cover.STL");
-/* line -> 30 */
+/* line -> 47 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([12.00,177.00,25.00]) cylinder(1,rtool,rtool); translate([12.00,177.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([12.00,177.00,-31.80]) cylinder(56.80,rtool,rtool);
-/* line -> 31 */
+/* line -> 49 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([12.00,177.00,25.00]) cylinder(1,rtool,rtool); translate([177.00,177.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([177.00,177.00,-31.80]) cylinder(56.80,rtool,rtool);
-/* line -> 32 */
+/* line -> 51 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([177.00,177.00,25.00]) cylinder(1,rtool,rtool); translate([177.00,12.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([177.00,12.00,-31.80]) cylinder(56.80,rtool,rtool);
-/* line -> 33 */
+/* line -> 53 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([177.00,12.00,25.00]) cylinder(1,rtool,rtool); translate([12.00,12.00,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([12.00,12.00,-31.80]) cylinder(56.80,rtool,rtool);
 x=-181.073;y=70.784;z=34.899; /* Near the table */

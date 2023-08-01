@@ -190,7 +190,7 @@ int main(int argc, char **argv) {
 	char RL='0', used_RL='0', Sense='+';
 	int toolcall; 
 	double feed = -1, feedscale=1.0,  rtool,ltool;
-	int dry=0;
+	int dry=0,debug=0;
 	int toolsmeasured=1;
 	int toolschanged=0;
 
@@ -208,7 +208,7 @@ int main(int argc, char **argv) {
 		cout<<"    clean - to remove all generated files "<< endl;
 		cout<<"    <>.apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> <thetatable> (override %FN15RUN.A)"<< endl;
 		cout<<"    <>.apt <opt1> <opt2> "<< endl;
-		cout<<"where <opt1>,<opt2> can be storetools, usestoredtools, dry"<< endl << endl;
+		cout<<"where <opt1>,<opt2> can be storetools, usestoredtools, dry, debug"<< endl << endl;
 		cout<<"A %FN15RUN.A file must be present in ../machine-code with the syntax"<< endl;
 		cout<<"		DatumX DatumY DatumZ (in machine coordinates)"<< endl;
 		cout<<"		<X> <Y> <Z> (setup 1 reference sphere relative to Datum)"<< endl;
@@ -236,6 +236,10 @@ int main(int argc, char **argv) {
 	if (ifarg("dry",argc,argv)) {
                 printf(" running dry\n");
 		dry=1;
+    }
+	if (ifarg("debug",argc,argv)) {
+                printf(" running debug and printing apt lines.\n");
+		debug=1;
     }
 	
 	/* end SCAD in FINI, CSYS and LOAD TOOL */
@@ -284,7 +288,7 @@ int main(int argc, char **argv) {
 
 	/* main loop on the apt file commands. Real output happens in first GOTO */
 	while (apt.ReadLine()) {
-
+		if (debug) fprintf(OUT, "%d ;apt: %s\n", lnumber, apt.getlineapt());++lnumber;
 		/* begin of program */
 		if ( apt.findUNIT_MM() ) {  /* begining of program */
 
@@ -408,14 +412,12 @@ int main(int argc, char **argv) {
 		} else if ( apt.findINSERT_CUTTER(&rtool, &ltool) ){
 			
 		/* spindle speed and spinsence */
-		} else if ( apt.findSPINDL(&(tools.tl[toolcall].speed))) { /* SPINDLE prints the TOOL statment if tool number is defined */
+		} else if ( apt.findSPINDL(&(tools.tl[toolcall].speed),&(tools.tl[toolcall].clockwise))) { /* SPINDLE prints the TOOL statment if tool number is defined */
 			if ( tools.tl[toolcall].speed > MachineMaxSpindle){
 				feedscale = MachineMaxSpindle/(1.0*tools.tl[toolcall].speed);
 				tools.tl[toolcall].speed = MachineMaxSpindle;
-			} feedscale = 1.0;
-			if (strstr(com+2*COMSIZE, "CCLW")) tools.tl[toolcall].clockwise = -1; 
-			else  tools.tl[toolcall].clockwise = 1;
-
+			} 
+			else feedscale = 1.0;
 
 		/* CSI_SET_FLUTE_LENGTH */
 		} else if ( apt.findCSI_SET_FLUTE_LENGTH(com) ) { /* tool CSI_SET_FLUTE_LENGTH */
@@ -477,7 +479,7 @@ int main(int argc, char **argv) {
 		/* store definitions for circle */
 		} else if ( apt.findCIRCLE(&nA,Datum2Tool)) { /* define the circle center and set circle on */
 			if (nA<3) {
-				printf("Erro na leitura de CIRCLE/\n");
+				printf("Error reading CIRCLE/\n");
 				fpause=1;
 			}
 			Sense='+';  /* math angle growing */
@@ -578,8 +580,6 @@ int main(int argc, char **argv) {
 					tools.tl[toolcall].DL, tools.tl[toolcall].DR); ++lnumber;
 				}
 				tools.tl[toolcall].defined=1;
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, 
-					tools.tl[toolcall].speed); ++lnumber;
 				tref.AddTool(toolcall,tools.tl);
 				if (old_Datum2Tool[2]!=invalid_coord) {
 					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_Datum2Tool[2]); ++lnumber; 
@@ -592,14 +592,14 @@ int main(int argc, char **argv) {
 					else fprintf(OUT, "%d L M04\n",lnumber);
 					++lnumber;
 					fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
-					fprintf(OUT, "%d CYCLE DEF 9.1 10\n",lnumber); ++lnumber;
-					fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, tools.tl[toolcall].speed); ++lnumber;
+					fprintf(OUT, "%d CYCLE DEF 9.1 5\n",lnumber); ++lnumber;
 				}
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, tools.tl[toolcall].speed); ++lnumber;
 				if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber);
 				else fprintf(OUT, "%d L M04\n",lnumber); 
 				++lnumber;
 				fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d CYCLE DEF 9.1 2\n",lnumber); ++lnumber;
+				fprintf(OUT, "%d CYCLE DEF 9.1 5\n",lnumber); ++lnumber;
 				apt.resetnewtool();
 			}
 			if ( apt.iscircleon() ) {
@@ -664,12 +664,12 @@ int main(int argc, char **argv) {
 				/* use only with tool R=0 to correct DR */
 				if ( used_RL != RL ) fprintf(OUT, " R%c",RL);
 				if ( feed == -1 ) fprintf(OUT, " FMAX");
-				else if ( apt.isnewfeed() ) fprintf(OUT, " F%.0f", feed);
+				else if ( apt.isnewfeed() ) fprintf(OUT, " F%.0f", feed*feedscale);
 				if (apt.isnewflood()) {
 					if ((dry==1)||(feed == -1)) fprintf(OUT," M09");
 					else fprintf(OUT," M08");
 				}
-				scad.AddLine(Datum2Tool, lnumber, feed, &fpause, thetab);
+				scad.AddLine(Datum2Tool, lnumber, feed*feedscale, &fpause, thetab);
 				if (apt.iscycleon()) {
 					fprintf(OUT," M99");
 					scad.AddDepth(Datum2Tool, lnumber, dist, length, &fpause, thetab);

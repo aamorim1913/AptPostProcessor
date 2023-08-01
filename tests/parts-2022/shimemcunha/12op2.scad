@@ -7,7 +7,7 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-0.000000,0]) rotate([0,0,-0.000000]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-2022/shimemcunha.STL");
-/* line -> 31 */
+/* line -> 35 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([32.26,26.33,25.00]) cylinder(1,rtool,rtool); translate([32.26,26.33,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([32.26,26.33,-3.19]) cylinder(28.19,rtool,rtool);
 x=-160.815;y=-79.881;z=34.899; /* Near the table */

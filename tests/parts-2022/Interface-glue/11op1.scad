@@ -7,22 +7,22 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-0.000000,0]) rotate([0,0,-0.000000]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-2022/Interface-glue.STL");
-/* line -> 30 */
+/* line -> 47 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([67.50,107.50,25.00]) cylinder(1,rtool,rtool); translate([67.50,107.50,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([67.50,107.50,-22.02]) cylinder(47.02,rtool,rtool);
-/* line -> 31 */
+/* line -> 49 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([67.50,107.50,25.00]) cylinder(1,rtool,rtool); translate([32.86,87.50,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([32.86,87.50,-22.02]) cylinder(47.02,rtool,rtool);
-/* line -> 32 */
+/* line -> 51 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([32.86,87.50,25.00]) cylinder(1,rtool,rtool); translate([32.86,47.50,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([32.86,47.50,-22.02]) cylinder(47.02,rtool,rtool);
-/* line -> 33 */
+/* line -> 53 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([32.86,47.50,25.00]) cylinder(1,rtool,rtool); translate([67.50,27.50,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([67.50,27.50,-22.02]) cylinder(47.02,rtool,rtool);
-/* line -> 34 */
+/* line -> 55 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([67.50,27.50,25.00]) cylinder(1,rtool,rtool); translate([102.14,47.50,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([102.14,47.50,-22.02]) cylinder(47.02,rtool,rtool);
-/* line -> 35 */
+/* line -> 57 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([102.14,47.50,25.00]) cylinder(1,rtool,rtool); translate([102.14,87.50,25.00]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([102.14,87.50,-22.02]) cylinder(47.02,rtool,rtool);
 x=-125.573;y=1.284;z=34.899; /* Near the table */

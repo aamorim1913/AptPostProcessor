@@ -7,371 +7,371 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-180.000000,0]) rotate([0,0,nan]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-2021/Sacrifice-Board.STL");
-/* line -> 84 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 85 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 86 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 89 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 91 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 93 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 93 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 94 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 95 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 96 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 97 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 98 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 101 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 101 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 102 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 103 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 104 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 105 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 108 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 108 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 109 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 110 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 111 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 112 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 113 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 114 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 117 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 119 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 121 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 121 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 122 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 123 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 124 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 125 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 126 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 129 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 129 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 130 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 131 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 132 */
+/* line -> 134 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 133 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 136 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 136 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 137 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 138 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 139 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 140 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 141 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 142 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 145 */
+/* line -> 143 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 147 */
+/* line -> 148 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 149 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 149 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 150 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 151 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 152 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 153 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 154 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 157 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 157 */
+/* line -> 155 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 158 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 159 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 160 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 161 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 164 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 164 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 165 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 166 */
+/* line -> 164 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 167 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 168 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 169 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 170 */
+/* line -> 171 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 173 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 175 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 177 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 177 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 178 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 179 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 180 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 183 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 181 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 182 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 185 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 185 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 186 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 187 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 188 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 189 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 192 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 192 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 193 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 194 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 195 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 196 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 197 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 198 */
+/* line -> 199 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 202 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 201 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 203 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 205 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 205 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 206 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 207 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 208 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 209 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 210 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 213 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 213 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 211 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 214 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 215 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 216 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 217 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 220 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 220 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 221 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 222 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 223 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 224 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 225 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 226 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 229 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 231 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 233 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 233 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 234 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 235 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 236 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 237 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 238 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 241 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 241 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 242 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 243 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 244 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 245 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 248 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 248 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 249 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 247 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 250 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 251 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 252 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 253 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 254 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 257 */
+/* line -> 260 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 259 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 261 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 261 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 262 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 263 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 264 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 265 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 266 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 269 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 269 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 270 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 271 */
+/* line -> 269 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 272 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 273 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 276 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 276 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 277 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 278 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 279 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 280 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 281 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 282 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
 /* line -> 285 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 287 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 289 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 289 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 290 */
+/* line -> 288 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 291 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 292 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 293 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 294 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 297 */
-color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 297 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 298 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 299 */
+/* line -> 297 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 300 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 301 */
-color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 /* line -> 304 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 309 */
 color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
-/* line -> 304 */
+/* line -> 314 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 318 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 321 */
 color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 305 */
+/* line -> 324 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-/* line -> 306 */
+/* line -> 327 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 330 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 333 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 337 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 343 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 346 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 349 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 352 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 355 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 359 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 365 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 368 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 371 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 374 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 377 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 380 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 383 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 387 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 392 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 397 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 401 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 404 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 407 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 410 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 413 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 416 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 420 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 426 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 429 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 432 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 435 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 438 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 442 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 448 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 451 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 454 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 457 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 460 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 463 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 466 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 470 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 475 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 480 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 484 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 487 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 490 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 493 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 496 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 499 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 503 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 509 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 512 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 515 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 518 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 521 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 525 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 531 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 534 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 537 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 540 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 543 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 546 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 549 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 553 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 558 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 563 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 567 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 570 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 573 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 576 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 579 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 582 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 586 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 592 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 595 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 598 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 601 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 604 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 608 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 614 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 617 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 620 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 623 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 626 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 629 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 632 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 636 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 641 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 646 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 650 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 653 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 656 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 659 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 662 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 665 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 669 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 675 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 678 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 681 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 684 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 687 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 691 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 697 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 700 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 703 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 706 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 709 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 712 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 715 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 719 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 724 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 729 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 733 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 736 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 739 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 742 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 745 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 748 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 752 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 758 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 761 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 764 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 767 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 770 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 774 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 780 */
+color("yellow",0.3) translate([xd,yd,zd]) translate([nan, nan, nan]) rotate([0,0,nan]) linear_extrude(height = nan, center = false, convexity = 10, twist = nan, $fn = 50) translate([nan, 0, 0]) square([2*rtool, 1],center = true);
+/* line -> 783 */
+color("yellow",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 786 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+/* line -> 789 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 x=nan;y=nan;z=nan; /* Near the table */
 color("white") translate([x,y,z]) union(){

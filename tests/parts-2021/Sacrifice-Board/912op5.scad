@@ -7,28 +7,28 @@ translate([0,0,-25]) cylinder(50,350,350,center = true);
 translate([0,-500,-75]) linear_extrude(100) square(500,center=true);
 translate([0,500,-75]) linear_extrude(100) square(500,center=true);}
 color("red") rotate([0,-180.000000,0]) rotate([0,0,nan]) translate([xd0,yd0,zd0]) import("/Users/aamorim/AptPostProcessor/parts-2021/Sacrifice-Board.STL");
-/* line -> 29 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
-/* line -> 30 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
-/* line -> 31 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
-/* line -> 32 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
 /* line -> 33 */
-color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
-color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
-/* line -> 34 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
 /* line -> 35 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
-/* line -> 36 */
+/* line -> 37 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
+/* line -> 39 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
+/* line -> 41 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
+/* line -> 43 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
+/* line -> 45 */
+color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
+color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
+/* line -> 47 */
 color("blue",0.3) translate([xd,yd,zd]) hull(){translate([nan,nan,nan]) cylinder(1,rtool,rtool); translate([nan,nan,nan]) cylinder(1,rtool,rtool);}
 color("green",0.3) translate([xd,yd,zd]) translate([nan,nan,nan]) cylinder(32.90,rtool,rtool);
 x=nan;y=nan;z=nan; /* Near the table */
