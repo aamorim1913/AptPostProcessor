@@ -96,10 +96,15 @@ case $1 in
 		echo "rstore all not available"
 		exit
 	fi
+	cp -f  machine-code/%FN15RUN.A machine-code/%FN15RUN.A-save
+	if test -f "tests/$ADIR/$2/%FN15RUN.A"; then
+    	    cp -f tests/$ADIR/$2/%FN15RUN.A  machine-code/%FN15RUN.A
+	fi
 	cd $ADIR && ../clsplit/clsplit $2.apt
 	cd ..
 	mkdir -p tests/$ADIR/$2/
 	cp -f machine-code/%FN15RUN.A machine-code/[123456789]*.h  machine-code/*.scad tests/$ADIR/$2
+	mv -f machine-code/%FN15RUN.A-save machine-code/%FN15RUN.A
 	;;
    diff)
 	if [ "$2" = "all" ]

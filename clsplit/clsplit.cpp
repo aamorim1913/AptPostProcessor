@@ -33,7 +33,7 @@ const int MachineMaxSpindle = 3500;
 const double Mac2Pivot[3]={-200.66, -193.7836, -338.3841};
 
 /* machine limits in machine coordinates xmin, xmax, ymin, ymax, zmin, zmax */
-const double MachineLimits[6]={-500,0,-400,0,-400,0};
+const double MachineLimits[6]={-500,-0.1,-400,-0.1,-400,-0.1};
 
 /* table center with z meassured included  3d sensor lenght */
 const double machine_table[3]={-200.66,-193.72,-388.18};
