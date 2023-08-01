@@ -96,19 +96,36 @@ case $1 in
 	fi
 	;;
    rstore)
+	cp -f  machine-code/%FN15RUN.A machine-code/%FN15RUN.A-save
 	if [ "$2" = "all" ]
 	then
-		echo "rstore all not available"
-		exit
+		for A in $ADIR
+		do
+			for F in `ls $A/*.apt`
+			do
+				F=${F%.apt}
+				F=${F##*/}
+				echo "**********************************************************"
+				echo "Processing $F from $A"
+				echo "**********************************************************"
+				if test -f "tests/$A/$F/%FN15RUN.A"; then
+    	    				cp -f tests/$A/$F/%FN15RUN.A  machine-code/%FN15RUN.A
+				fi
+				cd $A && ../clsplit/clsplit $F.apt
+				cd ..
+				mkdir -p tests/$A/$F/
+				cp -f machine-code/%FN15RUN.A machine-code/[0123456789]*.h  machine-code/*.scad tests/$A/$F
+			done
+		done
+	else
+		if test -f "tests/$ADIR/$2/%FN15RUN.A"; then
+    	    		cp -f tests/$ADIR/$2/%FN15RUN.A  machine-code/%FN15RUN.A
+		fi
+		cd $ADIR && ../clsplit/clsplit $2.apt
+		cd ..
+		mkdir -p tests/$ADIR/$2/
+		cp -f machine-code/%FN15RUN.A machine-code/[0123456789]*.h  machine-code/*.scad tests/$ADIR/$2
 	fi
-	cp -f  machine-code/%FN15RUN.A machine-code/%FN15RUN.A-save
-	if test -f "tests/$ADIR/$2/%FN15RUN.A"; then
-    	    cp -f tests/$ADIR/$2/%FN15RUN.A  machine-code/%FN15RUN.A
-	fi
-	cd $ADIR && ../clsplit/clsplit $2.apt
-	cd ..
-	mkdir -p tests/$ADIR/$2/
-	cp -f machine-code/%FN15RUN.A machine-code/[0123456789]*.h  machine-code/*.scad tests/$ADIR/$2
 	mv -f machine-code/%FN15RUN.A-save machine-code/%FN15RUN.A
 	;;
    diff)

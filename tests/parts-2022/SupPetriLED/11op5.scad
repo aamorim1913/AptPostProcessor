@@ -38,4 +38,4 @@ translate([0,0,230-l]) cylinder(100,75,75,center=true);
 translate([0,0,90+ltool/2]) cylinder(180-ltool,35,35,center=true);
 translate([0,0,ltool/2]) cylinder(ltool,rtool,rtool,center=true);}
 color("blue",0.6) rotate([0,-0.000000,0]) rotate([0,0,-0.000000]) translate([-133.573000,-46.716400,-5.100900]) cube([119.000000,119.000000,30.000000],center=true);
-color("brown",0.25) translate([-49.340000,-6.216400,137.384100]) cube([500.000000,400.000000,400.000000],center=true);
+color("brown",0.25) translate([-49.290000,-6.166400,137.434100]) cube([499.900000,399.900000,399.900000],center=true);

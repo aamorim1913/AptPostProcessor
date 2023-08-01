@@ -300,9 +300,17 @@ public:
        } else return 0;
      }
 
-     int findINSERT_CSYS(char *com) {
+     int findINSERT_CSYS(double axis[]) {
 	     if (strstr(lineapt, "CSYS") != 0) {
+               int nA;
+               double A[12];
+               char com[12*COMSIZE];
                strcpy(com, lineapt + strlen("CSYS/"));
+               nA = ReadArray(A, com, ',');
+			/* axis stored in A[3], A[4], A[5] */
+			axis[0] = A[2];
+			axis[1] = A[6];
+			axis[2] = A[10];
                return 1;      
           } else return 0;
      }

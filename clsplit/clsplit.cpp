@@ -319,17 +319,11 @@ int main(int argc, char **argv) {
 			fprintf(OUT," FMAX\n"); ++lnumber;
 
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
-		} else if ( apt.findINSERT_CSYS(com) ) { 
+		} else if ( apt.findINSERT_CSYS(axis) ) { 
 
 			if ( op > 0) scad.close(apt.getStock(), thetab, thetac, Shift);
 
 			++op;
-			nA = ReadArray(A, com, ',');
-			/* axis stored in A[3], A[4], A[5] */
-			axis[0] = A[2];
-			axis[1] = A[6];
-			axis[2] = A[10];
-
 			
 			if ((axis[0] != prev_axis[0]) || (axis[1] != prev_axis[1]) || (axis[2] != prev_axis[2])) {
 
