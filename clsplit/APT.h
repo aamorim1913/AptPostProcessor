@@ -68,7 +68,11 @@ private:
      char lineapt[MAXLINE];
      uint32_t updated;
      char pcom[12*COMSIZE];
+     char last_comment[100];
 
+     int loadedtool; 
+     double nextrcad;
+     double nextlcad;
      double Stock[3];
 
      enum update_flags { 
@@ -124,6 +128,78 @@ public:
 		     tl[i].DL=0;
 		     tl[i].DR=0;
 	     }
+          loadedtool = -1;
+          nextrcad=-1.0;
+          nextlcad=-1.0;
+     }
+
+     int getloadedtool(){
+        return loadedtool;
+     }
+
+     char *getlastcomment(){
+          return(last_comment);
+     }
+
+     int gettoolspeed(){
+          return tl[loadedtool].speed;
+     }
+
+     int settoolspeed(double speed){
+          tl[loadedtool].speed=speed;
+          return 0;
+     }
+
+     bool istooldefined(){
+          return  (tl[loadedtool].defined==1);
+     }
+
+     int settooldefined(){
+          tl[loadedtool].defined=1;
+          return 0;
+     }
+
+     bool istoolclockwise(){
+          return (tl[loadedtool].clockwise==1);
+     }
+
+     char* gettoolname(){
+          return tl[loadedtool].name;
+     }
+
+     double gettoolDR(){
+          return tl[loadedtool].DR;
+     }
+
+     double gettoolDL(){
+          return tl[loadedtool].DL;
+     }
+
+     double gettoolrcad(){
+          return tl[loadedtool].rcad;
+     }
+
+     int settoolrcad(double rcad){
+          tl[loadedtool].rcad=rcad;
+          return 0;
+     }
+
+     double gettoolrtable(){
+          return tl[loadedtool].rtable;
+     }
+
+     int settoolrtable(double rtable){
+          tl[loadedtool].rtable=rtable;
+          return 0;
+     }
+     
+     int settoollcad(double lcad){
+          tl[loadedtool].lcad=lcad;
+          return 0;
+     }
+
+     int gettoollcad(){
+          return tl[loadedtool].lcad;
      }
 
      int open(char * filename){
@@ -299,28 +375,28 @@ public:
           } else return 0;
      }
 
-     int findINSERT_INSERT(char *last_comment) {
+     int findINSERT_INSERT() {
      	if (strstr(lineapt, "INSERT/") != 0){
              strcpy(last_comment,lineapt+strlen("INSERT/"));
              return 1;
           } else return 0;
      }
 
-     int findINSERT_CUTTER(double *rtool, double *ltool) {
+     int findINSERT_CUTTER() {
           double temp;
      	  if (strstr(lineapt, "CUTTER/") != 0){
                sscanf(lineapt+strlen("CUTTER/"),"%lf,%lf,%lf,%lf,%lf,%lf,%lf",
-				rtool,&temp,&temp,&temp,&temp,&temp,ltool); *rtool=*rtool/2; 
+				&nextrcad,&temp,&temp,&temp,&temp,&temp,&nextlcad); nextrcad=nextrcad/2; 
                return 1;
             } else return 0;
      }
 
-     int findSPINDL(int *speed,int *clockwise) {
+     int findSPINDL() {
      	if (strstr(lineapt, "SPINDL/") != 0){
                nA=ReadArrayCom(com, lineapt + strlen("SPINDL/"), ',');
-		     *speed = atoi(com);
-               if (strstr(com+2*COMSIZE, "CCLW")) *clockwise = -1; 
-			else  *clockwise = 1;
+		     tl[loadedtool].speed = atoi(com);
+               if (strstr(com+2*COMSIZE, "CCLW")) tl[loadedtool].clockwise = -1; 
+			else  tl[loadedtool].clockwise = 1;
                updated |= NEW_SPINDLE;
                return 1;
           } else return 0;
@@ -346,9 +422,11 @@ public:
           } else return 0;
      }
 
-     int findLOAD_TOOL(int *toolcall) {
+     int findLOAD_TOOL() {
      	if (strstr(lineapt, "LOAD/TOOL,") != 0) {
-               *toolcall = atoi(lineapt + strlen("LOAD/TOOL,"));
+               loadedtool = atoi(lineapt + strlen("LOAD/TOOL,"));
+               tl[loadedtool].rcad=nextrcad;
+               tl[loadedtool].lcad=nextlcad;
                updated |= NEW_TOOL;
                return 1;
           } else return 0;

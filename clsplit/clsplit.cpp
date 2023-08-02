@@ -309,15 +309,15 @@ int main(int argc, char **argv) {
 	double CircleCenter[2], old_CircleCenter[2], Datum2Tool[6], old_Datum2Tool[3];
 	double axis[3]={0,0,0}, circ_axis[3]={0,0,0}, goto_axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
 	double prev_axis[3] = {0,0,0}, dist=0, length=0, plunge=0, cyfeed=0,cydwell=0;
-	char last_comment[100],stopcom[100];
+	char stopcom[100];
 
 	double thetabtemp,thetactemp, thetab, thetac, thetatable;
 	double theta1, theta2, CircleR;
 	int nA;
 	int nsetup,ncoord,lnumber;
 	char RL='0', used_RL='0', Sense='+';
-	int loadedtool; 
-	double feed = -1, feedscale=1.0,  rtool,ltool;
+	
+	double feed = -1, feedscale=1.0;
 	int dry=0,debug=0;
 	int toolsmeasured=1;
 	int toolschanged=0;
@@ -414,11 +414,11 @@ int main(int argc, char **argv) {
 	plunge=0.0;
 	cyfeed=0.0;
 	cydwell=0.0;
-	loadedtool = -1;
 
 	/* main loop on the apt file commands. Real output happens in first GOTO */
 	while (apt.ReadLine()) {
 		if (debug) fprintf(OUT, "%d ;apt: %s\n", lnumber, apt.getlineapt());++lnumber;
+
 		/* begin of program */
 		if ( apt.findUNIT_MM() ) {  /* begining of program */
 
@@ -428,6 +428,7 @@ int main(int argc, char **argv) {
 
 		/* Stock Size comment converted to BLK */
 		} else if ( apt.findINSERT_StockSize() ) { 
+
 		/* When one inserts a comment at the begining of a feature that is invoked in manual operation */
 		} else if ( apt.findINSERT_STOP(stopcom) ) {
 			fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
@@ -435,16 +436,16 @@ int main(int argc, char **argv) {
 			fprintf(OUT, "%d STOP\n",lnumber);  ++lnumber;
 			fprintf(OUT, "%d ;%s\n", lnumber, stopcom);  ++lnumber;
 			/* warm spindle for 10 seconds */
-			if (apt.tl[loadedtool].speed>2000){
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, loadedtool+100, 1500); ++lnumber;
-				if (apt.tl[loadedtool].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
+			if (apt.gettoolspeed()>2000){
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, 1500); ++lnumber;
+				if (apt.istoolclockwise()) fprintf(OUT, "%d L M03\n",lnumber); 
 				else fprintf(OUT, "%d L M04\n",lnumber); 
 				++lnumber;
 				fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d CYCLE DEF 9.1 10\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, loadedtool+100, apt.tl[loadedtool].speed); ++lnumber;
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, apt.gettoolspeed()); ++lnumber;
 			}
-			if (apt.tl[loadedtool].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
+			if (apt.istoolclockwise()) fprintf(OUT, "%d L M03\n",lnumber); 
 			else fprintf(OUT, "%d L M04\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d CYCLE DEF 9.1 2\n",lnumber); ++lnumber;
@@ -533,45 +534,43 @@ int main(int argc, char **argv) {
 			} else {
 				fprintf(OUT, "%d ;NewFeature\n", lnumber); ++lnumber;
 			}
-			scad.open(argv[1], nsetup, op, loadedtool, apt.getStock(), apt.tl, Shift, Piv2Datum, thetab, thetac, thetatable);
+			scad.open(argv[1], nsetup, op, apt.getloadedtool(), apt.getStock(), apt.tl, Shift, Piv2Datum, thetab, thetac, thetatable);
 
 		/* comment copy  */
-		} else if ( apt.findINSERT_INSERT(last_comment) ) {  /* INSERT is copied to comment (maybe tool name)*/
+		} else if ( apt.findINSERT_INSERT() ) {  /* INSERT is copied to comment (maybe tool name)*/
 
 		/* properties of the tool */
-		} else if ( apt.findINSERT_CUTTER(&rtool, &ltool) ){
+		} else if ( apt.findINSERT_CUTTER() ){
 			
 		/* spindle speed and spinsence */
-		} else if ( apt.findSPINDL(&(apt.tl[loadedtool].speed),&(apt.tl[loadedtool].clockwise))) { /* SPINDLE prints the TOOL statment if tool number is defined */
-			if ( apt.tl[loadedtool].speed > MachineMaxSpindle){
-				feedscale = MachineMaxSpindle/(1.0*apt.tl[loadedtool].speed);
-				apt.tl[loadedtool].speed = MachineMaxSpindle;
+		} else if ( apt.findSPINDL()) { /* SPINDLE prints the TOOL statment if tool number is defined */
+			if ( apt.gettoolspeed() > MachineMaxSpindle){
+				feedscale = MachineMaxSpindle/(1.0*apt.gettoolspeed());
+				apt.settoolspeed(MachineMaxSpindle);
 			} 
 			else feedscale = 1.0;
 
 		/* CSI_SET_FLUTE_LENGTH */
-		} else if ( apt.findCSI_SET_FLUTE_LENGTH(apt.tl[loadedtool].name) ) { /* tool CSI_SET_FLUTE_LENGTH */
+		} else if ( apt.findCSI_SET_FLUTE_LENGTH(apt.gettoolname()) ) { /* tool CSI_SET_FLUTE_LENGTH */
 
 		/* CSI_SET_EXTENSION_LENGTH */
-		} else if ( apt.findCSI_CSI_SET_EXTENSION_LENGTH(apt.tl[loadedtool].name) ) { /* tool CSI_SET_EXTENSION_LENGTH */
+		} else if ( apt.findCSI_CSI_SET_EXTENSION_LENGTH(apt.gettoolname()) ) { /* tool CSI_SET_EXTENSION_LENGTH */
 
 		/* load the tool */
-		} else if ( apt.findLOAD_TOOL(&loadedtool) ) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
-			if (strncmp(last_comment,apt.tl[loadedtool].name,strlen(last_comment)) != 0){
+		} else if ( apt.findLOAD_TOOL() ) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
+			if (strncmp(apt.getlastcomment(),apt.gettoolname(),strlen(apt.getlastcomment())) != 0){
 				toolschanged=1;
-				if (apt.tl[loadedtool].DL!=0) printf("Tool %d has been modifyed. Call with storetools option.\n",loadedtool+1);
+				if (apt.gettoolDL()!=0) printf("Tool %d has been modifyed. Call with storetools option.\n",apt.getloadedtool()+1);
 			}
-			strcpy(apt.tl[loadedtool].name,last_comment);
-			apt.tl[loadedtool].rcad = rtool; 
-			if ((apt.tl[loadedtool].rtable != 0) && (apt.tl[loadedtool].rtable != apt.tl[loadedtool].rcad)) {
+			strcpy(apt.gettoolname(),apt.getlastcomment());
+			if ((apt.gettoolrtable() != 0) && (apt.gettoolrtable() != apt.gettoolrcad())) {
 				printf("Error: Tool %d is set to radius %f in matching tool table %f\n",
-						loadedtool, apt.tl[loadedtool].rcad,apt.tl[loadedtool].rtable);
+						apt.getloadedtool(), apt.gettoolrcad(),apt.gettoolrtable());
 				fpause=1;
 			}
-			apt.tl[loadedtool].lcad = ltool;
-			if (apt.tl[loadedtool].DL == 0.0) {
+			if (apt.gettoolDL() == 0.0) {
 				toolsmeasured=0;
-				printf("Tool %d lenght is 0 and needs to be measured\n",loadedtool+1);
+				printf("Tool %d lenght is 0 and needs to be measured\n",apt.getloadedtool()+1);
 				fpause=1;
 			}
 
@@ -580,12 +579,12 @@ int main(int argc, char **argv) {
 
 		/* used only if delta r is not it CAM */
 		} else if ( apt.findCUTCOM_LEFT() ) { /* Define for RR R0 */
-			if (apt.tl[loadedtool].DR != 0.0) RL = 'L';
+			if (apt.gettoolDR() != 0.0) RL = 'L';
 			else RL = '0';
 
 		/* used only if delta r is not it CAM */
 		} else if ( apt.findCUTCOM_RIGHT() ) { /* Define for RR R0 */
-			if (apt.tl[loadedtool].DR != 0.0) RL = 'R';
+			if (apt.gettoolDR() != 0.0) RL = 'R';
 			else RL = '0';
 
 		/* used only if delta r is not it CAM */
@@ -695,30 +694,30 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
                 int namestart=0;
-                for (int j = 0; j < strlen(apt.tl[loadedtool].name); j++)  
-							if (apt.tl[loadedtool].name[j] == '=') namestart=j+1;
-				fprintf(OUT, "%d ;%s\n", lnumber, apt.tl[loadedtool].name+namestart); ++lnumber;
-				if (apt.tl[loadedtool].defined==0) {
-					fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, loadedtool+100, 
-					apt.tl[loadedtool].DL, apt.tl[loadedtool].DR); ++lnumber;
+                for (int j = 0; j < strlen(apt.gettoolname()); j++)  
+							if (apt.gettoolname()[j] == '=') namestart=j+1;
+				fprintf(OUT, "%d ;%s\n", lnumber, apt.gettoolname()+namestart); ++lnumber;
+				if (!apt.istooldefined()) {
+					fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, apt.getloadedtool()+100, 
+					apt.gettoolDL(), apt.gettoolDR()); ++lnumber;
 				}
-				apt.tl[loadedtool].defined=1;
-				tref.AddTool(loadedtool,apt.tl);
+				apt.settooldefined();
+				tref.AddTool(apt.getloadedtool(),apt.tl);
 				if (old_Datum2Tool[2]!=invalid_coord) {
 					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_Datum2Tool[2]); ++lnumber; 
 				}
 				apt.setnewflood();
 				/* warm spindle for 10 seconds*/
-				if (apt.tl[loadedtool].speed>2000){
-					fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, loadedtool+100, 1500); ++lnumber;
-					if (apt.tl[loadedtool].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
+				if (apt.gettoolspeed()>2000){
+					fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, 1500); ++lnumber;
+					if (apt.istoolclockwise()) fprintf(OUT, "%d L M03\n",lnumber); 
 					else fprintf(OUT, "%d L M04\n",lnumber);
 					++lnumber;
 					fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
 					fprintf(OUT, "%d CYCLE DEF 9.1 5\n",lnumber); ++lnumber;
 				}
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, loadedtool+100, apt.tl[loadedtool].speed); ++lnumber;
-				if (apt.tl[loadedtool].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber);
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, apt.gettoolspeed()); ++lnumber;
+				if (apt.istoolclockwise()) fprintf(OUT, "%d L M03\n",lnumber);
 				else fprintf(OUT, "%d L M04\n",lnumber); 
 				++lnumber;
 				fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
@@ -740,7 +739,7 @@ int main(int argc, char **argv) {
 				fpause=1;
 			}
 			if (Datum2Tool[2]+Mac2Datum[2] <= machine_table[2] ) {
-				printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, loadedtool);
+				printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, apt.getloadedtool());
 				fpause=1;
 			}
 			/* if only 3 coord no rotation is needed */
@@ -749,10 +748,10 @@ int main(int argc, char **argv) {
 					+(Datum2Tool[1]-CircleCenter[1])*(Datum2Tool[1]-CircleCenter[1]));
 				double sinn=sqrt(1-goto_axis[2]*goto_axis[2]);
 				for (int i=0; i<3; i++) goto_axis[i]=Datum2Tool[i+3];
-				if ((Datum2Tool[2]+Mac2Datum[2]-apt.tl[loadedtool].rcad*sqrt(1-goto_axis[2]*goto_axis[2]) 
+				if ((Datum2Tool[2]+Mac2Datum[2]-apt.gettoolrcad()*sqrt(1-goto_axis[2]*goto_axis[2]) 
 						<= machine_table[2]) || ((apt.iscircleon()) && 
-					Datum2Tool[2]+Mac2Datum[2] -(CircleR+apt.tl[loadedtool].rcad)*sinn <=machine_table[2])) {
-					printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, loadedtool);
+					Datum2Tool[2]+Mac2Datum[2] -(CircleR+apt.gettoolrcad())*sinn <=machine_table[2])) {
+					printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, apt.getloadedtool());
 					fpause=1;
 				}
 				RotateArray(Datum2Tool,goto_axis,thetabtemp,thetactemp);
