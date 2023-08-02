@@ -15,7 +15,6 @@
 
 #define MAXLINE 1024
 #define MAXGO 65536
-#define COMSIZE 256
 
 #define DMUDIR "../machine-code/%d.h"
 #define DMUDIRSCAD "../machine-code/%dop%d.scad"
@@ -47,6 +46,105 @@ const double invalid_coord=-9999.0;
 #include "APT.h"
 #include "CSCAD.h"
 
+
+int WriteSetup(int ns, double axis[3], double Shift[3]) {
+	char filename[MAXLINE];
+	FILE* SETUP;
+
+	if (axis[2]<0 ) snprintf(filename, MAXLINE, DMUDIRSETUP, 900+ns);
+	else snprintf(filename, MAXLINE, DMUDIRSETUP, ns);
+	if ( (SETUP=fopen(filename, "w") ) == NULL ) {
+		printf("cannot write SETUP file %s\n", filename);
+		return 1;
+	}
+	fprintf(SETUP, "1 BEGIN PGM %dsetup MM\n", ns);
+	fprintf(SETUP, "2 ;axis %lg %lg %lg\n", axis[0], axis[1], axis[2]);
+	fprintf(SETUP, "4 CYCL DEF 7.0 DATUM SHIFT\n5 CYCL DEF 7.1  X%+.3lf\n6 CYCL DEF 7.2  Y%+.3lf\n7 CYCL DEF 7.3  Z%+.3lf\n"
+		, Shift[0], Shift[1], Shift[2]);
+	fprintf(SETUP, "8 END PGM %dsetup MM\n", ns);
+	fclose(SETUP);
+	return 0;
+}
+
+int printVAR(FILE* OUT, const char* VAR, double x) {
+	fprintf(OUT, " %s", VAR);
+	if (round(x * 100) != x * 100) fprintf(OUT, "%+.3lf", x);
+	else if (round(x * 10) != x * 10) fprintf(OUT, "%+.2lf", x);
+	else if (round(x) != x) fprintf(OUT, "%+.1lf", x);
+	else fprintf(OUT, "%+.0lf", x);
+	return 0;
+}
+
+int ifarg(const char* arg, int argc, char **argv){
+	return ((argc>=3)&&(strstr(argv[2],arg)!=0)) || ((argc>=4)&&(strstr(argv[3],arg)!=0));
+}
+
+int CleanFiles() {
+	char filename[MAXLINE];
+	/* remove 0t0.SCAD */
+	snprintf(filename, MAXLINE, DMUDIRSCAD, 0, 0);
+#if defined(_WIN64)
+	_unlink(filename);
+#else
+	unlink(filename);
+#endif
+
+	/* remove 0TRef.h */
+	snprintf(filename, MAXLINE, FILETREF);
+#if defined(_WIN64)
+	_unlink(filename);
+#else
+	unlink(filename);
+#endif
+
+	for (int i = 11; i < 32; i++) {
+		snprintf(filename, MAXLINE, DMUDIR, i);
+#if defined(_WIN64)
+		/* remove i.h */
+		_unlink(filename); 
+		snprintf(filename, MAXLINE, DMUDIR, i+900);
+		_unlink(filename);
+#else
+		unlink(filename);
+		snprintf(filename, MAXLINE, DMUDIR, i+900);
+		unlink(filename);
+#endif
+		snprintf(filename, MAXLINE, DMUDIRSETUP, i);
+#if defined(_WIN64)
+		_unlink(filename); 
+		snprintf(filename, MAXLINE, DMUDIRSETUP, i+900);
+		_unlink(filename);
+#else
+		unlink(filename);
+		snprintf(filename, MAXLINE, DMUDIRSETUP, i+900);
+		unlink(filename);
+#endif
+		/* remove itj.SCAD */
+		for (int j = 1; j < 64; j++) {
+			snprintf(filename, MAXLINE, DMUDIRSCAD, i, j);
+#if defined(_WIN64)
+			_unlink(filename);
+			snprintf(filename, MAXLINE, DMUDIRSCAD, i+900, j);
+			_unlink(filename);
+#else
+			unlink(filename);
+			snprintf(filename, MAXLINE, DMUDIRSCAD, i+900, j);
+			unlink(filename);
+#endif
+		}
+	}
+	return 0;
+}
+
+FILE *OpenH(int n){
+	char filename[MAXLINE];
+	FILE *OUT;
+	snprintf(filename, MAXLINE, DMUDIR, n);
+		if ( (OUT=fopen(filename, "w")) == NULL) {
+			printf("cannot open OUT file %s\n", filename);
+			return 0;
+		} else return OUT;
+}
 
 /*-----------------------------  Processing the reference file  from the machine ----------------------------------------------*/
 class TRef{
@@ -179,12 +277,11 @@ int main(int argc, char **argv) {
 	double Shift[3];
 	double CircleCenter[2], old_CircleCenter[2], Datum2Tool[6], old_Datum2Tool[3];
 	double axis[3]={0,0,0}, circ_axis[3]={0,0,0}, goto_axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
-	double prev_axis[3] = {0,0,0}, dist=0, length=0;
-	char last_comment[100];
+	double prev_axis[3] = {0,0,0}, dist=0, length=0, plunge=0, cyfeed=0,cydwell=0;
+	char last_comment[100],stopcom[100];
 
 	double thetabtemp,thetactemp, thetab, thetac, thetatable;
 	double theta1, theta2, CircleR;
-	char com[12*COMSIZE];
 	int nA;
 	int nsetup,ncoord,lnumber;
 	char RL='0', used_RL='0', Sense='+';
@@ -284,6 +381,9 @@ int main(int argc, char **argv) {
 	RL = '0';
 	dist=0.0;
 	length=0.0;
+	plunge=0.0;
+	cyfeed=0.0;
+	cydwell=0.0;
 	toolcall = -1;
 
 	/* main loop on the apt file commands. Real output happens in first GOTO */
@@ -299,11 +399,11 @@ int main(int argc, char **argv) {
 		/* Stock Size comment converted to BLK */
 		} else if ( apt.findINSERT_StockSize() ) { 
 		/* When one inserts a comment at the begining of a feature that is invoked in manual operation */
-		} else if ( apt.findINSERT_STOP(com) ) {
+		} else if ( apt.findINSERT_STOP(stopcom) ) {
 			fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber);  ++lnumber;
 			fprintf(OUT, "%d STOP\n",lnumber);  ++lnumber;
-			fprintf(OUT, "%d ;%s\n", lnumber, com);  ++lnumber;
+			fprintf(OUT, "%d ;%s\n", lnumber, stopcom);  ++lnumber;
 			/* warm spindle for 10 seconds */
 			if (tools.tl[toolcall].speed>2000){
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, 1500); ++lnumber;
@@ -423,8 +523,7 @@ int main(int argc, char **argv) {
 		} else if ( apt.findCSI_SET_FLUTE_LENGTH(tools.tl[toolcall].name) ) { /* tool CSI_SET_FLUTE_LENGTH */
 
 		/* CSI_SET_EXTENSION_LENGTH */
-		} else if ( apt.findCSI_CSI_SET_EXTENSION_LENGTH(com) ) { /* tool CSI_SET_EXTENSION_LENGTH */
-			strcat(tools.tl[toolcall].name,com);
+		} else if ( apt.findCSI_CSI_SET_EXTENSION_LENGTH(tools.tl[toolcall].name) ) { /* tool CSI_SET_EXTENSION_LENGTH */
 
 		/* load the tool */
 		} else if ( apt.findLOAD_TOOL(&toolcall) ) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
@@ -503,43 +602,38 @@ int main(int argc, char **argv) {
 		} else if ( apt.findCYCLE_CLEAR()) {
 
 		/* CYCLE deep drill */
-		} else if ( apt.findCYCLE_DEEP2(&nA,com)) {
+		} else if ( apt.findCYCLE_DEEP2(&dist,&length,&plunge,&cyfeed)) {
 				fprintf(OUT, "%d CYCL DEF 1.0 PECKING\n", lnumber); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.1 DIST%.3f\n", lnumber,atof(com+11*COMSIZE)); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.2 DEPTH%.3f\n", lnumber,-atof(com+COMSIZE)); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.3 PLNGNG%.1f\n", lnumber,atof(com+9*COMSIZE)); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.1 DIST%.3f\n", lnumber,dist); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.2 DEPTH%.3f\n", lnumber,-length); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.3 PLNGNG%.1f\n", lnumber,plunge); ++lnumber;
 				fprintf(OUT, "%d CYCL DEF 1.4 DWELL0\n", lnumber); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.5 F%.0f\n", lnumber,atof(com+7*COMSIZE)); ++lnumber;
-				dist=atof(com+11*COMSIZE);
-				length=atof(com+COMSIZE);
+				fprintf(OUT, "%d CYCL DEF 1.5 F%.0f\n", lnumber,cyfeed); ++lnumber;
+
 				if (dry!=1) { fprintf(OUT, "%d M08\n",lnumber); ++ lnumber; }
 				else { fprintf(OUT, "%d M09\n",lnumber); ++ lnumber; }
 				apt.resetnewflood();
 
 		/* CYCLE deep */
-		} else if ( apt.findCYCLE_DEEP(&nA,com)) {
+		} else if ( apt.findCYCLE_DEEP(&dist,&length,&plunge,&cyfeed)) {
 				fprintf(OUT, "%d CYCL DEF 1.0 PECKING\n", lnumber); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.1 DIST%.3f\n", lnumber,atof(com+9*COMSIZE)); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.2 DEPTH%.3f\n", lnumber,-atof(com+COMSIZE)); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.3 PLNGNG%.1f\n", lnumber,atof(com+7*COMSIZE)); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.1 DIST%.3f\n", lnumber,dist); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.2 DEPTH%.3f\n", lnumber,-length); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.3 PLNGNG%.1f\n", lnumber,plunge); ++lnumber;
 				fprintf(OUT, "%d CYCL DEF 1.4 DWELL0\n", lnumber); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.5 F%.0f\n", lnumber,atof(com+5*COMSIZE)); ++lnumber;
-				dist=atof(com+9*COMSIZE);
-				length=atof(com+COMSIZE);
+				fprintf(OUT, "%d CYCL DEF 1.5 F%.0f\n", lnumber,cyfeed); ++lnumber;
 				if (dry!=1) { fprintf(OUT, "%d M08\n",lnumber); ++ lnumber; }
 				else { fprintf(OUT, "%d M09\n",lnumber); ++ lnumber; }
 				apt.resetnewflood();
 
 		/* CYCLE drill */
-		} else if ( apt.findCYCLE_DRILL(&nA,com)) {
+		} else if ( apt.findCYCLE_DRILL(&dist,&length,&plunge,&cyfeed,&cydwell)) {
 				fprintf(OUT, "%d CYCL DEF 1.0 PECKING\n", lnumber); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.1 DIST%.3f\n", lnumber,atof(com+7*COMSIZE)); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.2 DEPTH%.3f\n", lnumber,-atof(com+COMSIZE)); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.3 PLNGNG%.1f\n", lnumber,atof(com+5*COMSIZE)); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.4 DWELL%.0f\n", lnumber,atof(com+9*COMSIZE)); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 1.5 F%.0f\n", lnumber,atof(com+3*COMSIZE)); ++lnumber;
-				dist=atof(com+7*COMSIZE);
-				length=atof(com+COMSIZE);
+				fprintf(OUT, "%d CYCL DEF 1.1 DIST%.3f\n", lnumber,dist); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.2 DEPTH%.3f\n", lnumber,-length); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.3 PLNGNG%.1f\n", lnumber,plunge); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.4 DWELL%.0f\n", lnumber,cydwell); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 1.5 F%.0f\n", lnumber,cyfeed); ++lnumber;
 				if (dry!=1) { fprintf(OUT, "%d M08\n",lnumber); ++ lnumber; }
 				else { fprintf(OUT, "%d M09\n",lnumber); ++ lnumber; }
 				apt.resetnewflood();

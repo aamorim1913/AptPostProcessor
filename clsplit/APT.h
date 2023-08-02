@@ -4,7 +4,52 @@
 #define MAXLINE 1024
 
 #include <stdio.h>
-#include "readtools.h"
+
+int ReadLine(char* buff, FILE* fp) {
+	buff[0] = '\0';
+	buff[MAXLINE - 1] = '\0';             /* mark end of buffer */
+	char* tmp;
+
+	if (fgets(buff, MAXLINE, fp) == NULL) {
+		*buff = '\0';                   /* EOF */
+		return false;
+	}
+	else {
+		/* remove newline */
+		if ((tmp = strrchr(buff, '\n')) != NULL) {
+			*tmp = '\0';
+		}
+	}
+	return true;
+}
+
+/* Read coodinates from coord file up to end or invalid_coord (if exists) */
+/* Datum has pivot point coordinates subtracted. In file is absolute machine coordinates */
+int ReadCoord(double* xDat2Ref, double* yDat2Ref, double* zDat2Ref, double* Piv2Datum) {
+	int ns = 0;
+	FILE* SETCOOR;
+	char linecoor[MAXLINE];
+
+	if ( (SETCOOR=fopen(SETCOORNAME, "r")) == NULL ) {
+		printf("cannot open SETCOOR file %s\n", SETCOORNAME);
+		return 1;
+	}
+
+	ReadLine(linecoor, SETCOOR);
+	for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
+	sscanf(linecoor, "%lf %lf %lf", Piv2Datum, Piv2Datum+1, Piv2Datum+2);
+	for( int i=0; i<3; i++) Piv2Datum[i]-=Mac2Pivot[i];
+
+	while (ReadLine(linecoor, SETCOOR)) {
+		for (int i = 0; i < strlen(linecoor); i++) if (linecoor[i] == ',') linecoor[i] = '.';
+		if ((sscanf(linecoor, "%lf %lf %lf", xDat2Ref+ns, yDat2Ref+ns, zDat2Ref+ns) != 3) ||
+			(xDat2Ref[ns]==invalid_coord)) break;
+		ns++;
+	}
+
+	fclose(SETCOOR);
+	return ns;
+}
 
 #define MAXTOOL 256
 struct TOOL{
@@ -119,8 +164,10 @@ int ReadToolSet(){
 
 };
 
+#define COMSIZE 256
 
 class APT{
+
 private:
      FILE *FILEAPT;
      char lineapt[MAXLINE];
@@ -137,6 +184,36 @@ private:
      char com[12*COMSIZE];
 	int nA;
      double A[12];
+
+     int ReadArray(double* x, char* s, char del) {
+	     int i = 0;
+	     char* found;
+	     found = strtok(s, ",");
+	     if (found) {
+		     x[0] = (float)atof(found);
+		     ++i;
+	     } 
+	     while ((found = strtok(NULL, ",")) != NULL) {
+		     x[i] = (float)atof(found);
+		     i++;
+	     }
+	     return i;
+     }
+
+     int ReadArrayCom(char* com, char* s, char del) {
+	     int i = 0;
+	     char* found;
+	     found = strtok(s, ",");
+	     if (found) {
+		     strcpy(com, found);
+		     ++i;
+	     }
+	     while ((found = strtok(NULL, ",")) != NULL) {
+		     strcpy(com + i * COMSIZE, found);
+		     i++;
+	     }
+	     return i;
+     }
 
 public:
      APT(){
@@ -353,11 +430,12 @@ public:
           } else return 0;
      }
 
-     int findCSI_CSI_SET_EXTENSION_LENGTH(char* com) {
+     int findCSI_CSI_SET_EXTENSION_LENGTH(char* text) {
           double temp;
      	if (strstr(lineapt, "CSI_SET_EXTENSION_LENGTH/") != 0){
             	sscanf(lineapt+strlen("CSI_SET_EXTENSION_LENGTH/"),"%lf", &temp);
 			snprintf(com, COMSIZE, " FLUTE EXT %.1lf", temp);
+               strcat(text,com);
                return 1; 
           } else return 0;
      }
@@ -440,24 +518,37 @@ public:
             } else return 0;
      }
 
-     int findCYCLE_DEEP2(int *nA, char *com) {
+     int findCYCLE_DEEP2(double *dist,double *length, double *plunge, double *cyfeed) {
      	  if (strstr(lineapt, "CYCLE/DEEP2") != 0) {
-              *nA=ReadArrayCom(com, lineapt + strlen("CYCLE/DEEP2"), ',');
+               nA=ReadArrayCom(com, lineapt + strlen("CYCLE/DEEP2"), ',');
+              	*dist=atof(com+11*COMSIZE);
+			*length=atof(com+COMSIZE);
+               *plunge=atof(com+9*COMSIZE);
+               *cyfeed=atof(com+7*COMSIZE);
                return 1;
             } else return 0;
      }
 
-     int findCYCLE_DEEP(int *nA, char *com) {
+     int findCYCLE_DEEP(double *dist,double *length, double *plunge, double *cyfeed) {
      	  if (strstr(lineapt, "CYCLE/DEEP") != 0) {
-              *nA=ReadArrayCom(com, lineapt + strlen("CYCLE/DEEP"), ',');
+               nA=ReadArrayCom(com, lineapt + strlen("CYCLE/DEEP"), ',');
+               *dist=atof(com+9*COMSIZE);
+			*length=atof(com+COMSIZE);
+               *plunge=atof(com+7*COMSIZE);
+               *cyfeed=atof(com+5*COMSIZE);
                return 1;
             } else return 0;
 
      }
 
-     int findCYCLE_DRILL(int *nA, char *com) {
+     int findCYCLE_DRILL(double *dist,double *length, double *plunge, double *cyfeed, double *cydwell) {
        	  if (strstr(lineapt, "CYCLE/DRILL") != 0) {
-               *nA=ReadArrayCom(com, lineapt + strlen("CYCLE/DRILL"), ',');
+               nA=ReadArrayCom(com, lineapt + strlen("CYCLE/DRILL"), ',');
+			*dist=atof(com+7*COMSIZE);
+               *length=atof(com+COMSIZE);
+               *plunge=atof(com+5*COMSIZE);
+               *cyfeed=atof(com+3*COMSIZE);
+               *cydwell=atof(com+9*COMSIZE);
                return 1;
             } else return 0;
    }
