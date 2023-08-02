@@ -11,6 +11,8 @@
 #include "unistd.h"
 #endif
 #include "math.h"
+#include <iostream>
+
 #define AM_PI 3.14159265358979323846   // pi
 
 #define MAXLINE 1024
@@ -41,11 +43,40 @@ const int machine_table_round=1;
 
 const double invalid_coord=-9999.0;
 
-#include "clsplit.h"
-
 #include "APT.h"
 #include "CSCAD.h"
 
+int RotateArray(double* vec, double* axis, double& thetab, double& thetac) {
+	/* rotate vec with the machine rotation that puts axis as (0,0,1) normal out defines thetab and thetac */
+	double x, y, z;
+	double Cb, Sb, Cc, Sc, normAxis;
+
+	if (axis[2] == 1) {
+		Cb = 1;
+		Sb = 0;
+		Cc = 1;
+		Sc = 0;
+		thetab = 0;
+		thetac = 0;
+	} else {
+		normAxis=sqrt(axis[0]*axis[0]+axis[1]*axis[1]+axis[2]*axis[2]);
+		for (int i=0 ; i<3 ; i++) axis[i]=axis[i]/normAxis;
+		Cb = axis[2];
+		Sb = sqrt(1.0 - Cb * Cb);
+		Cc = axis[0] / Sb;
+		Sc = axis[1] / Sb;
+		thetab = atan2(Sb, Cb) * 180.0 / AM_PI;
+		thetac = atan2(Sc, Cc) * 180.0 / AM_PI;
+	}
+
+	x = vec[0]; y = vec[1]; z = vec[2];
+	/* directa */
+	vec[0] = Cb * Cc * x + Cb * Sc * y - Sb * z;
+	vec[1] = -Sc * x + Cc * y;
+	vec[2] = Sb * Cc * x + Sb * Sc * y + Cb * z;
+
+	return 0;
+}
 
 int WriteSetup(int ns, double axis[3], double Shift[3]) {
 	char filename[MAXLINE];
@@ -146,7 +177,7 @@ FILE *OpenH(int n){
 		} else return OUT;
 }
 
-/*-----------------------------  Processing the reference file  from the machine ----------------------------------------------*/
+/*-----------------------------  Processing the reference file from machine data ----------------------------------------------*/
 class TRef{
 
 private:
@@ -285,7 +316,7 @@ int main(int argc, char **argv) {
 	int nA;
 	int nsetup,ncoord,lnumber;
 	char RL='0', used_RL='0', Sense='+';
-	int toolcall; 
+	int loadedtool; 
 	double feed = -1, feedscale=1.0,  rtool,ltool;
 	int dry=0,debug=0;
 	int toolsmeasured=1;
@@ -295,7 +326,6 @@ int main(int argc, char **argv) {
 	APT apt;
 	TRef tref;
 	CSCAD scad;
-	TOOLS tools;
 
 	int op=0;
 	fpause = 0;
@@ -348,11 +378,11 @@ int main(int argc, char **argv) {
 	/* read all coordinates in the %FN15RUN.A file up to end or invalid_coord (if exists) */
 	ncoord=ReadCoord(xDatum2Ref,yDatum2Ref,zDatum2Ref,Piv2Datum);
 	/* read all tool measurements from SET.TOOLS */
-	tools.ReadToolSet();
+	apt.ReadToolSet();
 	/* read all tool measurements from the %FN15RUN.A file */
 	if (ifarg("usestoredtools",argc,argv)) {
                 printf("running usedstoredtools\n");
-    } else tools.ReadToolCoord(fpause);
+    } else apt.ReadToolCoord(fpause);
 
 	/* yDatum2Ref[ncoord] is cos(theta) of table rotation and zDatum2Ref[ncoord] is z0 of tool measure  */
 	if ( xDatum2Ref[ncoord] != invalid_coord ) thetatable=0;
@@ -384,7 +414,7 @@ int main(int argc, char **argv) {
 	plunge=0.0;
 	cyfeed=0.0;
 	cydwell=0.0;
-	toolcall = -1;
+	loadedtool = -1;
 
 	/* main loop on the apt file commands. Real output happens in first GOTO */
 	while (apt.ReadLine()) {
@@ -405,16 +435,16 @@ int main(int argc, char **argv) {
 			fprintf(OUT, "%d STOP\n",lnumber);  ++lnumber;
 			fprintf(OUT, "%d ;%s\n", lnumber, stopcom);  ++lnumber;
 			/* warm spindle for 10 seconds */
-			if (tools.tl[toolcall].speed>2000){
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, 1500); ++lnumber;
-				if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
+			if (apt.tl[loadedtool].speed>2000){
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, loadedtool+100, 1500); ++lnumber;
+				if (apt.tl[loadedtool].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
 				else fprintf(OUT, "%d L M04\n",lnumber); 
 				++lnumber;
 				fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d CYCLE DEF 9.1 10\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, tools.tl[toolcall].speed); ++lnumber;
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, loadedtool+100, apt.tl[loadedtool].speed); ++lnumber;
 			}
-			if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
+			if (apt.tl[loadedtool].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
 			else fprintf(OUT, "%d L M04\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d CYCLE DEF 9.1 2\n",lnumber); ++lnumber;
@@ -484,7 +514,7 @@ int main(int argc, char **argv) {
 					fclose(OUT);
 
 					/* open file for new setup */
-					tools.Undefine();
+					apt.Undefine();
 					/* if milling from bellow generate file with number 900+ */
 					if ( thetab > 90 ) OUT=OpenH(nsetup+900+11);
 					else {
@@ -503,7 +533,7 @@ int main(int argc, char **argv) {
 			} else {
 				fprintf(OUT, "%d ;NewFeature\n", lnumber); ++lnumber;
 			}
-			scad.open(argv[1], nsetup, op, toolcall, apt.getStock(), tools.tl, Shift, Piv2Datum, thetab, thetac, thetatable);
+			scad.open(argv[1], nsetup, op, loadedtool, apt.getStock(), apt.tl, Shift, Piv2Datum, thetab, thetac, thetatable);
 
 		/* comment copy  */
 		} else if ( apt.findINSERT_INSERT(last_comment) ) {  /* INSERT is copied to comment (maybe tool name)*/
@@ -512,36 +542,36 @@ int main(int argc, char **argv) {
 		} else if ( apt.findINSERT_CUTTER(&rtool, &ltool) ){
 			
 		/* spindle speed and spinsence */
-		} else if ( apt.findSPINDL(&(tools.tl[toolcall].speed),&(tools.tl[toolcall].clockwise))) { /* SPINDLE prints the TOOL statment if tool number is defined */
-			if ( tools.tl[toolcall].speed > MachineMaxSpindle){
-				feedscale = MachineMaxSpindle/(1.0*tools.tl[toolcall].speed);
-				tools.tl[toolcall].speed = MachineMaxSpindle;
+		} else if ( apt.findSPINDL(&(apt.tl[loadedtool].speed),&(apt.tl[loadedtool].clockwise))) { /* SPINDLE prints the TOOL statment if tool number is defined */
+			if ( apt.tl[loadedtool].speed > MachineMaxSpindle){
+				feedscale = MachineMaxSpindle/(1.0*apt.tl[loadedtool].speed);
+				apt.tl[loadedtool].speed = MachineMaxSpindle;
 			} 
 			else feedscale = 1.0;
 
 		/* CSI_SET_FLUTE_LENGTH */
-		} else if ( apt.findCSI_SET_FLUTE_LENGTH(tools.tl[toolcall].name) ) { /* tool CSI_SET_FLUTE_LENGTH */
+		} else if ( apt.findCSI_SET_FLUTE_LENGTH(apt.tl[loadedtool].name) ) { /* tool CSI_SET_FLUTE_LENGTH */
 
 		/* CSI_SET_EXTENSION_LENGTH */
-		} else if ( apt.findCSI_CSI_SET_EXTENSION_LENGTH(tools.tl[toolcall].name) ) { /* tool CSI_SET_EXTENSION_LENGTH */
+		} else if ( apt.findCSI_CSI_SET_EXTENSION_LENGTH(apt.tl[loadedtool].name) ) { /* tool CSI_SET_EXTENSION_LENGTH */
 
 		/* load the tool */
-		} else if ( apt.findLOAD_TOOL(&toolcall) ) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
-			if (strncmp(last_comment,tools.tl[toolcall].name,strlen(last_comment)) != 0){
+		} else if ( apt.findLOAD_TOOL(&loadedtool) ) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
+			if (strncmp(last_comment,apt.tl[loadedtool].name,strlen(last_comment)) != 0){
 				toolschanged=1;
-				if (tools.tl[toolcall].DL!=0) printf("Tool %d has been modifyed. Call with storetools option.\n",toolcall+1);
+				if (apt.tl[loadedtool].DL!=0) printf("Tool %d has been modifyed. Call with storetools option.\n",loadedtool+1);
 			}
-			strcpy(tools.tl[toolcall].name,last_comment);
-			tools.tl[toolcall].rcad = rtool; 
-			if ((tools.tl[toolcall].rtable != 0) && (tools.tl[toolcall].rtable != tools.tl[toolcall].rcad)) {
+			strcpy(apt.tl[loadedtool].name,last_comment);
+			apt.tl[loadedtool].rcad = rtool; 
+			if ((apt.tl[loadedtool].rtable != 0) && (apt.tl[loadedtool].rtable != apt.tl[loadedtool].rcad)) {
 				printf("Error: Tool %d is set to radius %f in matching tool table %f\n",
-						toolcall, tools.tl[toolcall].rcad,tools.tl[toolcall].rtable);
+						loadedtool, apt.tl[loadedtool].rcad,apt.tl[loadedtool].rtable);
 				fpause=1;
 			}
-			tools.tl[toolcall].lcad = ltool;
-			if (tools.tl[toolcall].DL == 0.0) {
+			apt.tl[loadedtool].lcad = ltool;
+			if (apt.tl[loadedtool].DL == 0.0) {
 				toolsmeasured=0;
-				printf("Tool %d lenght is 0 and needs to be measured\n",toolcall+1);
+				printf("Tool %d lenght is 0 and needs to be measured\n",loadedtool+1);
 				fpause=1;
 			}
 
@@ -550,12 +580,12 @@ int main(int argc, char **argv) {
 
 		/* used only if delta r is not it CAM */
 		} else if ( apt.findCUTCOM_LEFT() ) { /* Define for RR R0 */
-			if (tools.tl[toolcall].DR != 0.0) RL = 'L';
+			if (apt.tl[loadedtool].DR != 0.0) RL = 'L';
 			else RL = '0';
 
 		/* used only if delta r is not it CAM */
 		} else if ( apt.findCUTCOM_RIGHT() ) { /* Define for RR R0 */
-			if (tools.tl[toolcall].DR != 0.0) RL = 'R';
+			if (apt.tl[loadedtool].DR != 0.0) RL = 'R';
 			else RL = '0';
 
 		/* used only if delta r is not it CAM */
@@ -665,30 +695,30 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
                 int namestart=0;
-                for (int j = 0; j < strlen(tools.tl[toolcall].name); j++)  
-							if (tools.tl[toolcall].name[j] == '=') namestart=j+1;
-				fprintf(OUT, "%d ;%s\n", lnumber, tools.tl[toolcall].name+namestart); ++lnumber;
-				if (tools.tl[toolcall].defined==0) {
-					fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, toolcall+100, 
-					tools.tl[toolcall].DL, tools.tl[toolcall].DR); ++lnumber;
+                for (int j = 0; j < strlen(apt.tl[loadedtool].name); j++)  
+							if (apt.tl[loadedtool].name[j] == '=') namestart=j+1;
+				fprintf(OUT, "%d ;%s\n", lnumber, apt.tl[loadedtool].name+namestart); ++lnumber;
+				if (apt.tl[loadedtool].defined==0) {
+					fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, loadedtool+100, 
+					apt.tl[loadedtool].DL, apt.tl[loadedtool].DR); ++lnumber;
 				}
-				tools.tl[toolcall].defined=1;
-				tref.AddTool(toolcall,tools.tl);
+				apt.tl[loadedtool].defined=1;
+				tref.AddTool(loadedtool,apt.tl);
 				if (old_Datum2Tool[2]!=invalid_coord) {
 					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_Datum2Tool[2]); ++lnumber; 
 				}
 				apt.setnewflood();
 				/* warm spindle for 10 seconds*/
-				if (tools.tl[toolcall].speed>2000){
-					fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, 1500); ++lnumber;
-					if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
+				if (apt.tl[loadedtool].speed>2000){
+					fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, loadedtool+100, 1500); ++lnumber;
+					if (apt.tl[loadedtool].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber); 
 					else fprintf(OUT, "%d L M04\n",lnumber);
 					++lnumber;
 					fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
 					fprintf(OUT, "%d CYCLE DEF 9.1 5\n",lnumber); ++lnumber;
 				}
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, toolcall+100, tools.tl[toolcall].speed); ++lnumber;
-				if (tools.tl[toolcall].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber);
+				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, loadedtool+100, apt.tl[loadedtool].speed); ++lnumber;
+				if (apt.tl[loadedtool].clockwise==1) fprintf(OUT, "%d L M03\n",lnumber);
 				else fprintf(OUT, "%d L M04\n",lnumber); 
 				++lnumber;
 				fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
@@ -710,7 +740,7 @@ int main(int argc, char **argv) {
 				fpause=1;
 			}
 			if (Datum2Tool[2]+Mac2Datum[2] <= machine_table[2] ) {
-				printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, toolcall);
+				printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, loadedtool);
 				fpause=1;
 			}
 			/* if only 3 coord no rotation is needed */
@@ -719,10 +749,10 @@ int main(int argc, char **argv) {
 					+(Datum2Tool[1]-CircleCenter[1])*(Datum2Tool[1]-CircleCenter[1]));
 				double sinn=sqrt(1-goto_axis[2]*goto_axis[2]);
 				for (int i=0; i<3; i++) goto_axis[i]=Datum2Tool[i+3];
-				if ((Datum2Tool[2]+Mac2Datum[2]-tools.tl[toolcall].rcad*sqrt(1-goto_axis[2]*goto_axis[2]) 
+				if ((Datum2Tool[2]+Mac2Datum[2]-apt.tl[loadedtool].rcad*sqrt(1-goto_axis[2]*goto_axis[2]) 
 						<= machine_table[2]) || ((apt.iscircleon()) && 
-					Datum2Tool[2]+Mac2Datum[2] -(CircleR+tools.tl[toolcall].rcad)*sinn <=machine_table[2])) {
-					printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, toolcall);
+					Datum2Tool[2]+Mac2Datum[2] -(CircleR+apt.tl[loadedtool].rcad)*sinn <=machine_table[2])) {
+					printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, loadedtool);
 					fpause=1;
 				}
 				RotateArray(Datum2Tool,goto_axis,thetabtemp,thetactemp);
@@ -842,10 +872,10 @@ int main(int argc, char **argv) {
 	}
 	printf("Found %d setups. Output in ../machine-code/ directory.\n", nsetup+1);
 
-	tref.Close(tools.tl);
+	tref.Close(apt.tl);
 
 	if (toolsmeasured==1){ 
-		if ((toolschanged==0)||( ifarg("storetools",argc,argv))) tools.DumpToolSet();
+		if ((toolschanged==0)||( ifarg("storetools",argc,argv))) apt.DumpToolSet();
 	}
 
 	apt.close();
