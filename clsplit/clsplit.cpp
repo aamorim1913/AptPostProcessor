@@ -218,9 +218,6 @@ public:
 	}
 
 	int Close(struct TOOL *tl) {
-		int first;
-
-		first=1;
 
 		fprintf(TREF,"L Z-10 FMAX M91\n");
 		fprintf(TREF,"TOOL CALL 0 Z S5\n"); 
@@ -305,7 +302,7 @@ int main(int argc, char **argv) {
 	double Mac2Datum[3], Piv2RRef[3], Piv2RDatum[3];
 	double Shift[3];
 	double CircleCenter[2], old_CircleCenter[2], Datum2Tool[6], old_Datum2Tool[3];
-	double axis[3]={0,0,0}, circ_axis[3]={0,0,0}, goto_axis[3]={0,0,0}, A[12]={ 0,0,0,0,0,0,0,0,0,0,0,0 };
+	double axis[3]={0,0,0}, circ_axis[3]={0,0,0}, goto_axis[3]={0,0,0};
 	double prev_axis[3] = {0,0,0}, dist=0, length=0, plunge=0, cyfeed=0,cydwell=0;
 	char stopcom[100];
 

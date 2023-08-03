@@ -142,7 +142,6 @@ int AddCircle( double* CircleCenter,double CircleR,double theta1,double theta2, 
 int open(char* name, int setnsetup, int setop, int settool, double *Stock, struct TOOL *settl, double *Shift, double *Datum, double thetab, double thetac, double thetatable) {
 
 	size_t st;
-	static int prev_ns;
 
 	char filename[MAXLINE];
 
