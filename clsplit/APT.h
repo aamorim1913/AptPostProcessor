@@ -364,6 +364,7 @@ public:
      }
 
      int findINSERT_CSYS(double axis[]) {
+          double normAxis;
 	     if (strstr(lineapt, "CSYS") != 0) {
                strcpy(com, lineapt + strlen("CSYS/"));
                nA = ReadArray(A, com, ',');
@@ -371,6 +372,10 @@ public:
 			axis[0] = A[2];
 			axis[1] = A[6];
 			axis[2] = A[10];
+               if (axis[2] != 1.0) {
+                    normAxis=sqrt(axis[0]*axis[0]+axis[1]*axis[1]+axis[2]*axis[2]);
+		          for (int i=0 ; i<3 ; i++) axis[i]=axis[i]/normAxis;
+               }
                return 1;      
           } else return 0;
      }
@@ -482,8 +487,13 @@ public:
      }
    
      int findCIRCLE(int *nA, double *Datum2Tool) {
+          double normAxis;
      	 if (strstr(lineapt, "CIRCLE/") != 0){
                *nA=ReadArray(Datum2Tool, lineapt + strlen("CIRCLE/"), ',');
+               if ((*nA>3) && (Datum2Tool[5]!=1.0)) {  
+                    normAxis=sqrt(Datum2Tool[3]*Datum2Tool[3]+Datum2Tool[4]*Datum2Tool[4]+Datum2Tool[5]*Datum2Tool[5]);
+                    for (int i=0; i<3; i++) Datum2Tool[i+3]=Datum2Tool[i+3]/normAxis;
+               }
                return 1;
            } else return 0;
      }
@@ -542,8 +552,13 @@ public:
      }
 
      int findGOTO(int *nA, double *Datum2Tool) {
+          double normAxis;
      	if (strstr(lineapt, "GOTO/") != 0){
                *nA=ReadArray(Datum2Tool, lineapt + strlen("GOTO/"), ',');
+               if ((*nA>3) && (Datum2Tool[5]!=1.0)) {
+                    normAxis=sqrt(Datum2Tool[3]*Datum2Tool[3]+Datum2Tool[4]*Datum2Tool[4]+Datum2Tool[5]*Datum2Tool[5]);
+                    for (int i=0; i<3; i++) Datum2Tool[i+3]=Datum2Tool[i+3]/normAxis;
+               }
                return 1;
           } else return 0;
      }

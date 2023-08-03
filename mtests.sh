@@ -91,6 +91,7 @@ case $1 in
 				done
 			done
 		done
+		ls tests/*.new 2>/dev/null
 		mv -f machine-code/%FN15RUN.A-save machine-code/%FN15RUN.A
 	else
 		mv machine-code/%FN15RUN.A machine-code/%FN15RUN.A-save

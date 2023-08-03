@@ -49,7 +49,7 @@ const double invalid_coord=-9999.0;
 int RotateArray(double* vec, double* axis, double& thetab, double& thetac) {
 	/* rotate vec with the machine rotation that puts axis as (0,0,1) normal out defines thetab and thetac */
 	double x, y, z;
-	double Cb, Sb, Cc, Sc, normAxis;
+	double Cb, Sb, Cc, Sc;
 
 	if (axis[2] == 1) {
 		Cb = 1;
@@ -59,8 +59,6 @@ int RotateArray(double* vec, double* axis, double& thetab, double& thetac) {
 		thetab = 0;
 		thetac = 0;
 	} else {
-		normAxis=sqrt(axis[0]*axis[0]+axis[1]*axis[1]+axis[2]*axis[2]);
-		for (int i=0 ; i<3 ; i++) axis[i]=axis[i]/normAxis;
 		Cb = axis[2];
 		Sb = sqrt(1.0 - Cb * Cb);
 		Cc = axis[0] / Sb;
