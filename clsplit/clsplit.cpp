@@ -609,7 +609,13 @@ int main(int argc, char **argv) {
 			}
 			Sense='+';  /* math angle growing */
 			if (nA==6){
-				for (int i=0; i<3; i++) circ_axis[i]=Datum2Tool[i+3];
+				for (int i=0; i<3; i++) {
+					 circ_axis[i]=Datum2Tool[i+3];
+					if (abs(circ_axis[i])!=abs(axis[i])) {
+						printf("Axis %d with %lf in CIRCLE different from CSYS %lf: true 5 axis required\n",i, circ_axis[i],axis[i]);
+						fpause=1;
+					}
+				}
 				/* if dot product with axis  < 0 */
 				if (sin(thetab)*cos(thetac)*Datum2Tool[3]+
 						sin(thetab)*sin(thetac)*Datum2Tool[4]+cos(thetab)*Datum2Tool[5]<0){
@@ -745,7 +751,13 @@ int main(int argc, char **argv) {
 				CircleR = sqrt((Datum2Tool[0]-CircleCenter[0])*(Datum2Tool[0]-CircleCenter[0])
 					+(Datum2Tool[1]-CircleCenter[1])*(Datum2Tool[1]-CircleCenter[1]));
 				double sinn=sqrt(1-goto_axis[2]*goto_axis[2]);
-				for (int i=0; i<3; i++) goto_axis[i]=Datum2Tool[i+3];
+				for (int i=0; i<3; i++) {
+					goto_axis[i]=Datum2Tool[i+3];
+					if (goto_axis[i]!=axis[i]) {
+						printf("Axis %d with %lf in GOTO different from CSYS %lf: true 5 axis required\n",i, goto_axis[i],axis[i]);
+						fpause=1;
+					}
+				}
 				if ((Datum2Tool[2]+Mac2Datum[2]-apt.gettoolrcad()*sqrt(1-goto_axis[2]*goto_axis[2]) 
 						<= machine_table[2]) || ((apt.iscircleon()) && 
 					Datum2Tool[2]+Mac2Datum[2] -(CircleR+apt.gettoolrcad())*sinn <=machine_table[2])) {
