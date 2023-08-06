@@ -145,7 +145,7 @@ public:
           return tl[loadedtool].speed;
      }
 
-     int settoolspeed(double speed){
+     int settoolspeed(int speed){
           tl[loadedtool].speed=speed;
           return 0;
      }
@@ -198,7 +198,7 @@ public:
           return 0;
      }
 
-     int gettoollcad(){
+     double gettoollcad(){
           return tl[loadedtool].lcad;
      }
 
