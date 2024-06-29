@@ -436,17 +436,16 @@ int main(int argc, char **argv) {
 			/* if spin > 2000 warm spindle for 10 seconds */
 			if (apt.gettoolspeed()>2000){
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, 1500); ++lnumber;
-				if (apt.istoolclockwise()) fprintf(OUT, "%d L M03\n",lnumber); 
-				else fprintf(OUT, "%d L M04\n",lnumber); 
+				if (apt.istoolclockwise()) fprintf(OUT, "%d L M03 M99\n",lnumber); 
+				else fprintf(OUT, "%d L M04 M99\n",lnumber); 
 				++lnumber;
-				fprintf(OUT, "%d L M99\n",lnumber); ++lnumber;
 			}
 			fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, apt.gettoolspeed()); ++lnumber;
-			if (apt.istoolclockwise()) fprintf(OUT, "%d L M03\n",lnumber); 
-			else fprintf(OUT, "%d L M04\n",lnumber); ++lnumber;
+			if (apt.istoolclockwise()) fprintf(OUT, "%d L M03 M99\n",lnumber); 
+			else fprintf(OUT, "%d L M04 M99\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L ",lnumber); 
 			printVAR(OUT,"Z", old_Datum2Tool[2]);
-			fprintf(OUT," FMAX M99\n"); ++lnumber;
+			fprintf(OUT," FMAX\n"); ++lnumber;
 
 		/* The reference frame of the fixture that we pick only form the normal transformed from ez */
 		} else if ( apt.findINSERT_CSYS(axis) ) { 
@@ -708,23 +707,19 @@ int main(int argc, char **argv) {
 					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_Datum2Tool[2]); ++lnumber; 
 				}
 				apt.setnewflood();
+				fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
+				fprintf(OUT, "%d CYCLE DEF 9.1 2\n",lnumber); ++lnumber;
 				/* warm spindle for 10 seconds*/
 				if (apt.gettoolspeed()>2000){
 					fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, 1500); ++lnumber;
-					if (apt.istoolclockwise()) fprintf(OUT, "%d L M03\n",lnumber); 
-					else fprintf(OUT, "%d L M04\n",lnumber);
+					if (apt.istoolclockwise()) fprintf(OUT, "%d L M03 M99\n",lnumber); 
+					else fprintf(OUT, "%d L M04 M99\n",lnumber);
 					++lnumber;
-					fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
-					fprintf(OUT, "%d CYCLE DEF 9.1 5\n",lnumber); ++lnumber;
-					fprintf(OUT, "%d L M99\n",lnumber); ++lnumber;
 				}
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, apt.gettoolspeed()); ++lnumber;
-				if (apt.istoolclockwise()) fprintf(OUT, "%d L M03\n",lnumber);
-				else fprintf(OUT, "%d L M04\n",lnumber); 
+				if (apt.istoolclockwise()) fprintf(OUT, "%d L M03 M99\n",lnumber);
+				else fprintf(OUT, "%d L M04 M99\n",lnumber); 
 				++lnumber;
-				fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d CYCLE DEF 9.1 5\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d L M99\n",lnumber); ++lnumber;
 				apt.resetnewtool();
 			}
 			if ( apt.iscircleon() ) {
