@@ -428,23 +428,22 @@ int main(int argc, char **argv) {
 		} else if ( apt.findINSERT_STOP(stopcom) ) {
 			fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber);  ++lnumber;
-			fprintf(OUT, "%d STOP\n",lnumber);  ++lnumber;
+			fprintf(OUT, "%d STOP\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d ;%s\n", lnumber, stopcom);  ++lnumber;
-			/* warm spindle for 10 seconds */
+			fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
+			fprintf(OUT, "%d CYCLE DEF 9.1 10\n",lnumber); ++lnumber;
+
+			/* if spin > 2000 warm spindle for 10 seconds */
 			if (apt.gettoolspeed()>2000){
 				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, 1500); ++lnumber;
 				if (apt.istoolclockwise()) fprintf(OUT, "%d L M03\n",lnumber); 
 				else fprintf(OUT, "%d L M04\n",lnumber); 
 				++lnumber;
-				fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d CYCLE DEF 9.1 10\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L M99\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, apt.gettoolspeed()); ++lnumber;
 			}
+			fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, apt.gettoolspeed()); ++lnumber;
 			if (apt.istoolclockwise()) fprintf(OUT, "%d L M03\n",lnumber); 
 			else fprintf(OUT, "%d L M04\n",lnumber); ++lnumber;
-			fprintf(OUT, "%d CYCLE DEF 9.0 DWELL TIME\n",lnumber); ++lnumber;
-			fprintf(OUT, "%d CYCLE DEF 9.1 2\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L ",lnumber); 
 			printVAR(OUT,"Z", old_Datum2Tool[2]);
 			fprintf(OUT," FMAX M99\n"); ++lnumber;
