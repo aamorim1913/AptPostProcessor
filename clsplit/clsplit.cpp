@@ -22,7 +22,7 @@
 #define DMUDIRSCAD "../machine-code/%dop%d.scad"
 #define DMUDIRSETUP "../machine-code/%dsetup.h"
 #define SETCOORNAME "../machine-code/%FN15RUN.A"
-#define FILETREF "../machine-code/0TREF.h"
+#define FILETREF "../machine-code/0.h"
 #define FILETOOLSET "../machine-code/SET.TOOLS"
  
 using namespace std;
@@ -194,7 +194,7 @@ public:
                 return 1;
         	}
 
-        	fprintf(TREF,"BEGIN PGM 0TREF MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
+        	fprintf(TREF,"BEGIN PGM 0 MM\nCYCL DEF 7.0 DATUM SHIFT\nCYCL DEF 7.1  X+0\nCYCL DEF 7.2  Y+0\nCYCL DEF 7.3  Z+0\n");
 		fprintf(TREF,";Old  Datum- X%+.3lf Y%+.3lf Z%+.3lf\n",
 			Piv2Datum[0]+Mac2Pivot[0],Piv2Datum[1]+Mac2Pivot[1],Piv2Datum[2]+Mac2Pivot[2]);
 		nref=0;
@@ -223,11 +223,11 @@ public:
 		fprintf(TREF,"TOOL CALL 0 Z S5\n"); 
 		fprintf(TREF,"STOP\n; Set Datum & Point to Mac2Pivot T slot\n");
 		fprintf(TREF,"FN18: SYSREAD Q10 = ID270 NR1 IDX1\n"); 
-			fprintf(TREF,"FN18: SYSREAD Q13 = ID240 NR1 IDX1\n");
-			fprintf(TREF,"FN18: SYSREAD Q11 = ID270 NR1 IDX2\n"); 
-			fprintf(TREF,"FN18: SYSREAD Q14 = ID240 NR1 IDX2\n"); 
-			fprintf(TREF,"FN18: SYSREAD Q12 = ID270 NR1 IDX3\n");
-			fprintf(TREF,"FN18: SYSREAD Q15 = ID240 NR1 IDX3\n");
+		fprintf(TREF,"FN18: SYSREAD Q13 = ID240 NR1 IDX1\n");
+		fprintf(TREF,"FN18: SYSREAD Q11 = ID270 NR1 IDX2\n"); 
+		fprintf(TREF,"FN18: SYSREAD Q14 = ID240 NR1 IDX2\n"); 
+		fprintf(TREF,"FN18: SYSREAD Q12 = ID270 NR1 IDX3\n");
+		fprintf(TREF,"FN18: SYSREAD Q15 = ID240 NR1 IDX3\n");
 		fprintf(TREF,"Q7 = Q13 - Q10\n"); 
 		fprintf(TREF,"Q8 = Q14 - Q11\n"); 
 		fprintf(TREF,"Q9 = Q15 - Q12\n"); 
@@ -283,7 +283,7 @@ public:
 		for (int i=0; i<nref; i++) fprintf(TREF,"FN15: PRINT Q%d0/Q%d1/Q%d2\n",i+1,i+1,i+1); 
 		fprintf(TREF,"FN15: PRINT Q6/Q2/Q5\n"); 
 		for (int i=0; i<ntool; i++) fprintf(TREF,"FN15: PRINT Q%d7/Q%d6/Q%d8\n",i+1,i+1,i+1);
-		fprintf(TREF,"END PGM 0TREF MM\n");
+		fprintf(TREF,"END PGM 0 MM\n");
 
 		fclose(TREF);
 		return 0;
@@ -430,8 +430,6 @@ int main(int argc, char **argv) {
 			fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber);  ++lnumber;
 			fprintf(OUT, "%d STOP\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d ;%s\n", lnumber, stopcom);  ++lnumber;
-			fprintf(OUT, "%d CYCL DEF 9.0 DWELL\n",lnumber); ++lnumber;
-			fprintf(OUT, "%d CYCL DEF 9.1 TIMEO5\n",lnumber); ++lnumber;
 
 			/* if spin > 2000 warm spindle for 10 seconds */
 			if (apt.gettoolspeed()>2000){
@@ -709,8 +707,6 @@ int main(int argc, char **argv) {
 				apt.settooldefined();
 				apt.setnewflood();
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber);  ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 9.0 DWELL\n",lnumber); ++lnumber;
-				fprintf(OUT, "%d CYCL DEF 9.1 TIME05\n",lnumber); ++lnumber;
 				/* warm spindle for 10 seconds*/
 				if (apt.gettoolspeed()>2000){
 					fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, 1500); ++lnumber;
