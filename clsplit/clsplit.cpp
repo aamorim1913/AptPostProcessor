@@ -88,9 +88,9 @@ int WriteSetup(int ns, double axis[3], double Shift[3]) {
 	}
 	fprintf(SETUP, "1 BEGIN PGM %dsetup MM\n", ns);
 	fprintf(SETUP, "2 ;axis %lg %lg %lg\n", axis[0], axis[1], axis[2]);
-	fprintf(SETUP, "4 CYCL DEF 7.0 DATUM SHIFT\n5 CYCL DEF 7.1  X%+.3lf\n6 CYCL DEF 7.2  Y%+.3lf\n7 CYCL DEF 7.3  Z%+.3lf\n"
+	fprintf(SETUP, "3 CYCL DEF 7.0 DATUM SHIFT\n4 CYCL DEF 7.1  X%+.3lf\n5 CYCL DEF 7.2  Y%+.3lf\n6 CYCL DEF 7.3  Z%+.3lf\n"
 		, Shift[0], Shift[1], Shift[2]);
-	fprintf(SETUP, "8 END PGM %dsetup MM\n", ns);
+	fprintf(SETUP, "7 END PGM %dsetup MM\n", ns);
 	fclose(SETUP);
 	return 0;
 }
@@ -400,7 +400,7 @@ int main(int argc, char **argv) {
 	/* initialize MAIN LOOP OVER LINES of the .apt file */
 	nsetup = -1;
 	apt.resetupdated();
-	lnumber=0;
+	lnumber=1;
 	for (int i=0; i<3; i++) old_Datum2Tool[i]=invalid_coord;
 	for (int i=0; i<2; i++) old_CircleCenter[i] = invalid_coord;
 	RL = '0';
@@ -412,7 +412,7 @@ int main(int argc, char **argv) {
 
 	/* main loop on the apt file commands. Real output happens in first GOTO */
 	while (apt.ReadLine()) {
-		if (debug) fprintf(OUT, "%d ;apt: %s\n", lnumber, apt.getlineapt());++lnumber;
+		if (debug) { fprintf(OUT, "%d ;apt: %s\n", lnumber, apt.getlineapt());++lnumber; }
 
 		/* begin of program */
 		if ( apt.findUNIT_MM() ) {  /* begining of program */
@@ -523,7 +523,7 @@ int main(int argc, char **argv) {
 						tref.AddRef(nsetup);
 					}
 					
-					fprintf(OUT, "0 BEGIN PGM %d MM\n1 ;setup of file %s\n", nsetup+11,argv[1]);
+					fprintf(OUT, "1 BEGIN PGM %d MM\n2 ;setup of file %s\n", nsetup+11,argv[1]);
 					lnumber = 2;
 					apt.setnewX();
 					apt.setnewY();
@@ -559,7 +559,7 @@ int main(int argc, char **argv) {
 			if (strncmp(apt.getlastcomment(),apt.gettoolname(),strlen(apt.getlastcomment())) != 0){
 				toolschanged=1;
 				if (apt.gettoolDL()!=0) printf("Tool %d has been modifyed. Call with storetools option.\n",apt.getloadedtool());
-				if (apt.gettoolDL()!=0) printf("Tool name %s\n",apt.gettoolname());
+				if (apt.gettoolDL()!=0) printf("Tool name %s\n",apt.getlastcomment());
 			}
 			strcpy(apt.gettoolname(),apt.getlastcomment());
 			if ((apt.gettoolrtable() != 0) && (apt.gettoolrtable() != apt.gettoolrcad())) {
