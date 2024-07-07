@@ -558,7 +558,8 @@ int main(int argc, char **argv) {
 		} else if ( apt.findLOAD_TOOL() ) { /* LOAD/TOOL prints TOOL statement if spindl is defined */
 			if (strncmp(apt.getlastcomment(),apt.gettoolname(),strlen(apt.getlastcomment())) != 0){
 				toolschanged=1;
-				if (apt.gettoolDL()!=0) printf("Tool %d has been modifyed. Call with storetools option.\n",apt.getloadedtool()+1);
+				if (apt.gettoolDL()!=0) printf("Tool %d has been modifyed. Call with storetools option.\n",apt.getloadedtool());
+				if (apt.gettoolDL()!=0) printf("Tool name %s\n",apt.gettoolname());
 			}
 			strcpy(apt.gettoolname(),apt.getlastcomment());
 			if ((apt.gettoolrtable() != 0) && (apt.gettoolrtable() != apt.gettoolrcad())) {
@@ -568,7 +569,7 @@ int main(int argc, char **argv) {
 			}
 			if (apt.gettoolDL() == 0.0) {
 				toolsmeasured=0;
-				printf("Tool %d lenght is 0 and needs to be measured\n",apt.getloadedtool()+1);
+				printf("Tool %d lenght is 0 and needs to be measured\n",apt.getloadedtool());
 				fpause=1;
 			}
 
@@ -706,11 +707,8 @@ int main(int argc, char **argv) {
 					apt.gettoolDL(), apt.gettoolDR()); ++lnumber;
 				}
 				apt.settooldefined();
-				tref.AddTool(apt.getloadedtool(),apt.tl);
-				if (old_Datum2Tool[2]!=invalid_coord) {
-					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_Datum2Tool[2]); ++lnumber; 
-				}
 				apt.setnewflood();
+				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber);  ++lnumber;
 				fprintf(OUT, "%d CYCL DEF 9.0 DWELL\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d CYCL DEF 9.1 TIME05\n",lnumber); ++lnumber;
 				/* warm spindle for 10 seconds*/
@@ -729,6 +727,10 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d CYCL DEF 9.0 DWELL\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d CYCL DEF 9.1 TIME10\n",lnumber); ++lnumber;
 				apt.resetnewtool();
+				tref.AddTool(apt.getloadedtool(),apt.tl);
+				if (old_Datum2Tool[2]!=invalid_coord) {
+					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_Datum2Tool[2]); ++lnumber; 
+				}
 			}
 			if ( apt.iscircleon() ) {
 				if (( CircleCenter[0] != old_CircleCenter[0]) || ( CircleCenter[1] != old_CircleCenter[1])) {
