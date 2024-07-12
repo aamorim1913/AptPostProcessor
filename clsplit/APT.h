@@ -571,6 +571,14 @@ public:
      	  return (strstr(lineapt, "PARTNO/") != 0);
      }
 
+     int findSETUPSTART() {
+     	  return (strstr(lineapt, "SETUP/START") != 0);
+     }
+
+     int findSETUPEND() {
+     	  return (strstr(lineapt, "SETUP/END") != 0);
+     }
+
      struct TOOL tl[MAXTOOL];
 
      int Undefine(){

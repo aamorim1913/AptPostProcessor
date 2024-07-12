@@ -870,10 +870,15 @@ int main(int argc, char **argv) {
 		/* do nothing for part number */
 		} else if ( apt.findPARTNO() ) {
 
+		} else if ( apt.findSETUPSTART() ) {
+			fprintf(OUT,"%d ;%s\n", lnumber, apt.getlineapt()); ++lnumber;
+
+		} else if ( apt.findSETUPEND() ) {
+			fprintf(OUT,"%d ;%s\n", lnumber, apt.getlineapt()); ++lnumber;
+
 		/* everything else put as comment */
 		} else {
-			fprintf(OUT,"%d ;%s\n", lnumber, apt.getlineapt());
-			++lnumber;
+			fprintf(OUT,"%d ;%s\n", lnumber, apt.getlineapt()); ++lnumber;
 			printf("ERROR: Unprocessed command on line %d, setup %d. Fix CAM.\n%s\n\n", 
 				  lnumber, nsetup + 11,apt.getlineapt());
 			fpause = 1;
