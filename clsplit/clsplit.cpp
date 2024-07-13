@@ -118,7 +118,7 @@ int CleanFiles() {
 	unlink(filename);
 #endif
 
-	/* remove 0TRef.h */
+	/* remove 0.h */
 	snprintf(filename, MAXLINE, FILETREF);
 #if defined(_WIN64)
 	_unlink(filename);

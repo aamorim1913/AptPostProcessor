@@ -1,6 +1,8 @@
 subsystem:
 	cd clsplit && cmake .
 	$(MAKE) -C clsplit
+	cd skiptool && cmake .
+	$(MAKE) -C skiptool
 	cd cirpivot && cmake .
 	$(MAKE) -C cirpivot 
 	cd flip && cmake .
@@ -12,6 +14,8 @@ subsystem:
 windows:
 	cd clsplit && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release .
 	cd clsplit && nmake
+	cd skiptool && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release .
+	cd skiptool && nmake
 	cd cirpivot && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
 	cd cirpivot && nmake
 	cd flip && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release .
@@ -28,6 +32,9 @@ clean:
 	$(MAKE) -C clsplit clean
 	rm -f clsplit/CMakeCache.txt
 	rm -rf clsplit/CMakeFiles/
+	$(MAKE) -C skiptool clean
+	rm -f skiptool/CMakeCache.txt
+	rm -rf skiptool/CMakeFiles/
 	$(MAKE) -C cirpivot clean
 	rm -f cirpivot/CMakeCache.txt
 	rm -rf cirpivot/CMakeFiles/
@@ -41,6 +48,7 @@ clean:
 cleanwindows:
 	erase /S CMakeCache.txt
 	cd clsplit && $(MAKE) clean
+	cd skiptool && $(MAKE) clean
 	cd cirpivot && $(MAKE) clean
 	cd flip && $(MAKE) clean
 	cd micromeasure && $(MAKE) clean
