@@ -426,8 +426,10 @@ int main(int argc, char **argv) {
 
 		/* When one inserts a comment at the begining of a feature that is invoked in manual operation */
 		} else if ( apt.findINSERT_STOP(stopcom) ) {
-			fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber);  ++lnumber;
+			fprintf(OUT, "%d CYCL DEF 9.0 DWELL\n",lnumber); ++lnumber;
+			fprintf(OUT, "%d CYCL DEF 9.1 TIME2\n",lnumber); ++lnumber;
+			fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d STOP\n",lnumber); ++lnumber;
 			fprintf(OUT, "%d ;%s\n", lnumber, stopcom);  ++lnumber;
 
@@ -694,11 +696,13 @@ int main(int argc, char **argv) {
 				apt.resetnewsys();
 			}
 			if ((apt.isnewspindle() ) && (apt.isnewtool())) {
-				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber); ++lnumber;
+				fprintf(OUT, "%d M5 M9\n",lnumber); ++lnumber;
                 int namestart=0;
                 for (int j = 0; j < strlen(apt.gettoolname()); j++)  
 							if (apt.gettoolname()[j] == '=') namestart=j+1;
+				fprintf(OUT, "%d CYCL DEF 9.0 DWELL\n",lnumber); ++lnumber;
+				fprintf(OUT, "%d CYCL DEF 9.1 TIME2\n",lnumber); ++lnumber;
 				fprintf(OUT, "%d ;%s\n", lnumber, apt.gettoolname()+namestart); ++lnumber;
 				if (!apt.istooldefined()) {
 					fprintf(OUT, "%d TOOL DEF %d L%+.3lf R%+.3lf\n", lnumber, apt.getloadedtool()+100, 
