@@ -15,13 +15,14 @@ windows:
 	cd clsplit && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release .
 	cd clsplit && nmake
 	cd skiptool && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release .
-	cd skiptool && nmake
-	cd cirpivot && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
+	
+	cd cirpivot && cmake -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
 	cd cirpivot && nmake
 	cd flip && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release .
 	cd flip && nmake
-	cd micromeasure && cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
-	cd micromeasure && nmake
+
+	#cd micromeasure && cmake -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
+	#cd micromeasure && nmake
 
 create2: 
 	rsync -av --exclude=CMakeFiles --exclude=CMakeCache.txt clsplit/ clsplit2/
