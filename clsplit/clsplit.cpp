@@ -217,9 +217,10 @@ public:
 		return 0;
 	}
 
-	int Close(struct TOOL *tl) {
+	int Close(struct TOOL *tl,double *Piv2Datum) {
 
 		fprintf(TREF,"L Z-10 FMAX M91\n");
+		fprintf(TREF,"L X%+.3lf Y%+.3lf FMAX M91\n",Mac2Pivot[0]+Piv2Datum[0],Mac2Pivot[1]+Piv2Datum[1]);
 		fprintf(TREF,"TOOL CALL 0 Z S5\n"); 
 		fprintf(TREF,"STOP\n; Set Datum & Point to Mac2Pivot T slot\n");
 		fprintf(TREF,"FN18: SYSREAD Q10 = ID270 NR1 IDX1\n"); 
@@ -890,7 +891,7 @@ int main(int argc, char **argv) {
 	}
 	printf("Found %d setups. Output in ../machine-code/ directory.\n", nsetup+1);
 
-	tref.Close(apt.tl);
+	tref.Close(apt.tl,Piv2Datum);
 
 	if (toolsmeasured==1){ 
 		if ((toolschanged==0)||( ifarg("storetools",argc,argv))) apt.DumpToolSet();
