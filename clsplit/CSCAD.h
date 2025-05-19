@@ -163,13 +163,11 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 	fprintf(SCAD, "xd0=%f; yd0=%f; zd0=%f; /* Datum relative to pivot unrotated */\n", Piv2Datum[0], Piv2Datum[1], Piv2Datum[2]);
 	fprintf(SCAD, "l=%f; ltool=%f; rtool=%f;\n", tl[tool].DL, tl[tool].lcad, tl[tool].rcad);
 	/* draw table */
-	fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) ", 
-		-thetab, -thetac-thetatable,machine_table[0]-Mac2Pivot[0],
-		machine_table[1]-Mac2Pivot[1],machine_table[2]-Mac2Pivot[2]);
-	fprintf(SCAD, "color(\"grey\") difference(){\ntranslate([0,0,-25]) cylinder(50,350,350,center = true);\n"); 
-	fprintf(SCAD, "translate([0,0,-25]) cylinder(50,350,350,center = true);\n");
-	fprintf(SCAD, "translate([0,-500,-75]) linear_extrude(100) square(500,center=true);\n");
-	fprintf(SCAD, "translate([0,500,-75]) linear_extrude(100) square(500,center=true);}\n"); 
+	//fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) ", -thetab, -thetac-thetatable,machine_table[0]-Mac2Pivot[0],machine_table[1]-Mac2Pivot[1],machine_table[2]-Mac2Pivot[2]);
+	//fprintf(SCAD, "color(\"grey\") difference(){\ntranslate([0,0,-25]) cylinder(50,350,350,center = true);\n"); 
+	//fprintf(SCAD, "translate([0,0,-25]) cylinder(50,350,350,center = true);\n");
+	//fprintf(SCAD, "translate([0,-500,-75]) linear_extrude(100) square(500,center=true);\n");
+	//fprintf(SCAD, "translate([0,500,-75]) linear_extrude(100) square(500,center=true);}\n"); 
 
 	/* STL of the part */
 #if defined(_WIN64)
