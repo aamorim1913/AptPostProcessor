@@ -396,9 +396,10 @@ int main(int argc, char **argv) {
 	else thetatable=asin(yDatum2Ref[ncoord]) * 180.0 / AM_PI;
 
 	/* Check Tool Lenght */
-	if ( xDatum2Ref[ncoord] != invalid_coord ) printf("Invalid sensor position in FN15RUN.A \n"); 
-	printf("Set tool lenght to %.3f\n",zDatum2Ref[ncoord]-atof(argv[2])); 
-	fpause=1;
+	if ( xDatum2Ref[ncoord] != invalid_coord ) {
+		printf("Invalid sensor position in FN15RUN.A \n");  
+		fpause=1;
+	}
 
 	/* initialize MAIN LOOP OVER LINES of the .apt file */
 	nsetup = -1;
