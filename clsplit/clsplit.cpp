@@ -105,7 +105,8 @@ int printVAR(FILE* OUT, const char* VAR, double x) {
 }
 
 int ifarg(const char* arg, int argc, char **argv){
-	return ((argc>=3)&&(strstr(argv[2],arg)!=0)) || ((argc>=4)&&(strstr(argv[3],arg)!=0));
+	for (int i=2; i<argc; i++) if (strstr(argv[i],arg)!=0) return 1;
+	return 0;
 }
 
 int CleanFiles() {
@@ -300,7 +301,7 @@ int main(int argc, char **argv) {
 	int fpause;
 	/* Datum has the Pivot coordinates subtrated in ReadCoord() */
 	double Piv2Datum[3], xDatum2Ref[32], yDatum2Ref[32], zDatum2Ref[32]; 
-	double Mac2Datum[3], Piv2RRef[3], Piv2RDatum[3];
+	double Piv2RRef[3], Piv2RDatum[3];
 	double Shift[3];
 	double CircleCenter[2], old_CircleCenter[2], Datum2Tool[6], old_Datum2Tool[3];
 	double axis[3]={0,0,0}, circ_axis[3]={0,0,0}, goto_axis[3]={0,0,0};
@@ -315,6 +316,7 @@ int main(int argc, char **argv) {
 	
 	double feed = -1, feedscale=1.0;
 	int dry=0,debug=0;
+	double FMAXZ=100.0;
 	int toolsmeasured=1;
 	int toolschanged=0;
 
@@ -329,9 +331,8 @@ int main(int argc, char **argv) {
 		cout<< endl;
 		cout<<"Provide the APT (....apt) file name or:" << endl;
 		cout<<"    clean - to remove all generated files "<< endl;
-		cout<<"    <>.apt <Datumx(pivot), Datumy(pivot), Datumz(pivot)> <thetatable> (override %FN15RUN.A)"<< endl;
-		cout<<"    <>.apt <opt1> <opt2> "<< endl;
-		cout<<"where <opt1>,<opt2> can be storetools, usestoredtools, dry, debug"<< endl << endl;
+		cout<<"    <>.apt <opt1> <opt2> ... "<< endl;
+		cout<<"where <opt1>,<opt2> can be storetools, usestoredtools, dry, debug, FMAXZ=xxx"<< endl << endl;
 		cout<<"A %FN15RUN.A file must be present in ../machine-code with the syntax"<< endl;
 		cout<<"		DatumX DatumY DatumZ (in machine coordinates)"<< endl;
 		cout<<"		<X> <Y> <Z> (setup 1 reference sphere relative to Datum)"<< endl;
@@ -364,6 +365,16 @@ int main(int argc, char **argv) {
                 printf(" running debug and printing apt lines.\n");
 		debug=1;
     }
+	if (ifarg("FMAXZ=",argc,argv)) {
+				for (int i=2; i<argc; i++) {
+					if (strstr(argv[i],"FMAXZ=")!=0) {
+						FMAXZ=atof(argv[i]+6);
+						printf(" Change the value of FMAXZ to %lf.\n",FMAXZ);
+					}
+				}
+                
+		debug=1;
+    }
 	
 	/* end SCAD in FINI, CSYS and LOAD TOOL */
 	/* start SCAD in first addline or addcircle with data from CSYS */
@@ -384,19 +395,10 @@ int main(int argc, char **argv) {
 	if ( xDatum2Ref[ncoord] != invalid_coord ) thetatable=0;
 	else thetatable=asin(yDatum2Ref[ncoord]) * 180.0 / AM_PI;
 
-	/* allow datum imput from command line */
-	if (argc>=5 ) {
-		Mac2Datum[0]=atof(argv[2]);
-		Mac2Datum[1]=atof(argv[3]);
-		Mac2Datum[2]=atof(argv[4]);
-		for (int i=0; i<3 ; i++) Piv2Datum[i]=Mac2Datum[i]-Mac2Pivot[i];
-		if (argc >=6) thetatable=atof(argv[5]);
-	} else if (argc>=4) {
-		if ( xDatum2Ref[ncoord] != invalid_coord ) printf("Invalid sensor position in FN15RUN.A \n"); 
-		printf("Set tool lenght to %.3f\n",zDatum2Ref[ncoord]-atof(argv[2])); 
-		fpause=1;
-	}
-
+	/* Check Tool Lenght */
+	if ( xDatum2Ref[ncoord] != invalid_coord ) printf("Invalid sensor position in FN15RUN.A \n"); 
+	printf("Set tool lenght to %.3f\n",zDatum2Ref[ncoord]-atof(argv[2])); 
+	fpause=1;
 
 	/* initialize MAIN LOOP OVER LINES of the .apt file */
 	nsetup = -1;
@@ -712,6 +714,8 @@ int main(int argc, char **argv) {
 				apt.settooldefined();
 				apt.setnewflood();
 				fprintf(OUT, "%d L Z-10 FMAX M91\n",lnumber);  ++lnumber;
+				/* -10-apt.gettoolDL()=Mac2Datum[2]+Datum2Tool[2]*/
+				old_Datum2Tool[2]=-10-apt.gettoolDL()-(Mac2Pivot[2]+Piv2Datum[2]);
 				/* warm spindle for 10 seconds*/
 				if (apt.gettoolspeed()>2000){
 					fprintf(OUT, "%d TOOL CALL %d Z S%d\n", lnumber, apt.getloadedtool()+100, 1500); ++lnumber;
@@ -729,9 +733,14 @@ int main(int argc, char **argv) {
 				fprintf(OUT, "%d CYCL DEF 9.1 TIME10\n",lnumber); ++lnumber;
 				apt.resetnewtool();
 				tref.AddTool(apt.getloadedtool(),apt.tl);
-				if (old_Datum2Tool[2]!=invalid_coord) {
-					fprintf(OUT,"%d L Z %.3f FMAX\n",lnumber,old_Datum2Tool[2]); ++lnumber; 
-				}
+				fprintf(OUT,"%d L", lnumber); 
+				printVAR(OUT,"X",Datum2Tool[0]); 
+				printVAR(OUT,"Y",Datum2Tool[1]);
+				fprintf(OUT," FMAX\n"); ++lnumber;
+				old_Datum2Tool[0]=Datum2Tool[0];
+				old_Datum2Tool[1]=Datum2Tool[1];
+				apt.setoldX();
+				apt.setoldY();
 			}
 			if ( apt.iscircleon() ) {
 				if (( CircleCenter[0] != old_CircleCenter[0]) || ( CircleCenter[1] != old_CircleCenter[1])) {
@@ -747,7 +756,7 @@ int main(int argc, char **argv) {
 				printf("Error reading GOTO/\n");
 				fpause=1;
 			}
-			if (Datum2Tool[2]+Mac2Datum[2] <= machine_table[2] ) {
+			if (Datum2Tool[2]+Mac2Pivot[2]+Piv2Datum[2] <= machine_table[2] ) {
 				printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, apt.getloadedtool());
 				fpause=1;
 			}
@@ -763,9 +772,9 @@ int main(int argc, char **argv) {
 						fpause=1;
 					}
 				}
-				if ((Datum2Tool[2]+Mac2Datum[2]-apt.gettoolrcad()*sqrt(1-goto_axis[2]*goto_axis[2]) 
+				if ((Datum2Tool[2]+Mac2Pivot[2]+Piv2Datum[2]-apt.gettoolrcad()*sqrt(1-goto_axis[2]*goto_axis[2]) 
 						<= machine_table[2]) || ((apt.iscircleon()) && 
-					Datum2Tool[2]+Mac2Datum[2] -(CircleR+apt.gettoolrcad())*sinn <=machine_table[2])) {
+					Datum2Tool[2]+Mac2Pivot[2]+Piv2Datum[2] -(CircleR+apt.gettoolrcad())*sinn <=machine_table[2])) {
 					printf("Tool hitting table at line %d, setup %d,  tool %d\n",lnumber, nsetup+11, apt.getloadedtool());
 					fpause=1;
 				}
@@ -800,8 +809,14 @@ int main(int argc, char **argv) {
 				if (apt.isnewZ()) printVAR(OUT,"Z",Datum2Tool[2]);
 				/* use only with tool R=0 to correct DR */
 				if ( used_RL != RL ) fprintf(OUT, " R%c",RL);
-				if ( feed == -1 ) fprintf(OUT, " FMAX");
-				else if ( apt.isnewfeed() ) fprintf(OUT, " F%.0f", feed*feedscale);
+				if ( feed == -1 ) {
+					fprintf(OUT, " FMAX");
+					if(((apt.isnewX()) || (apt.isnewY())) && (old_Datum2Tool[2]!=invalid_coord) && ((old_Datum2Tool[2] < FMAXZ) ||(Datum2Tool[2] < FMAXZ))){
+						printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX from (%+.3lf,%+.3lf,%+.3lf) to (%+.3lf,%+.3lf,%+.3lf)\nRapid horiz. Feed at ZMAX < %lf setup %d op %d line %d\n",
+							old_Datum2Tool[0], old_Datum2Tool[1], old_Datum2Tool[2],Datum2Tool[0], Datum2Tool[1], Datum2Tool[2],FMAXZ,nsetup+1,op,lnumber);
+						fpause=1;
+					}
+				} else if ( apt.isnewfeed() ) fprintf(OUT, " F%.0f", feed*feedscale);
 				if (apt.isnewflood()) {
 					if ((dry==1)||(feed == -1)) fprintf(OUT," M09");
 					else fprintf(OUT," M08");
@@ -842,8 +857,14 @@ int main(int argc, char **argv) {
 					printVAR(OUT, "Z", Datum2Tool[2]);
 				}
 				fprintf(OUT, " DR%c",Sense);
-				if (feed == -1) fprintf(OUT, " FMAX");
-				else if ( apt.isnewfeed() ){
+				if (feed == -1) {
+					fprintf(OUT, " FMAX");
+					if(((apt.isnewX()) || (apt.isnewY())) && (old_Datum2Tool[2]!=invalid_coord) && ((old_Datum2Tool[2] < FMAXZ) ||(Datum2Tool[2] < FMAXZ))){
+						printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX from (%+.3lf,%+.3lf,%+.3lf) to (%+.3lf,%+.3lf,%+.3lf)\nRapid horiz. Feed at ZMAX < %lf setup %d op %d line %d\n",
+							old_Datum2Tool[0], old_Datum2Tool[1], old_Datum2Tool[2],Datum2Tool[0], Datum2Tool[1], Datum2Tool[2],FMAXZ,nsetup+1,op,lnumber);
+						fpause=1;
+					}
+				} else if ( apt.isnewfeed() ){
 					 fprintf(OUT, " F%.0f", feed * feedscale);
 					 apt.resetnewfeed();
 				} 
