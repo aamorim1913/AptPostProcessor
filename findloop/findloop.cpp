@@ -12,6 +12,13 @@
  *         Returns an empty vector if the file could not be opened or is empty.
  *         Prints an error message to cerr if the file cannot be opened.
  */
+
+ class Repeat{
+    public:
+        size_t len,count,start;
+        double Z1,Z2,F,dZ1,dZ2;
+ };
+
 std::vector<std::string> readFileIntoVector(const std::string& filename) {
     std::vector<std::string> lines; // Vector to store the lines
 
@@ -42,6 +49,150 @@ std::vector<std::string> readFileIntoVector(const std::string& filename) {
     return lines;
 }
 
+int writeVectorIntoFile(std::vector<std::string>& fileContent, std::vector<Repeat>& repeats, const std::string& filename){
+    std::ofstream out(filename);
+    if (!out.is_open()) {
+        std::cerr << "Error: Could not open write file '" << filename << "'" << std::endl;
+        return -1;
+    }
+    std::cout << "Writing file: " << filename << "-new" << std::endl;
+    int wln=0;
+    //generate output file
+    size_t nrepeat=0;
+    for ( size_t i=0; i< fileContent.size() ; i++){
+        if (i+3 == repeats[nrepeat].start){
+            if ((nrepeat<(repeats.size()-1) && repeats[nrepeat].count==0)) {
+                nrepeat++;
+            } else {
+                ++wln; out << wln << " " << ";loop ++  " << repeats[nrepeat].count << " times Z=" << repeats[nrepeat].Z2 
+                << " to  " << repeats[nrepeat].Z2+repeats[nrepeat].count*repeats[nrepeat].dZ2  << std::endl;
+                ++wln; out << wln << "L Z..."  << std::endl;
+                ++wln; out << wln << "L Z..."  << std::endl;
+                for (size_t j=0; j< repeats[nrepeat].len-2; j++) {++wln; out << wln << fileContent[i+j+2] << std::endl;}
+                ++wln; out <<wln << "; end loop" << std::endl;
+                i+=(repeats[nrepeat].count+1)*(repeats[nrepeat].len)-1;
+                ++nrepeat;
+                while ((nrepeat<repeats.size()-1) && (repeats[nrepeat].count==0)) nrepeat++;
+                std::cout << " at line " << i+3 << " pointing to nrepeat "<< nrepeat << " with start at " << repeats[nrepeat].start << std::endl; 
+            }
+        } else {
+            ++wln; out << wln <<  fileContent[i] << std::endl ;
+        }
+        std::cout << " at line " << i << std::endl;
+    }
+
+    std::cout << "Successfully write file '" << filename << "'." << std::endl;
+    return 0;
+}
+
+std::vector<Repeat> findRepeats(std::vector<std::string>& fileContent ){
+    std::vector<Repeat> repeats;
+
+    char c;
+    Repeat repeat;
+    std::string token;
+    size_t ln=0;
+    bool lnmatch=false;
+
+    for (std::string& line : fileContent) {
+        ++ln;
+        if (line.find("FMAX") != std::string::npos) lnmatch=false;
+        if (!lnmatch){
+            std::stringstream ss(line);
+            ss >> c;
+            if (ss.fail() || c != 'L') continue;
+            ss >> c;
+            if (ss.fail() || c != 'Z') continue;
+            ss >> repeat.Z1;
+            if (ss.fail()) continue;
+            ss >> token;
+            if (ss.fail() || token != "FMAX") continue;
+            ss >> token;
+            if (!ss.fail()) continue;
+            lnmatch=true;
+            std::cout << "Match First Line at Line " << ln << " line " << line << std::endl;
+        } else {
+            // consecutive line
+            lnmatch=false;
+            std::stringstream ss(line);
+            ss >> c;
+            if (ss.fail() || c != 'L') continue;
+            ss >> c;
+            if (ss.fail() || c != 'Z') continue;
+            ss >> repeat.Z2;
+            if (ss.fail() || repeat.Z2 > 0.0) continue;
+            ss >> c;
+            if (ss.fail() || c != 'F') continue;
+            ss >> repeat.F;
+            if (ss.fail()) continue;
+            ss >> c;
+            if (ss.fail() || c != 'M') continue;
+            std::cout << "  Match second Line " << ln << " line " << line << std::endl;
+            // start is tyhe line after the two L Z lines
+            repeat.count=0;
+            repeat.len=0;
+            repeat.start=ln+1;
+            repeat.dZ1=0;
+            repeat.dZ2=0;
+            repeats.push_back(repeat);
+        }
+    }
+    return repeats;
+}
+
+int printRepeats(std::string Message, std::vector<Repeat>& repeats){
+    std::cout << Message << std::endl;
+    for(int i=0; i<repeats.size();i++){
+        Repeat r=repeats[i];
+        std::cout << "R: count " << r.count << ", len " << r.len << ", start " << r.start  << ", Z1 " << r.Z1 << ", Z2 " << r.Z2 << ", dZ1 " << r.dZ1 << ", dZ2 " << r.dZ2 << std::endl;
+    }
+    return 0;
+}
+
+int validateRepeates(std::vector<Repeat>& repeats, std::vector<std::string>& fileContent){
+    // It sets count =1 if the lines bellow up to next are equal to the lines after the next
+    if(repeats.size()<2){
+        std::cout << "No repeats to be validated" << std::endl;
+        return 0;
+    }
+    for (size_t i=0; i < repeats.size()-1; i++){
+        repeats[i].len=repeats[i+1].start-repeats[i].start;
+        repeats[i].dZ1=repeats[i+1].Z1-repeats[i].Z1;
+        repeats[i].dZ2=repeats[i+1].Z2-repeats[i].Z2;
+        size_t ln=0;
+        for (ln=repeats[i].start; ln<repeats[i].start+repeats[i].len-2 ; ln++){
+            //std::cout << "Eval. for line " << ln << " to ln " << ln+len << " line1 " <<fileContent[ln-1] << " line2 " << fileContent[ln+len-1] << std::endl;
+            if ( fileContent[ln-1]!=fileContent[ln+repeats[i].len-1]) {
+                std::cout << "repeat count kept as 0 at line " << ln-1 <<  std::endl;
+                break;
+            }
+        }
+        if (ln==repeats[i].start+repeats[i].len-2) repeats[i].count=1;
+    }
+    
+    for (size_t i=0; i < repeats.size()-1; i++){
+       if (repeats[i].count != 0)  std::cout << "repeat confirmed len "<< repeats[i].len << " count " << repeats[i].count << " Z2 " << repeats[i].Z2 << " to " << repeats[i+1].Z2 << " dZ1 " << repeats[i].dZ1 <<" dZ2=" << repeats[i].dZ2 << std::endl;
+    }
+    return 1;
+}
+
+int gatherRepeates(std::vector<Repeat>& repeats){
+    size_t firstrep=0;
+    for (size_t i=1; i < repeats.size()-1; i++){
+       if ((repeats[i].count != 0) &&
+           (repeats[i].len == repeats[i+1].len) && 
+           (repeats[i].dZ1 == repeats[i+1].dZ1) &&
+           (repeats[i].dZ2 == repeats[i+1].dZ2)) {
+            ++repeats[firstrep].count;
+            repeats[i].count = 0;
+            //std::cout << " Z2 " << repeats[i].Z2 << " len " << repeats[i].len << " dZ1 " << repeats[i].dZ1 <<  " dZ2 " << repeats[i].dZ2 << " ; Z2 " << repeats[i+1].Z2 << " len " << repeats[i+1].len << " dZ1 " << repeats[i+1].dZ1 <<  " dZ2 " << repeats[i+1].dZ2 << std::endl;
+       } else {
+        firstrep=i+1;
+       }
+    }  
+    return 0;
+}
+
 // main function now accepts command-line arguments
 int main(int argc, char* argv[]) {
 
@@ -58,101 +209,13 @@ int main(int argc, char* argv[]) {
     }
     // Call the function to read the file
     std::vector<std::string> fileContent = readFileIntoVector(filename);
-
-    // Check if the vector is empty.
-    // readFileIntoVector returns an empty vector if the file couldn't be opened (and prints an error),
-    // or if the file was opened successfully but was actually empty.
-    if (fileContent.empty()) {
-        std::ifstream test_file(filename);
-        if (test_file.is_open()) {
-             std::cout << "File '" << filename << "' was empty." << std::endl;
-        } else {
-            std::cout << "File '" << filename << "' did not open." << std::endl;
-        }
-         return 1; // Return error code because no content was loaded
-    }  else {
-        size_t ln=0,lnmax=0;
-        bool lnmatch=false;
-        // Iterate through the vector and print each line
-        for ( const std::string& l : fileContent){ ++ln; std::cout <<ln << " " << l << std::endl;}
-
-        std::vector<size_t> repeat_start;
-        std::vector<size_t> repeat_count;
-        std::vector<double> repeat_Z1,repeat_Z2,repeat_F;
-        char c;
-        double Z1,Z2,F;
-        std::string token;
-        ln=0;
-        lnmatch=false;
-        for (std::string& line : fileContent) {
-            ++ln;
-            if (line.find("FMAX") != std::string::npos) lnmatch=false;
-            if (!lnmatch){
-                std::stringstream ss(line);
-                ss >> c;
-                if (ss.fail() || c != 'L') continue;
-                ss >> c;
-                if (ss.fail() || c != 'Z') continue;
-                ss >> Z1;
-                if (ss.fail()) continue;
-                ss >> token;
-                if (ss.fail() || token != "FMAX") continue;
-                ss >> token;
-                 if (!ss.fail()) continue;
-                lnmatch=true;
-                std::cout << "Match First Line at Line " << ln << " line " << line << std::endl;
-            } else {
-                // consecutive lines
-                lnmatch=false;
-                std::stringstream ss(line);
-                ss >> c;
-                if (ss.fail() || c != 'L') continue;
-                ss >> c;
-                if (ss.fail() || c != 'Z') continue;
-                ss >> Z2;
-                if (ss.fail() || Z2 > 0.0) continue;
-                ss >> c;
-                if (ss.fail() || c != 'F') continue;
-                ss >> F;
-                if (ss.fail()) continue;
-                ss >> c;
-                if (ss.fail() || c != 'M') continue;
-                                std::cout << "  Match second Line " << ln << " line " << line << std::endl;
-                repeat_start.push_back(ln+1);
-                repeat_Z1.push_back(Z1);
-                repeat_Z2.push_back(Z2);
-                repeat_F.push_back(F);
-            }
-        }
-        lnmax=ln;
-        size_t repeats=repeat_start.size();
-        for (size_t i=0; i < repeats; i++){
-            size_t len=repeat_start[i+1]-repeat_start[i];
-            
-
-            for (size_t ln=repeat_start[i]; ln<repeat_start[i+1]-3 ; ln++){
-                std::cout << "Evaluate repeat for line " << ln << " to ln " << ln+len << " line1 " <<fileContent[ln] << " line2 " << fileContent[ln+len] << std::endl;
-                if ( fileContent[ln]!=fileContent[ln+len]) {
-                    repeats--;
-                    repeat_start.erase(repeat_start.begin() + i);
-                    repeat_Z1.erase(repeat_Z1.begin() + i);
-                    repeat_Z2.erase(repeat_Z2.begin() + i);
-                    repeat_F.erase(repeat_F.begin() + i);
-                    std::cout << "repeat removed at line " << std::endl;
-                    break;
-                }
-            }
-            std::cout << "repeat confirmed " << std::endl;
-        }
-        // print loops
-        for (size_t i=0; i < repeats; i++){
-            std::cout << "repeat start " << repeat_start[i] << "lenght " << repeat_start[i+1]-repeat_start[i] << " Z1  " << repeat_Z1[i] << " Z2  " << repeat_Z2[i] << " F " << repeat_F[i] << std::endl;
-        }
-        // File was read successfully and is not empty
-        std::cout << "Successfully read file '" << filename << "'." << std::endl;
-        std::cout << "File content:" << std::endl;
-        
-    }
+    std::vector<Repeat>repeats = findRepeats(fileContent );
+    printRepeats("Before:", repeats);
+    validateRepeates(repeats, fileContent);
+    gatherRepeates(repeats);
+    printRepeats("After", repeats);
+    // File was read successfully and is not empty
+    writeVectorIntoFile(fileContent,repeats,filename+"-new");
 
     return 0; // Indicate success
 }
