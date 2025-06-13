@@ -49,42 +49,6 @@ std::vector<std::string> readFileIntoVector(const std::string& filename) {
     return lines;
 }
 
-int writeVectorIntoFile(std::vector<std::string>& fileContent, std::vector<Repeat>& repeats, const std::string& filename){
-    std::ofstream out(filename);
-    if (!out.is_open()) {
-        std::cerr << "Error: Could not open write file '" << filename << "'" << std::endl;
-        return -1;
-    }
-    std::cout << "Writing file: " << filename << "-new" << std::endl;
-    int wln=0;
-    //generate output file
-    size_t nrepeat=0;
-    for ( size_t i=0; i< fileContent.size() ; i++){
-        if (i+3 == repeats[nrepeat].start){
-            if ((nrepeat<(repeats.size()-1) && repeats[nrepeat].count==0)) {
-                nrepeat++;
-            } else {
-                ++wln; out << wln << " " << ";loop ++  " << repeats[nrepeat].count << " times Z=" << repeats[nrepeat].Z2 
-                << " to  " << repeats[nrepeat].Z2+repeats[nrepeat].count*repeats[nrepeat].dZ2  << std::endl;
-                ++wln; out << wln << "L Z..."  << std::endl;
-                ++wln; out << wln << "L Z..."  << std::endl;
-                for (size_t j=0; j< repeats[nrepeat].len-2; j++) {++wln; out << wln << fileContent[i+j+2] << std::endl;}
-                ++wln; out <<wln << "; end loop" << std::endl;
-                i+=(repeats[nrepeat].count+1)*(repeats[nrepeat].len)-1;
-                ++nrepeat;
-                while ((nrepeat<repeats.size()-1) && (repeats[nrepeat].count==0)) nrepeat++;
-                std::cout << " at line " << i+3 << " pointing to nrepeat "<< nrepeat << " with start at " << repeats[nrepeat].start << std::endl; 
-            }
-        } else {
-            ++wln; out << wln <<  fileContent[i] << std::endl ;
-        }
-        std::cout << " at line " << i << std::endl;
-    }
-
-    std::cout << "Successfully write file '" << filename << "'." << std::endl;
-    return 0;
-}
-
 std::vector<Repeat> findRepeats(std::vector<std::string>& fileContent ){
     std::vector<Repeat> repeats;
 
@@ -110,7 +74,7 @@ std::vector<Repeat> findRepeats(std::vector<std::string>& fileContent ){
             ss >> token;
             if (!ss.fail()) continue;
             lnmatch=true;
-            std::cout << "Match First Line at Line " << ln << " line " << line << std::endl;
+            //std::cout << "Match First Line at Line " << ln << " line " << line << std::endl;
         } else {
             // consecutive line
             lnmatch=false;
@@ -127,16 +91,18 @@ std::vector<Repeat> findRepeats(std::vector<std::string>& fileContent ){
             if (ss.fail()) continue;
             ss >> c;
             if (ss.fail() || c != 'M') continue;
-            std::cout << "  Match second Line " << ln << " line " << line << std::endl;
+            //std::cout << "  Match second Line " << ln << " line " << line << std::endl;
             // start is tyhe line after the two L Z lines
             repeat.count=0;
             repeat.len=0;
+            // line number started at 1
             repeat.start=ln+1;
             repeat.dZ1=0;
             repeat.dZ2=0;
             repeats.push_back(repeat);
         }
     }
+    std::cout << "Found " << repeats.size() << " candidate repeats " << std::endl;
     return repeats;
 }
 
@@ -163,33 +129,76 @@ int validateRepeates(std::vector<Repeat>& repeats, std::vector<std::string>& fil
         for (ln=repeats[i].start; ln<repeats[i].start+repeats[i].len-2 ; ln++){
             //std::cout << "Eval. for line " << ln << " to ln " << ln+len << " line1 " <<fileContent[ln-1] << " line2 " << fileContent[ln+len-1] << std::endl;
             if ( fileContent[ln-1]!=fileContent[ln+repeats[i].len-1]) {
-                std::cout << "repeat count kept as 0 at line " << ln-1 <<  std::endl;
+                //std::cout << "repeat count kept as 0 at line " << ln-1 <<  std::endl;
                 break;
             }
         }
         if (ln==repeats[i].start+repeats[i].len-2) repeats[i].count=1;
     }
-    
+    std::cout << "Validated repeats.";
     for (size_t i=0; i < repeats.size()-1; i++){
-       if (repeats[i].count != 0)  std::cout << "repeat confirmed len "<< repeats[i].len << " count " << repeats[i].count << " Z2 " << repeats[i].Z2 << " to " << repeats[i+1].Z2 << " dZ1 " << repeats[i].dZ1 <<" dZ2=" << repeats[i].dZ2 << std::endl;
+       if (repeats[i].count != 0)  std::cout <<  repeats[i].start << "+"<< repeats[i].len << " Z2 " << repeats[i].Z2 << " to " << repeats[i+1].Z2 <<" ; ";
+       else std::cout << "skip "<<  repeats[i].start << "+"<< repeats[i].len <<" ; ";
     }
+    std::cout << std::endl;
     return 1;
 }
 
 int gatherRepeates(std::vector<Repeat>& repeats){
     size_t firstrep=0;
-    for (size_t i=1; i < repeats.size()-1; i++){
+    for (size_t i=0; i < repeats.size()-1; i++){
        if ((repeats[i].count != 0) &&
            (repeats[i].len == repeats[i+1].len) && 
            (repeats[i].dZ1 == repeats[i+1].dZ1) &&
            (repeats[i].dZ2 == repeats[i+1].dZ2)) {
             ++repeats[firstrep].count;
             repeats[i].count = 0;
-            //std::cout << " Z2 " << repeats[i].Z2 << " len " << repeats[i].len << " dZ1 " << repeats[i].dZ1 <<  " dZ2 " << repeats[i].dZ2 << " ; Z2 " << repeats[i+1].Z2 << " len " << repeats[i+1].len << " dZ1 " << repeats[i+1].dZ1 <<  " dZ2 " << repeats[i+1].dZ2 << std::endl;
        } else {
         firstrep=i+1;
        }
-    }  
+    } 
+    for (size_t i=0; i < repeats.size()-1; i++){
+        if (repeats[i].count >0) std::cout <<"Gadered: " << repeats[i].start << "+"<< repeats[i].len << " count 1+" << repeats[i].count << " dZ1 " << repeats[i].dZ1 <<  " dZ2 " << repeats[i].dZ2 << std::endl;
+    } 
+
+    return 0;
+}
+
+int writeVectorWithLoops(std::vector<std::string>& fileContent, std::vector<Repeat>& repeats, const std::string& filename){
+    std::ofstream out(filename);
+    if (!out.is_open()) {
+        std::cerr << "Error: Could not open write file '" << filename  << std::endl;
+        return -1;
+    }
+    std::cout << "Writing file: " << filename << std::endl;
+    int wln=0;
+    //generate output file
+    size_t nrepeat=0;
+    // loop over lines using the line number (starting in 1)
+    for ( size_t ln=1; ln< fileContent.size()+1 ; ln++){
+        //if we are before a repeat (before the two L z lines)  
+        if (ln+2 == repeats[nrepeat].start){
+            if ((nrepeat<(repeats.size()-1) && repeats[nrepeat].count==0)) {
+                nrepeat++;
+            } else {
+                ++wln; out << wln << " " << ";loop ++  " << repeats[nrepeat].count+1 << " times Z=" << repeats[nrepeat].Z2 
+                << " to  " << repeats[nrepeat].Z2+(repeats[nrepeat].count+1)*repeats[nrepeat].dZ2  << std::endl;
+                ++wln; out << wln << "L Z..."  << std::endl;
+                ++wln; out << wln << "L Z..."  << std::endl;
+                for (size_t j=0; j< repeats[nrepeat].len-2; j++) {++wln; out << wln << " " << fileContent[ln+j+1] << std::endl;}
+                ++wln; out <<wln << "; end loop" << std::endl;
+                ln+=repeats[nrepeat].count*(repeats[nrepeat].len+2)+1;
+                ++nrepeat;
+                while ((nrepeat<repeats.size()-1) && (repeats[nrepeat].count==0)) nrepeat++;
+                //std::cout << " at line " << i+3 << " pointing to nrepeat "<< nrepeat << " with start at " << repeats[nrepeat].start << std::endl; 
+            }
+        } else {
+            ++wln; out << wln << " " <<  fileContent[ln-1] << std::endl ;
+        }
+        //std::cout << " at line " << i << std::endl;
+    }
+
+    std::cout << "Successfully write file '" << filename << "'." << std::endl;
     return 0;
 }
 
@@ -201,7 +210,6 @@ int main(int argc, char* argv[]) {
     // We need at least 2 arguments: program_name and filename.
     std::string filename = "../machine-code/11.h";
     if (argc < 2) {
-        //std::cerr << "Usage: " << argv[0] << " <filename>" << std::endl;
         std::cout << "Using ../machine-code/11.h" << std::endl;
     } else {
         // The filename is the first argument after the program name (at index 1)
@@ -210,12 +218,11 @@ int main(int argc, char* argv[]) {
     // Call the function to read the file
     std::vector<std::string> fileContent = readFileIntoVector(filename);
     std::vector<Repeat>repeats = findRepeats(fileContent );
-    printRepeats("Before:", repeats);
+    //printRepeats("Before:", repeats);
     validateRepeates(repeats, fileContent);
     gatherRepeates(repeats);
-    printRepeats("After", repeats);
-    // File was read successfully and is not empty
-    writeVectorIntoFile(fileContent,repeats,filename+"-new");
+    //printRepeats("After", repeats);
+    writeVectorWithLoops(fileContent,repeats,filename+"-new");
 
     return 0; // Indicate success
 }
