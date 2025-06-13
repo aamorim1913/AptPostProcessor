@@ -197,7 +197,7 @@ int writeVectorWithLoops(std::vector<std::string>& fileContent, std::vector<Repe
                 }
                 ++wln; out <<wln << " Q1=Q1" << std::showpos << repeats[nrepeat].dZ1 << std::noshowpos << std::endl;
                 ++wln; out <<wln << " Q2=Q2" << std::showpos << repeats[nrepeat].dZ2 << std::noshowpos << std::endl;
-                ++wln; out <<wln << " CALL LBL " << nlbl << " REP " << repeats[nrepeat].count << std::endl;
+                ++wln; out <<wln << " CALL LBL " << nlbl << " REP " << repeats[nrepeat].count+1 << std::endl;
                 ++nlbl;
                 ln+=repeats[nrepeat].count*(repeats[nrepeat].len+2)+1;
                 while ((nrepeat<repeats.size()-1) && (repeats[nrepeat].start<ln+2)) nrepeat++;
