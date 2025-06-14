@@ -174,12 +174,17 @@ int writeVectorWithLoops(std::vector<std::string>& fileContent, std::vector<Repe
     }
     std::cout << "Writing file: " << filename << std::endl;
     int wln=0;
+    // replace program name
+    fileContent[0].replace(fileContent[0].find(" MM"), 3, "L MM");
+    //std::string program=fileContent[0];
+    //program.replace(program.find(" MM"), 3, "L MM");
+    ++wln; out << wln << " " <<  fileContent[0] << std::endl ; 
     //generate output file
     size_t nrepeat=0;
     size_t nlbl=1;
     size_t ln;
     // loop over lines using the line number (starting in 1)
-    for ( ln=1; ln < fileContent.size()+1 ; ln++){
+    for ( ln=2; ln < fileContent.size()+1 ; ln++){
         //if we are before a repeat (before the two L z lines)  
         if (ln+2 == repeats[nrepeat].start){
             if (repeats[nrepeat].count==0) {
