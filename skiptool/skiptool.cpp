@@ -4,7 +4,7 @@
 
 #define MAXLINE 1024
 #define DMUDIR "../machine-code/%d.h"
-#define DMUDIRS "../machine-code/%dS.h"
+#define DMUDIRS "../machine-code/%d1.h"
 
 int main(int argc, char* argv[]) {
 
@@ -34,8 +34,9 @@ int main(int argc, char* argv[]) {
 		copy=1;
 
 		fgets(prevline, MAXLINE, IN); 
-		fgets(prevline, MAXLINE, IN);
-		fprintf(OUT,"%d BEGIN PGM %dS MM\n",wln,i); ++wln;
+		fgets(codeline, MAXLINE, IN);
+		strcpy(prevline,strstr(codeline," "));
+		fprintf(OUT,"%d BEGIN PGM %d1 MM\n",wln,i); ++wln;
     
  		while (fgets(codeline, MAXLINE, IN)) {
 			if ((found=strstr(codeline,"TOOL DEF")) != NULL) {
@@ -45,7 +46,7 @@ int main(int argc, char* argv[]) {
 				printf("In %d.h Found DEF TOOL n=%d copy %d\n",i,definedtool,copy);
 			}
         		if (copy == 1) {
-					 fprintf(OUT,"%d %s", wln, prevline); ++wln; // Print each line
+					 fprintf(OUT,"%d%s", wln, prevline); ++wln; // Print each line
 				}
 			strcpy(prevline,strstr(codeline," "));
     		}

@@ -166,7 +166,7 @@ int gatherRepeates(std::vector<Repeat>& repeats){
 
 int writeVectorWithLoops(std::vector<std::string>& fileContent, std::vector<Repeat>& repeats, std::string filename){
 
-    filename.insert(filename.end()-2,1,'L');
+    filename.insert(filename.end()-2,1,'1');
     std::ofstream out(filename);
     if (!out.is_open()) {
         std::cerr << "Error: Could not open write file '" << filename  << std::endl;
@@ -175,9 +175,7 @@ int writeVectorWithLoops(std::vector<std::string>& fileContent, std::vector<Repe
     std::cout << "Writing file: " << filename << std::endl;
     int wln=0;
     // replace program name
-    fileContent[0].replace(fileContent[0].find(" MM"), 3, "L MM");
-    //std::string program=fileContent[0];
-    //program.replace(program.find(" MM"), 3, "L MM");
+    fileContent[0].replace(fileContent[0].find(" MM"), 3, "1 MM");
     ++wln; out << wln << " " <<  fileContent[0] << std::endl ; 
     //generate output file
     size_t nrepeat=0;
@@ -192,8 +190,8 @@ int writeVectorWithLoops(std::vector<std::string>& fileContent, std::vector<Repe
                 ++wln; out << wln << " " <<  fileContent[ln-1] << std::endl ;
                 // ++wln; out << wln << " " <<  fileContent[ln-1] << " ; from " << ln << std::endl ;
             } else {
-                ++wln; out << wln << " Q1=" << repeats[nrepeat].Z1  << std::endl;
-                ++wln; out << wln << " Q2="  << repeats[nrepeat].Z2  << std::endl;
+                ++wln; out << wln << " FN0: Q1=" << repeats[nrepeat].Z1  << std::endl;
+                ++wln; out << wln << " FN0: Q2="  << repeats[nrepeat].Z2  << std::endl;
                 ++wln; out << wln << " LBL "  << nlbl << std::endl;
                 ++wln; out << wln << " L Z+Q1 FMAX"  << std::endl;
                 ++wln; out << wln << " L Z+Q2 F"  << repeats[nrepeat].F << " M" << std::setw(2) << std::setfill('0') << repeats[nrepeat].M << std::endl;
