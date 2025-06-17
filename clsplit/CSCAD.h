@@ -160,6 +160,7 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 
 	fprintf(SCAD, "xd=%f; yd=%f; zd=%f; /* Datum shifted (Rotated) relative to pivot  */\n", 
 		Piv2Datum[0] + Shift[0], Piv2Datum[1] + Shift[1], Piv2Datum[2] + Shift[2]);
+	fprintf(SCAD, "color(\"black\") translate([xd,yd,zd])cylinder(h = 40, r1 = 0, r2 = 10);/* cone to datum */\n");
 	fprintf(SCAD, "xd0=%f; yd0=%f; zd0=%f; /* Datum relative to pivot unrotated */\n", Piv2Datum[0], Piv2Datum[1], Piv2Datum[2]);
 	fprintf(SCAD, "l=%f; ltool=%f; rtool=%f;\n", tl[tool].DL, tl[tool].lcad, tl[tool].rcad);
 	/* draw table */

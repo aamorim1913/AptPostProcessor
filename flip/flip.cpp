@@ -195,6 +195,7 @@ int main(int argc, char **argv) {
 	char com[12*COMSIZE];
 
        if (argc < 3 ) { 
+		cout << "USE INSTEAD: Several configurations in Solidworks CAM and chose diferent Datums!" << endl;
 		cout << "Give original apt file name and option:" << endl;
 		cout <<"     - rotate along YY; F1Y 90 deg; F2Y 180 deg; F3Y -90 deg" << endl;
 		cout <<"     - rotate along ZZ; F1Z 90 deg; F2Z 180 deg; F3Z -90 deg"<< endl;

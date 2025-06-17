@@ -166,7 +166,6 @@ int gatherRepeates(std::vector<Repeat>& repeats){
 
 int writeVectorWithLoops(std::vector<std::string>& fileContent, std::vector<Repeat>& repeats, std::string filename){
 
-    filename.insert(filename.end()-2,1,'1');
     std::ofstream out(filename);
     if (!out.is_open()) {
         std::cerr << "Error: Could not open write file '" << filename  << std::endl;
@@ -175,7 +174,7 @@ int writeVectorWithLoops(std::vector<std::string>& fileContent, std::vector<Repe
     std::cout << "Writing file: " << filename << std::endl;
     int wln=0;
     // replace program name
-    fileContent[0].replace(fileContent[0].find(" MM"), 3, "1 MM");
+    fileContent[0].replace(fileContent[0].find("PGM "), 4, "PGM 2");
     ++wln; out << wln << " " <<  fileContent[0] << std::endl ; 
     //generate output file
     size_t nrepeat=0;
@@ -219,28 +218,21 @@ int writeVectorWithLoops(std::vector<std::string>& fileContent, std::vector<Repe
 // main function now accepts command-line arguments
 int main(int argc, char* argv[]) {
 
-    // Check if the user provided exactly one argument (the filename)
-    // argc will be 1 if only the program name is given.
-    // We need at least 2 arguments: program_name and filename.
-    std::vector<std::string> filenames= {"../machine-code/11.h","../machine-code/12.h","../machine-code/13.h","../machine-code/14.h","../machine-code/15.h","../machine-code/16h","../machine-code/17h","../machine-code/18h","../machine-code/19h"};
-    if (argc < 2) {
-        std::cout << "Using "<< filenames[0] << filenames[1] << filenames[2] << filenames[3] << filenames[4] << std::endl;
-    } else {
-        // The filename is the first argument after the program name (at index 1)
-        filenames[0] = argv[1];
-        filenames.erase(filenames.begin()+1,filenames.end());
-    }
-    for (const std::string& filename : filenames){
-
+    // Check 
+    for (int nfile=11; nfile<32 ; nfile++ ){
+        std::stringstream ssin;
+        ssin << "../machine-code/" << nfile << ".h";
         // Call the function to read the file
-        std::vector<std::string> fileContent = readFileIntoVector(filename);
+        std::vector<std::string> fileContent = readFileIntoVector(ssin.str());
         if (fileContent.empty()) continue;
         std::vector<Repeat>repeats = findRepeats(fileContent );
         //printRepeats("Before:", repeats);
         validateRepeates(repeats, fileContent);
         gatherRepeates(repeats);
         //printRepeats("After", repeats);
-        writeVectorWithLoops(fileContent,repeats,filename);
+        std::stringstream ssout;
+        ssout << "../machine-code/2" << nfile << ".h";
+        writeVectorWithLoops(fileContent,repeats,ssout.str());
     }
     return 0; // Indicate success
 }
