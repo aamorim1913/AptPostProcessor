@@ -132,9 +132,17 @@ int CleanFiles() {
 #if defined(_WIN64)
 		/* remove i.h */
 		_unlink(filename); 
+		snprintf(filename, MAXLINE, DMUDIR, i+100);
+		_unlink(filename);
+		snprintf(filename, MAXLINE, DMUDIR, i+200);
+		_unlink(filename);
 		snprintf(filename, MAXLINE, DMUDIR, i+900);
 		_unlink(filename);
 #else
+		unlink(filename);
+		snprintf(filename, MAXLINE, DMUDIR, i+100);
+		unlink(filename);
+		snprintf(filename, MAXLINE, DMUDIR, i+200);
 		unlink(filename);
 		snprintf(filename, MAXLINE, DMUDIR, i+900);
 		unlink(filename);
