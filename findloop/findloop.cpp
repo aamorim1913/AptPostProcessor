@@ -201,9 +201,8 @@ int writeVectorWithLoops(std::vector<std::string>& fileContent, std::vector<Repe
                 ++wln; out <<wln << " Q2=Q2" << std::showpos << repeats[nrepeat].dZ2 << std::noshowpos << std::endl;
                 ++wln; out <<wln << " CALL LBL " << nlbl << " REP " << repeats[nrepeat].count+1 << std::endl;
                 ++nlbl;
-                ln+=repeats[nrepeat].count*(repeats[nrepeat].len+2)+1;
+                ln+=(repeats[nrepeat].count+2)*(repeats[nrepeat].len)-1;
                 while ((nrepeat<repeats.size()-1) && (repeats[nrepeat].start<ln+2)) nrepeat++;
-                std::cout << " Loop found " << ln << " nrepeat " << nrepeat << " start " << repeats[nrepeat].start<< std::endl; 
             }
         } else {
             ++wln; out << wln << " " <<  fileContent[ln-1] << std::endl ; 
