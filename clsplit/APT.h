@@ -224,9 +224,9 @@ public:
 	int setnewY(){ updated |= NEW_Y; return 0; }
 	int setnewZ(){ updated |= NEW_Z; return 0; }
 
-     int setoldX(){ updated &= NEW_X; return 0; }
-	int setoldY(){ updated &= NEW_Y; return 0; }
-	int setoldZ(){ updated &= NEW_Z; return 0; }
+     int setoldX(){ updated &= ~NEW_X; return 0; }
+	int setoldY(){ updated &= ~NEW_Y; return 0; }
+	int setoldZ(){ updated &= ~NEW_Z; return 0; }
 
      int setnewfeed(){
  		updated |= NEW_FEED;

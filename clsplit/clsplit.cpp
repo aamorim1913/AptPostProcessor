@@ -224,7 +224,7 @@ int main(int argc, char **argv) {
 		cout<<"Provide the APT (....apt) file name or:" << endl;
 		cout<<"    clean - to remove all generated files "<< endl;
 		cout<<"    <>.apt <opt1> <opt2> ... "<< endl;
-		cout<<"where <opt1>,<opt2> can be storetools, resetstoredtools, usestoredtools, dry, debug, FMAXZ=xxx"<< endl << endl;
+		cout<<"where <opt1>,<opt2> can be storetools, resetstoredtools, usestoredtools, dry, debug, FMAXZ=xxx (=0 for no change)"<< endl << endl;
 		cout<<"A %FN15RUN.A file must be present in ../machine-code with the syntax"<< endl;
 		cout<<"		DatumX DatumY DatumZ (in machine coordinates)"<< endl;
 		cout<<"		<X> <Y> <Z> (setup 1 reference sphere relative to Datum)"<< endl;
@@ -258,14 +258,12 @@ int main(int argc, char **argv) {
 		debug=1;
     }
 	if (ifarg("FMAXZ=",argc,argv)) {
-				for (int i=2; i<argc; i++) {
-					if (strstr(argv[i],"FMAXZ=")!=0) {
-						FMAXZ=atof(argv[i]+6);
-						printf(" Change the value of FMAXZ to %lf.\n",FMAXZ);
-					}
-				}
-                
-		debug=1;
+		for (int i=2; i<argc; i++) {
+			if (strstr(argv[i],"FMAXZ=")!=0) {
+				FMAXZ=atof(argv[i]+6);
+				printf(" Change the value of FMAXZ to %lf.\n",FMAXZ);
+			}
+		}
     }
 	
 	/* end SCAD in FINI, CSYS and LOAD TOOL */
@@ -698,6 +696,23 @@ int main(int argc, char **argv) {
 			}
 
 			if ( !(apt.iscircleon()) ) { /* draw line */
+				if ( feed == -1 ) {
+					if(((apt.isnewX()) || (apt.isnewY())) && (old_Datum2Tool[2]!=invalid_coord) && ((old_Datum2Tool[2] < FMAXZ) ||(Datum2Tool[2] < FMAXZ))){
+						double D2T[6];
+						fprintf(OUT, "%d L",lnumber); ++lnumber; printVAR(OUT,"Z",FMAXZ);fprintf(OUT, " FMAX\n");
+						D2T[0]=old_Datum2Tool[0]; D2T[1]=old_Datum2Tool[1]; D2T[2]=FMAXZ;
+						scad.AddLine(D2T, lnumber, feed*feedscale, &fpause, thetab);
+						fprintf(OUT, "%d L",lnumber); ++lnumber; 
+						if (apt.isnewX()) printVAR(OUT,"X",Datum2Tool[0]); 
+						if (apt.isnewY()) printVAR(OUT,"Y",Datum2Tool[1]);
+						fprintf(OUT, " FMAX\n");
+						D2T[0]=Datum2Tool[0]; D2T[1]=Datum2Tool[1]; D2T[2]=FMAXZ;
+						scad.AddLine(D2T, lnumber, feed*feedscale, &fpause, thetab);
+						apt.setoldX();
+						apt.setoldY();
+						apt.setnewZ();
+					}
+				}
 				fprintf(OUT, "%d L",lnumber);
 				if (apt.isnewX()) printVAR(OUT,"X",Datum2Tool[0]); 
 				if (apt.isnewY()) printVAR(OUT,"Y",Datum2Tool[1]);
@@ -706,11 +721,6 @@ int main(int argc, char **argv) {
 				if ( used_RL != RL ) fprintf(OUT, " R%c",RL);
 				if ( feed == -1 ) {
 					fprintf(OUT, " FMAX");
-					if(((apt.isnewX()) || (apt.isnewY())) && (old_Datum2Tool[2]!=invalid_coord) && ((old_Datum2Tool[2] < FMAXZ) ||(Datum2Tool[2] < FMAXZ))){
-						printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX from (%+.3lf,%+.3lf,%+.3lf) to (%+.3lf,%+.3lf,%+.3lf)\nRapid horiz. Feed at ZMAX < %lf setup %d op %d line %d\n",
-							old_Datum2Tool[0], old_Datum2Tool[1], old_Datum2Tool[2],Datum2Tool[0], Datum2Tool[1], Datum2Tool[2],FMAXZ,nsetup+1,op,lnumber);
-						fpause=1;
-					}
 				} else if ( apt.isnewfeed() ) fprintf(OUT, " F%.0f", feed*feedscale);
 				if (apt.isnewflood()) {
 					if ((dry==1)||(feed == -1)) fprintf(OUT," M09");
