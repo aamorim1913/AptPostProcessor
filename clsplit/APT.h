@@ -115,6 +115,7 @@ private:
      }
 
 public:
+     struct TOOL tl[MAXTOOL];
      APT(){
           updated=0;
           for (int i=0; i<MAXTOOL; i++) {
@@ -583,8 +584,6 @@ public:
      	  return (strstr(lineapt, "SETUP/END") != 0);
      }
 
-     struct TOOL tl[MAXTOOL];
-
      int Undefine(){
           for (int i=0; i<MAXTOOL; i++) tl[i].defined=0;
           return 0;
@@ -631,7 +630,7 @@ public:
           fprintf(TOOLSET,"defined speed clockwise DL DR lcad rtable rcad\n");
           for (int i=0; i<MAXTOOL; i++) {
                if (tl[i].name[0]=='\0') continue;
-               fprintf(TOOLSET,"%d\n",i+1);	
+               fprintf(TOOLSET,"%d\n",i);	
                fprintf(TOOLSET,"%s\n",tl[i].name);
                fprintf(TOOLSET,"%d %d %lf %lf %lf %lf %lf\n", 
                     tl[i].speed,tl[i].clockwise,
@@ -653,7 +652,6 @@ public:
           fgets(buff, MAXLINE, TOOLSET) ;
           int i;
           while (fscanf(TOOLSET,"%d\n",&i)==1) {
-               i=i-1;
                fgets(tl[i].name,100,TOOLSET);
                /* remove newline */
                char *tmp;

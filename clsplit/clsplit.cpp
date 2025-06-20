@@ -224,7 +224,7 @@ int main(int argc, char **argv) {
 		cout<<"Provide the APT (....apt) file name or:" << endl;
 		cout<<"    clean - to remove all generated files "<< endl;
 		cout<<"    <>.apt <opt1> <opt2> ... "<< endl;
-		cout<<"where <opt1>,<opt2> can be storetools, usestoredtools, dry, debug, FMAXZ=xxx"<< endl << endl;
+		cout<<"where <opt1>,<opt2> can be storetools, resetstoredtools, usestoredtools, dry, debug, FMAXZ=xxx"<< endl << endl;
 		cout<<"A %FN15RUN.A file must be present in ../machine-code with the syntax"<< endl;
 		cout<<"		DatumX DatumY DatumZ (in machine coordinates)"<< endl;
 		cout<<"		<X> <Y> <Z> (setup 1 reference sphere relative to Datum)"<< endl;
@@ -277,7 +277,9 @@ int main(int argc, char **argv) {
 	/* read all coordinates in the %FN15RUN.A file up to end or invalid_coord (if exists) */
 	ncoord=ReadCoord(xDatum2Ref,yDatum2Ref,zDatum2Ref,Piv2Datum);
 	/* read all tool measurements from SET.TOOLS */
-	apt.ReadToolSet();
+	if (ifarg("resetstoredtools",argc,argv)) {
+		    printf("Resseting storedtools\n");
+    } else apt.ReadToolSet();
 	/* read all tool measurements from the %FN15RUN.A file */
 	if (ifarg("usestoredtools",argc,argv)) {
                 printf("running usedstoredtools\n");
@@ -808,7 +810,23 @@ int main(int argc, char **argv) {
 	tref.Close(apt.tl,Piv2Datum);
 
 	if (toolsmeasured==1){ 
-		if ((toolschanged==0)||( ifarg("storetools",argc,argv))) apt.DumpToolSet();
+		if (toolschanged==0) { 
+			fpause=1; 
+			printf("Tools unchanged lengh updated\n"); 
+			apt.DumpToolSet();
+		}
+		if (ifarg("storetools",argc,argv) || ifarg("resetstoredtools",argc,argv)){
+			fpause=1; 
+			printf("Tools modified. Stored Tools\n"); 
+		    apt.DumpToolSet();
+		}
+	} else {
+		fpause=1; 
+		printf("Tools missing measurement.\n"); 
+		if (ifarg("resetstoredtools",argc,argv)) {
+			for (int i=0; i<MAXTOOL; i++) apt.tl[i].name[0]='\0';
+			apt.DumpToolSet();
+		}
 	}
 
 	apt.close();
