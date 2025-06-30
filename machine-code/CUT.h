@@ -4,19 +4,22 @@ CYCL DEF 7.1  X+0
 CYCL DEF 7.2  Y+0
 CYCL DEF 7.3  Z+0
 ; 125 mm cutter as tool 59
-TOOL CALL 59 Z S600
+TOOL CALL 59 Z S700
 STOP
 ; Tool touch middle of xmin plane
 FN 18: SYSREAD Q11 = ID270 NR1 IDX1
 STOP
-; Tool touch middle of xmax plane
-FN 18: SYSREAD Q12 = ID270 NR1 IDX1
-STOP
 ; Tool touch middle of ymin plane
 FN 18: SYSREAD Q21 = ID270 NR1 IDX2
 STOP
+; Tool touch middle of xmax plane
+FN 16: SYSREAD Q12 = ID270 NR1 IDX1
+STOP
 ; Tool touch middle of ymax plane
 FN 18: SYSREAD Q22 = ID270 NR1 IDX2
+L IY+0.25 F600
+CYCL DEF 9.0 DWELL
+CYCL DEF 9.1 TIME5
 M3 M8
 LBL 1 
 Q11 = Q11+2
@@ -25,10 +28,10 @@ Q12 = Q12-2
 Q22 = Q22-2
 Q31 = Q12-124
 Q32 = Q22-124
-Q41 = Q11+30
-Q42 = Q12-30
-Q43 = Q21+20
-Q44 = Q22-30
+Q41 = Q11+35
+Q42 = Q12-35
+Q43 = Q21+35
+Q44 = Q22-35
 L X+Q41 F200 
 L X+Q11 F800
 L Y+Q44 F800
