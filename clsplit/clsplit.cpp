@@ -711,6 +711,8 @@ int main(int argc, char **argv) {
 						apt.setoldX();
 						apt.setoldY();
 						apt.setnewZ();
+						printf("XXX Strait Lifted from (%+.3lf,%+.3lf,%+.3lf) to (%+.3lf,%+.3lf,%+.3lf) to ZMAX %+.3lf setup %d op %d line %d\n",
+							old_Datum2Tool[0], old_Datum2Tool[1], old_Datum2Tool[2],Datum2Tool[0], Datum2Tool[1], Datum2Tool[2],FMAXZ,nsetup+1,op,lnumber);
 					}
 				}
 				fprintf(OUT, "%d L",lnumber);
@@ -765,7 +767,7 @@ int main(int argc, char **argv) {
 				if (feed == -1) {
 					fprintf(OUT, " FMAX");
 					if(((apt.isnewX()) || (apt.isnewY())) && (old_Datum2Tool[2]!=invalid_coord) && ((old_Datum2Tool[2] < FMAXZ) ||(Datum2Tool[2] < FMAXZ))){
-						printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX from (%+.3lf,%+.3lf,%+.3lf) to (%+.3lf,%+.3lf,%+.3lf)\nRapid horiz. Feed at ZMAX < %lf setup %d op %d line %d\n",
+						printf("XXX NOT IMPLEMENTED Circle lifted from (%+.3lf,%+.3lf,%+.3lf) to (%+.3lf,%+.3lf,%+.3lf)\nRapid horiz. Feed at ZMAX < %lf setup %d op %d line %d\n",
 							old_Datum2Tool[0], old_Datum2Tool[1], old_Datum2Tool[2],Datum2Tool[0], Datum2Tool[1], Datum2Tool[2],FMAXZ,nsetup+1,op,lnumber);
 						fpause=1;
 					}
