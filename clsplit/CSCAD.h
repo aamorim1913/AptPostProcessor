@@ -183,11 +183,25 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 	getcwd(filename, MAXLINE);
 	strcat(filename, "/");
 #endif
-	st = strlen(name);
-	name[st - 3] = 'S'; name[st - 2] = 'T'; name[st - 1] = 'L';
-	fprintf(SCAD, "color(\"red\") rotate([0,%f,0]) rotate([0,0,%f]) translate([xd0,yd0,zd0]) import(\"%s%s\");\n",
-		-thetab, -thetac, filename, name);
-
+	FILE* fileframe;
+	char framename[MAXLINE];
+	sprintf(framename,"%s%s ",filename,name);
+	st = strlen(framename);
+	framename[st - 4] = 's'; framename[st - 3] = 'c'; framename[st - 2] = 'a';  framename[st - 1] = 'd' ;
+    // if file of frame exists
+	if ((fileframe = fopen(framename, "r"))) {
+		fgets(framename, MAXLINE, fileframe) ;
+		st = strlen(name);
+		name[st - 3] = 'S'; name[st - 2] = 'T'; name[st - 1] = 'L';
+		fprintf(SCAD, "color(\"red\") rotate([0,%f,0]) rotate([0,0,%f]) translate([xd0,yd0,zd0]) %s import(\"%s%s\");\n",
+			-thetab, -thetac, framename, filename, name);
+		fclose(fileframe);
+	} else { // frame file does not exist
+		st = strlen(name);
+		name[st - 3] = 'S'; name[st - 2] = 'T'; name[st - 1] = 'L';
+		fprintf(SCAD, "color(\"red\") rotate([0,%f,0]) rotate([0,0,%f]) translate([xd0,yd0,zd0]) import(\"%s%s\");\n",
+			-thetab, -thetac, filename, name);
+	}
 	return 0;
 }
 
