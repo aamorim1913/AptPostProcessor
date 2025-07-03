@@ -1,4 +1,4 @@
-﻿// CSCAD.h :
+// CSCAD.h :
 //
 #pragma once
 
@@ -162,6 +162,9 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 		Piv2Datum[0] + Shift[0], Piv2Datum[1] + Shift[1], Piv2Datum[2] + Shift[2]);
 	fprintf(SCAD, "color(\"black\") translate([xd,yd,zd])cylinder(h = 40, r1 = 0, r2 = 10);/* cone to datum */\n");
 	fprintf(SCAD, "xd0=%f; yd0=%f; zd0=%f; /* Datum relative to pivot unrotated */\n", Piv2Datum[0], Piv2Datum[1], Piv2Datum[2]);
+	fprintf(SCAD,"x=%.3lf;y=%.3lf;z=%.3lf; /* Near the table */\n", 
+			iniDatum2Tool[0]+Piv2Datum[0]+Shift[0], iniDatum2Tool[1]+Piv2Datum[1]+Shift[1], 
+			iniDatum2Tool[2]+Piv2Datum[2]+Shift[2]);
 	fprintf(SCAD, "l=%f; ltool=%f; rtool=%f;\n", tl[tool].DL, tl[tool].lcad, tl[tool].rcad);
 	/* draw table */
 	//fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) ", -thetab, -thetac-thetatable,machine_table[0]-Mac2Pivot[0],machine_table[1]-Mac2Pivot[1],machine_table[2]-Mac2Pivot[2]);
@@ -170,7 +173,7 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 	//fprintf(SCAD, "translate([0,-500,-75]) linear_extrude(100) square(500,center=true);\n");
 	//fprintf(SCAD, "translate([0,500,-75]) linear_extrude(100) square(500,center=true);}\n"); 
 
-	/* STL of the part */
+	/* STL of the machined part */
 #if defined(_WIN64)
 	if (strstr(name, ":") == 0) {
 		_getcwd(filename, MAXLINE);
@@ -202,20 +205,6 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 		fprintf(SCAD, "color(\"red\") rotate([0,%f,0]) rotate([0,0,%f]) translate([xd0,yd0,zd0]) import(\"%s%s\");\n",
 			-thetab, -thetac, filename, name);
 	}
-	return 0;
-}
-
-int close(double *Stock, double thetab, double thetac, double *Shift) {
-
-	if (SCAD == NULL) return -1;
-
-	fprintf(SCAD,"x=%.3lf;y=%.3lf;z=%.3lf; /* Near the table */\n", 
-			iniDatum2Tool[0]+Piv2Datum[0]+Shift[0], iniDatum2Tool[1]+Piv2Datum[1]+Shift[1], 
-			iniDatum2Tool[2]+Piv2Datum[2]+Shift[2]);
-
-	/* machine head xd to be replaced by x */
-	fprintf(SCAD, "color(\"white\") translate([x,y,z]) union(){\ntranslate([7.5,0,280-l]) linear_extrude(500) square(295,center=true);\ntranslate([0,0,230-l]) cylinder(100,75,75,center=true);\ntranslate([0,0,90+ltool/2]) cylinder(180-ltool,35,35,center=true);\ntranslate([0,0,ltool/2]) cylinder(ltool,rtool,rtool,center=true);}\n");
-
 	/* stock transparent */
 	fprintf(SCAD, "color(\"blue\",0.6) rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) cube([%f,%f,%f],center=true);\n",
 		-thetab, -thetac, Piv2Datum[0]+Stock[0]/2, Piv2Datum[1]+Stock[1]/2, Piv2Datum[2]-Stock[2]/2, Stock[0], Stock[1], Stock[2]);
@@ -226,6 +215,16 @@ int close(double *Stock, double thetab, double thetac, double *Shift) {
 		-(Mac2Pivot[1]+(MachineLimits[3]-MachineLimits[2])/2),
 		-(Mac2Pivot[2]+(MachineLimits[5]-MachineLimits[4])/2 + tl[tool].DL), 
 		MachineLimits[1]-MachineLimits[0],MachineLimits[3]-MachineLimits[2],MachineLimits[5]-MachineLimits[4]);
+
+	return 0;
+}
+
+int close(double *Stock, double thetab, double thetac, double *Shift) {
+
+	if (SCAD == NULL) return -1;
+
+	/* machine head xd to be replaced by x */
+	fprintf(SCAD, "color(\"white\") translate([x,y,z]) union(){\ntranslate([7.5,0,280-l]) linear_extrude(500) square(295,center=true);\ntranslate([0,0,230-l]) cylinder(100,75,75,center=true);\ntranslate([0,0,90+ltool/2]) cylinder(180-ltool,35,35,center=true);\ntranslate([0,0,ltool/2]) cylinder(ltool,rtool,rtool,center=true);}\n");
 
 	fclose(SCAD);
 	SCAD = NULL;

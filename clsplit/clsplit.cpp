@@ -224,7 +224,7 @@ int main(int argc, char **argv) {
 		cout<<"Provide the APT (....apt) file name or:" << endl;
 		cout<<"    clean - to remove all generated files "<< endl;
 		cout<<"    <>.apt <opt1> <opt2> ... "<< endl;
-		cout<<"where <opt1>,<opt2> can be storetools, resetstoredtools, usestoredtools, dry, debug, FMAXZ=xxx (=0 for no change)"<< endl << endl;
+		cout<<"where <opt1>,<opt2> can be storetools, resetstoredtools, usestoredtools, dry, debug, FMAXZ=xxx (0 for FMAXZ=0 -> No Change )"<< endl << endl;
 		cout<<"A %FN15RUN.A file must be present in ../machine-code with the syntax"<< endl;
 		cout<<"		DatumX DatumY DatumZ (in machine coordinates)"<< endl;
 		cout<<"		<X> <Y> <Z> (setup 1 reference sphere relative to Datum)"<< endl;
@@ -265,7 +265,8 @@ int main(int argc, char **argv) {
 			}
 		}
     }
-	
+	if (ifarg("0",argc,argv)) FMAXZ=0;
+
 	/* end SCAD in FINI, CSYS and LOAD TOOL */
 	/* start SCAD in first addline or addcircle with data from CSYS */
 
