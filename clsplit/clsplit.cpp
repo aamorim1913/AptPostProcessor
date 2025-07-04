@@ -211,6 +211,7 @@ int main(int argc, char **argv) {
 	double FMAXZ=100.0;
 	int toolsmeasured=1;
 	int toolschanged=0;
+	int trefsetup0=0;
 
 	/* create an object of all main classes for the apt file, the measurement file for the scad and for the tool parameters */
 	APT apt;
@@ -265,7 +266,7 @@ int main(int argc, char **argv) {
 			}
 		}
     }
-	if (ifarg("0",argc,argv)) FMAXZ=0;
+	for (int i=2; i<argc; i++) if (argv[i][0]=='0' && argv[i][1]==0) FMAXZ=0;
 
 	/* end SCAD in FINI, CSYS and LOAD TOOL */
 	/* start SCAD in first addline or addcircle with data from CSYS */
@@ -354,9 +355,7 @@ int main(int argc, char **argv) {
 			if ( op > 0) scad.close(apt.getStock(), thetab, thetac, Shift);
 
 			++op;
-			
 			if ((axis[0] != prev_axis[0]) || (axis[1] != prev_axis[1]) || (axis[2] != prev_axis[2])) {
-
 				/* this is the end of the previous setup */
 				++nsetup;
 				/* if nstup exceeds ncoord stop with error */
@@ -384,6 +383,10 @@ int main(int argc, char **argv) {
 				/* write the setup */
 				WriteSetup(nsetup+11, axis, Shift);
 
+				if (axis[0]!=0 || axis[1]!=0 || axis[2]!=1.0 ) {
+					tref.AddRef(0);
+					trefsetup0=1;
+				}
 				/* then we compute the shift for the Datum */
 				/* The datum coordinates from the pivot point */
 				for (int i = 0; i < 3; i++) Piv2RDatum[i] = Piv2Datum[i];
@@ -416,7 +419,7 @@ int main(int argc, char **argv) {
 					else {
 						OUT=OpenH(nsetup+11);
 						/* if first add previous */
-						if ( nsetup==1) tref.AddRef(nsetup-1);
+						if (nsetup==1 && trefsetup0==0 ) tref.AddRef(0);
 						tref.AddRef(nsetup);
 					}
 					
@@ -698,7 +701,7 @@ int main(int argc, char **argv) {
 
 			if ( !(apt.iscircleon()) ) { /* draw line */
 				if ( feed == -1 ) {
-					if(((apt.isnewX()) || (apt.isnewY())) && (old_Datum2Tool[2]!=invalid_coord) && ((old_Datum2Tool[2] < FMAXZ) ||(Datum2Tool[2] < FMAXZ))){
+					if(((abs(old_Datum2Tool[0]-Datum2Tool[0])>0.010) || (abs(old_Datum2Tool[1]-Datum2Tool[1])>0.010)) && (old_Datum2Tool[2]!=invalid_coord) && ((old_Datum2Tool[2]+Shift[2] < FMAXZ) ||(Datum2Tool[2]+Shift[2] < FMAXZ))){
 						double D2T[6];
 						fprintf(OUT, "%d L",lnumber); ++lnumber; printVAR(OUT,"Z",FMAXZ);fprintf(OUT, " FMAX\n");
 						D2T[0]=old_Datum2Tool[0]; D2T[1]=old_Datum2Tool[1]; D2T[2]=FMAXZ;
@@ -712,7 +715,7 @@ int main(int argc, char **argv) {
 						apt.setoldX();
 						apt.setoldY();
 						apt.setnewZ();
-						printf("XXX Strait Lifted from (%+.3lf,%+.3lf,%+.3lf) to (%+.3lf,%+.3lf,%+.3lf) to ZMAX %+.3lf setup %d op %d line %d\n",
+						printf("XXX Strait Lifted from (%+.3lf,%+.3lf,%+.3lf) to (%+.3lf,%+.3lf,%+.3lf) to FMAXZ %+.3lf setup %d op %d line %d\n",
 							old_Datum2Tool[0], old_Datum2Tool[1], old_Datum2Tool[2],Datum2Tool[0], Datum2Tool[1], Datum2Tool[2],FMAXZ,nsetup+1,op,lnumber);
 					}
 				}
@@ -767,7 +770,7 @@ int main(int argc, char **argv) {
 				fprintf(OUT, " DR%c",Sense);
 				if (feed == -1) {
 					fprintf(OUT, " FMAX");
-					if(((apt.isnewX()) || (apt.isnewY())) && (old_Datum2Tool[2]!=invalid_coord) && ((old_Datum2Tool[2] < FMAXZ) ||(Datum2Tool[2] < FMAXZ))){
+					if(((abs(old_Datum2Tool[0]-Datum2Tool[0])>0.010) || (abs(old_Datum2Tool[1]-Datum2Tool[1])>0.010)) && (old_Datum2Tool[2]!=invalid_coord) && ((old_Datum2Tool[2]+Shift[2] < FMAXZ) ||(Datum2Tool[2]+Shift[2] < FMAXZ))){
 						printf("XXX NOT IMPLEMENTED Circle lifted from (%+.3lf,%+.3lf,%+.3lf) to (%+.3lf,%+.3lf,%+.3lf)\nRapid horiz. Feed at ZMAX < %lf setup %d op %d line %d\n",
 							old_Datum2Tool[0], old_Datum2Tool[1], old_Datum2Tool[2],Datum2Tool[0], Datum2Tool[1], Datum2Tool[2],FMAXZ,nsetup+1,op,lnumber);
 						fpause=1;
