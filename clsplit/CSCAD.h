@@ -167,11 +167,7 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 			iniDatum2Tool[2]+Piv2Datum[2]+Shift[2]);
 	fprintf(SCAD, "l=%f; ltool=%f; rtool=%f;\n", tl[tool].DL, tl[tool].lcad, tl[tool].rcad);
 	/* draw table */
-	//fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) ", -thetab, -thetac-thetatable,machine_table[0]-Mac2Pivot[0],machine_table[1]-Mac2Pivot[1],machine_table[2]-Mac2Pivot[2]);
-	//fprintf(SCAD, "color(\"grey\") difference(){\ntranslate([0,0,-25]) cylinder(50,350,350,center = true);\n"); 
-	//fprintf(SCAD, "translate([0,0,-25]) cylinder(50,350,350,center = true);\n");
-	//fprintf(SCAD, "translate([0,-500,-75]) linear_extrude(100) square(500,center=true);\n");
-	//fprintf(SCAD, "translate([0,500,-75]) linear_extrude(100) square(500,center=true);}\n"); 
+	fprintf(SCAD, "rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) import(\"C:/AptPostProcessor/DMU50-Table.STL\");", -thetab, -thetac-thetatable,-Mac2Pivot[0],-Mac2Pivot[1],-Mac2Pivot[2]);
 
 	/* STL of the machined part */
 #if defined(_WIN64)
@@ -187,34 +183,43 @@ int open(char* name, int setnsetup, int setop, int settool, double *Stock, struc
 	strcat(filename, "/");
 #endif
 	FILE* fileframe;
+	char namenoext[MAXLINE];
+	strcpy(namenoext,name);
+	st = strlen(name);
+	namenoext[st-4]=0;
+	st = strlen(namenoext);
 	char framename[MAXLINE];
-	sprintf(framename,"%s%s ",filename,name);
-	st = strlen(framename);
-	framename[st - 4] = 's'; framename[st - 3] = 'c'; framename[st - 2] = 'a';  framename[st - 1] = 'd' ;
+	sprintf(framename,"%s%s.scad",filename,namenoext);
     // if file of frame exists
 	if ((fileframe = fopen(framename, "r"))) {
 		fgets(framename, MAXLINE, fileframe) ;
-		st = strlen(name);
-		name[st - 3] = 'S'; name[st - 2] = 'T'; name[st - 1] = 'L';
-		fprintf(SCAD, "color(\"red\") rotate([0,%f,0]) rotate([0,0,%f]) translate([xd0,yd0,zd0]) %s import(\"%s%s\");\n",
-			-thetab, -thetac, framename, filename, name);
 		fclose(fileframe);
+		fprintf(SCAD, "color(\"red\") rotate([0,%f,0]) rotate([0,0,%f]) translate([xd0,yd0,zd0]) %s import(\"%s%s.STL\");\n",
+			-thetab, -thetac, framename, filename, namenoext);
+		/* stock transparent  from xxx-1.STL file */
+		if (namenoext[st - 1]>='1' && namenoext[st - 1]<='9') {
+			namenoext[st-1] = namenoext[st-1]-1;
+			if (namenoext[st-1] == '0') namenoext[st-1]=0;
+		} else {
+            namenoext[st]='-'; namenoext[st+1]='1'; namenoext[st+2] = 0; 
+		}
+		fprintf(SCAD, "color(\"blue\",0.6)  rotate([0,%f,0]) rotate([0,0,%f]) translate([xd0,yd0,zd0]) %s import(\"%s%s.STL\");\n\n",
+			-thetab, -thetac, framename, filename, namenoext);
 	} else { // frame file does not exist
-		st = strlen(name);
-		name[st - 3] = 'S'; name[st - 2] = 'T'; name[st - 1] = 'L';
-		fprintf(SCAD, "color(\"red\") rotate([0,%f,0]) rotate([0,0,%f]) translate([xd0,yd0,zd0]) import(\"%s%s\");\n",
-			-thetab, -thetac, filename, name);
+		fprintf(SCAD, "color(\"red\") rotate([0,%f,0]) rotate([0,0,%f]) translate([xd0,yd0,zd0]) import(\"%s%s.STL\");\n",
+			-thetab, -thetac, filename, namenoext);
+		/* stock transparent */
+		fprintf(SCAD, "color(\"blue\",0.6) rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) cube([%f,%f,%f],center=true);\n",
+			-thetab, -thetac, Piv2Datum[0]+Stock[0]/2, Piv2Datum[1]+Stock[1]/2, Piv2Datum[2]-Stock[2]/2, Stock[0], Stock[1], Stock[2]);
 	}
-	/* stock transparent */
-	fprintf(SCAD, "color(\"blue\",0.6) rotate([0,%f,0]) rotate([0,0,%f]) translate([%f,%f,%f]) cube([%f,%f,%f],center=true);\n",
-		-thetab, -thetac, Piv2Datum[0]+Stock[0]/2, Piv2Datum[1]+Stock[1]/2, Piv2Datum[2]-Stock[2]/2, Stock[0], Stock[1], Stock[2]);
+	
 
 	/* machine range volume transparent. -Mac2Pivot to corner at (0,0,0) in machine coordinates */
-	fprintf(SCAD, "color(\"brown\",0.25) translate([%f,%f,%f]) cube([%lf,%lf,%lf],center=true);\n",
-		-(Mac2Pivot[0]+(MachineLimits[1]-MachineLimits[0])/2), 
-		-(Mac2Pivot[1]+(MachineLimits[3]-MachineLimits[2])/2),
-		-(Mac2Pivot[2]+(MachineLimits[5]-MachineLimits[4])/2 + tl[tool].DL), 
-		MachineLimits[1]-MachineLimits[0],MachineLimits[3]-MachineLimits[2],MachineLimits[5]-MachineLimits[4]);
+	//fprintf(SCAD, "color(\"brown\",0.25) translate([%f,%f,%f]) cube([%lf,%lf,%lf],center=true);\n",
+	//	-(Mac2Pivot[0]+(MachineLimits[1]-MachineLimits[0])/2), 
+	//	-(Mac2Pivot[1]+(MachineLimits[3]-MachineLimits[2])/2),
+	//	-(Mac2Pivot[2]+(MachineLimits[5]-MachineLimits[4])/2 + tl[tool].DL), 
+	//	MachineLimits[1]-MachineLimits[0],MachineLimits[3]-MachineLimits[2],MachineLimits[5]-MachineLimits[4]);
 
 	return 0;
 }
