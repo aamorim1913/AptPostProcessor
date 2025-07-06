@@ -36,7 +36,7 @@ const double Mac2Pivot[3]={-200.66, -193.7836, -338.3841};
 /* machine limits in machine coordinates xmin, xmax, ymin, ymax, zmin, zmax */
 const double MachineLimits[6]={-500,-0.1,-400,-0.1,-400,-0.1};
 
-/* table center with z meassured included  3d sensor lenght */
+/* table top center with z meassured included 3d sensor lenght */
 const double machine_table[3]={-200.66,-193.72,-388.18};
 const double machine_table_size[3]={500,350,50};
 const int machine_table_round=1;
@@ -203,7 +203,7 @@ int main(int argc, char **argv) {
 	double thetabtemp,thetactemp, thetab, thetac, thetatable;
 	double theta1, theta2, CircleR;
 	int nA;
-	int nsetup,ncoord,lnumber;
+	int nsetup,nrefsetup,ncoord,lnumber;
 	char RL='0', used_RL='0', Sense='+';
 	
 	double feed = -1, feedscale=1.0;
@@ -211,7 +211,6 @@ int main(int argc, char **argv) {
 	double FMAXZ=100.0;
 	int toolsmeasured=1;
 	int toolschanged=0;
-	int trefsetup0=0;
 
 	/* create an object of all main classes for the apt file, the measurement file for the scad and for the tool parameters */
 	APT apt;
@@ -228,8 +227,8 @@ int main(int argc, char **argv) {
 		cout<<"where <opt1>,<opt2> can be storetools, resetstoredtools, usestoredtools, dry, debug, FMAXZ=xxx (0 for FMAXZ=0 -> No Change )"<< endl << endl;
 		cout<<"A %FN15RUN.A file must be present in ../machine-code with the syntax"<< endl;
 		cout<<"		DatumX DatumY DatumZ (in machine coordinates)"<< endl;
-		cout<<"		<X> <Y> <Z> (setup 1 reference sphere relative to Datum)"<< endl;
-		cout<<"     ... ... ... (setup 2)"<< endl;
+		cout<<"		<X> <Y> <Z> (first tilted setup reference sphere relative to Datum)"<< endl;
+		cout<<"     ... ... ... (second tilted)"<< endl;
 		cout<<"     ... ... ..."<< endl;
 		cout<<"     -9999 SinTheta Z0 (sin(theta) of table rotation and Z0 of tool measurement) "<< endl;
 		cout<<"     toolnumber DR DL"<< endl;
@@ -297,6 +296,7 @@ int main(int argc, char **argv) {
 
 	/* initialize MAIN LOOP OVER LINES of the .apt file */
 	nsetup = -1;
+	nrefsetup=-1;
 	apt.resetupdated();
 	lnumber=1;
 	for (int i=0; i<3; i++) old_Datum2Tool[i]=invalid_coord;
@@ -358,45 +358,43 @@ int main(int argc, char **argv) {
 			if ((axis[0] != prev_axis[0]) || (axis[1] != prev_axis[1]) || (axis[2] != prev_axis[2])) {
 				/* this is the end of the previous setup */
 				++nsetup;
-				/* if nstup exceeds ncoord stop with error */
-				if ((nsetup >= ncoord)&&(nsetup>=1)) {
-					cout<<"Number of setups larger than the number of references. Exiting."<<endl;
-					cout<<"If you want to use the same references:"<<endl;
-					cout<< "Copy Ref line FN15RUN15.A if using the same references."<<endl;
-					fpause=1;
-					exit(2);
-				}
-				
-				/* first we compute the shift for the reference point for setup
-				   The reference point coordinates relative to the pivot point */
-				Piv2RRef[0] = xDatum2Ref[nsetup]+Piv2Datum[0];
-				Piv2RRef[1] = yDatum2Ref[nsetup]+Piv2Datum[1];
-				Piv2RRef[2] = zDatum2Ref[nsetup]+Piv2Datum[2];
-
-				RotateArray(Piv2RRef,axis,thetab,thetac);
-
-				/* the reference point coordinates relative to the unrotated datum are */
-				/* R(r) - r + xDatum2Ref */	
-				for (int i = 0; i < 3; i++) Shift[i] = Piv2RRef[i] - Piv2Datum[i];
-
-
-				/* write the setup */
-				WriteSetup(nsetup+11, axis, Shift);
 
 				if (axis[0]!=0 || axis[1]!=0 || axis[2]!=1.0 ) {
-					tref.AddRef(0);
-					trefsetup0=1;
+					++nrefsetup;
+					/* if nsetup exceeds ncoord stop with error */
+					if (nrefsetup >= ncoord) {
+						cout<<"Tilted/rotated for setup "<< nsetup+1 <<" not available. Using Ref at DatumX-50 DatumY-50 DatumZ"<<endl;
+						xDatum2Ref[nrefsetup]=-50;
+						yDatum2Ref[nrefsetup]=-50;
+						zDatum2Ref[nrefsetup]=0;
+						fpause=1;
+					}
+				
+					/* first we compute the shift for the reference point for setup
+					   The reference point coordinates relative to the pivot point 
+					   Note that only the titlted/rotated setups are in  xDatum2Ref, ... array*/
+					Piv2RRef[0] = xDatum2Ref[nrefsetup]+Piv2Datum[0];
+					Piv2RRef[1] = yDatum2Ref[nrefsetup]+Piv2Datum[1];
+					Piv2RRef[2] = zDatum2Ref[nrefsetup]+Piv2Datum[2];
+
+					RotateArray(Piv2RRef,axis,thetab,thetac);
+
+					/* the reference point coordinates relative to the unrotated datum are */
+					/* R(r) - r + xDatum2Ref */	
+					for (int i = 0; i < 3; i++) Shift[i] = Piv2RRef[i] - Piv2Datum[i];
+
+					/* add tref to 0.h */
+					tref.AddRef(nsetup);
+					/* write the setup */
+					WriteSetup(nsetup+11, axis, Shift);
+					/* then we compute the shift for the Datum */
+					/* The datum coordinates from the pivot point */
+					for (int i = 0; i < 3; i++) Piv2RDatum[i] = Piv2Datum[i];
+					RotateArray(Piv2RDatum,axis,thetab,thetac);
+					/* the new machine coordinates of the Datum */
+					/* Shift = R(r) - r becomes the the shift to be applied to the Datum point */
+					for (int i = 0; i < 3; i++) Shift[i] = Piv2RDatum[i] - Piv2Datum[i];
 				}
-				/* then we compute the shift for the Datum */
-				/* The datum coordinates from the pivot point */
-				for (int i = 0; i < 3; i++) Piv2RDatum[i] = Piv2Datum[i];
-
-				RotateArray(Piv2RDatum,axis,thetab,thetac);
-
-				/* the new machine coordinates of the Datum */
-				/* Shift = R(r) - r becomes the the shift to be applied to the Datum point */
-				for (int i = 0; i < 3; i++) Shift[i] = Piv2RDatum[i] - Piv2Datum[i];
-
 				apt.setnewcsys();
 				apt.setnewtool();
 				apt.setnewblk();
@@ -418,9 +416,6 @@ int main(int argc, char **argv) {
 					if ( thetab > 90 ) OUT=OpenH(nsetup+900+11);
 					else {
 						OUT=OpenH(nsetup+11);
-						/* if first add previous */
-						if (nsetup==1 && trefsetup0==0 ) tref.AddRef(0);
-						tref.AddRef(nsetup);
 					}
 					
 					fprintf(OUT, "1 BEGIN PGM %d MM\n2 ;setup of file %s\n", nsetup+11,argv[1]);
