@@ -38,8 +38,8 @@ const double MachineLimits[6]={-500,-0.1,-400,-0.1,-400,-0.1};
 
 /* table top center with z meassured included 3d sensor lenght */
 const double machine_table[3]={-200.66,-193.72,-388.18};
-const double machine_table_size[3]={500,350,50};
-const int machine_table_round=1;
+//const double machine_table_size[3]={500,350,50};
+//const int machine_table_round=1;
 
 const double invalid_coord=-9999.0;
 
@@ -224,7 +224,8 @@ int main(int argc, char **argv) {
 		cout<<"Provide the APT (....apt) file name or:" << endl;
 		cout<<"    clean - to remove all generated files "<< endl;
 		cout<<"    <>.apt <opt1> <opt2> ... "<< endl;
-		cout<<"where <opt1>,<opt2> can be storetools, resetstoredtools, usestoredtools, dry, debug, FMAXZ=xxx (0 for FMAXZ=0 -> No Change )"<< endl << endl;
+		cout<<"	   options are storetools, resetstoredtools, usestoredtools, dry, debug, "<<endl;
+		cout<<"    FMAXZ=xxx (0 for FMAXZ=0 -> No Change ), XT2D=, YT2D=, ZT2D=, (Top center of Table to Datum)"<< endl << endl;
 		cout<<"A %FN15RUN.A file must be present in ../machine-code with the syntax"<< endl;
 		cout<<"		DatumX DatumY DatumZ (in machine coordinates)"<< endl;
 		cout<<"		<X> <Y> <Z> (first tilted setup reference sphere relative to Datum)"<< endl;
@@ -275,6 +276,32 @@ int main(int argc, char **argv) {
 	
 	/* read all coordinates in the %FN15RUN.A file up to end or invalid_coord (if exists) */
 	ncoord=ReadCoord(xDatum2Ref,yDatum2Ref,zDatum2Ref,Piv2Datum);
+
+	if (ifarg("XT2D=",argc,argv)) {
+		for (int i=2; i<argc; i++) {
+			if (strstr(argv[i],"XT2D=")!=0) {
+				Piv2Datum[0]=machine_table[0]-Mac2Pivot[0]+atof(argv[i]+5);
+				printf(" Change Mac2Datum[0] to %+.3lf\n",Mac2Pivot[0]+Piv2Datum[0]);
+			}
+		}
+	}
+	if (ifarg("YT2D=",argc,argv)) {
+		for (int i=2; i<argc; i++) {
+			if (strstr(argv[i],"YT2D=")!=0) {
+				Piv2Datum[1]=machine_table[1]-Mac2Pivot[1]+atof(argv[i]+5);
+				printf(" Change Mac2Datum[1] to %+.3lf\n",Mac2Pivot[1]+Piv2Datum[1]);
+			}
+		}
+	}
+	if (ifarg("ZT2D=",argc,argv)) {
+		for (int i=2; i<argc; i++) {
+			if (strstr(argv[i],"ZT2D=")!=0) {
+				Piv2Datum[2]=machine_table[2]-Mac2Pivot[2]+atof(argv[i]+5);
+				printf(" Change Mac2Datum[2] to %+.3lf\n",Mac2Pivot[2]+Piv2Datum[2]);
+			}
+		}
+	}
+
 	/* read all tool measurements from SET.TOOLS */
 	if (ifarg("resetstoredtools",argc,argv)) {
 		    printf("Resseting storedtools\n");
